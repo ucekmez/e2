@@ -1,3 +1,29 @@
+import { Session } from 'meteor/session';
+
+import '/imports/ui/landing/landing.html';
+
+// loading mesajlari
+var message = '<p class="loading-message">Yükleniyor</p>';
+var spinner = '<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
+Template.LoadingLayout.rendered = function () {
+  if ( ! Session.get('loadingSplash') ) {
+    this.loading = window.pleaseWait({
+      logo: '/img/fililabs_logo.png',
+      backgroundColor: '#7f8c8d',
+      loadingHtml: message + spinner
+    });
+    Session.set('loadingSplash', true); // just show loading splash once
+  }
+};
+
+Template.LoadingLayout.destroyed = function () {
+  if ( this.loading ) {
+    this.loading.finish();
+  }
+};
+
+
+
 T9n.setLanguage("tr");
 
 T9n.map('tr', {

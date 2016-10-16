@@ -1,4 +1,4 @@
-/* all page routes */
+/* all routes */
 import '/imports/startup/client/routes.js';
 
 /* config file
