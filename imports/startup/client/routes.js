@@ -15,6 +15,6 @@ routes
 *************************************************/
 
 FlowRouter.triggers.enter([() => {
-  if (Meteor.loggingIn()) { BlazeLayout.render('LoadingLayout');}
+  //if (Meteor.loggingIn()) { BlazeLayout.render('LoadingLayout');}
   NProgress.start();
 }]);

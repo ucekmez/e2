@@ -1,9 +1,9 @@
 import './landing.html';
 
 
-/************************************************
+/**********************************************
 routes
-*************************************************/
+***********************************************/
 
 FlowRouter.route('/', { name: 'home',
   action() {
@@ -21,5 +21,25 @@ FlowRouter.route('/login', { name: 'login',
   action() {
     BlazeLayout.render('LandingLayout', { main: 'LoginPage' });
     NProgress.done();
+  }
+});
+
+FlowRouter.notFound = {
+  name: 'notfound',
+  action() {
+    BlazeLayout.render('LandingLayout', { main: 'NotFoundPage' });
+    NProgress.done();
+  }
+};
+
+
+
+/**********************************************
+template events
+***********************************************/
+
+Template.LandingLayout.events({
+  'click #logout'(event, instance) {
+    AccountsTemplates.logout();
   }
 });

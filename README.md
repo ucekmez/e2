@@ -13,15 +13,13 @@
 
 # packages
 
-kadira:flow-router kadira:blaze-layout arillo:flow-router-helpers theara:flow-router-breadcrumb mrt:nprogress session alanning:roles momentjs:moment momentjs:twix check msavin:mongol chrismbeckett:toastr accounts-password useraccounts:bootstrap
+meteor add kadira:flow-router kadira:blaze-layout arillo:flow-router-helpers theara:flow-router-breadcrumb mrt:nprogress session alanning:roles momentjs:moment momentjs:twix check msavin:mongol chrismbeckett:toastr accounts-password useraccounts:bootstrap aldeed:collection2
 
-
-
-
+meteor remove autopublish insecure
 
 
 
 
 --old
 
-aldeed:collection2 pcel:loading  backbone rubaxa:sortable froala:editor froala:editor-reactive lukemadera:video-capture
+ pcel:loading  backbone rubaxa:sortable froala:editor froala:editor-reactive lukemadera:video-capture

@@ -16,7 +16,8 @@
                               <a href="#" class="nav-link cwt__main-menu__link cwt__js-click__about">Hakkımızda</a>
                           </div> -->
                           {{#if currentUser }}
-                            <a href="#" class="nav-link btn btn-success cwt__main-menu__link cwt__main-menu__link--button">Panel</a>
+                            <a href="#" class="nav-link btn btn-success cwt__main-menu__link cwt__main-menu__link--button"><strong>Kullanıcı Paneli</strong></a>
+                            <a id="logout" class="nav-link btn btn-warning cwt__main-menu__link cwt__main-menu__link--button"><strong>Oturum kapat</strong></a>
                           {{else}}
                             <a href="{{ pathFor 'login' }}" class="nav-link btn btn-primary cwt__main-menu__link cwt__main-menu__link--button">Oturum Açın</a>
                           {{/if}}
@@ -25,6 +26,7 @@
               </div>
           </div>
       </div>
+      <hr style="height:1px;margin:0px;"/>
   </div>
   {{> Template.dynamic template=main}}
 </template>
@@ -32,21 +34,32 @@
 
 <template name="LandingPage">
   <div class="cwt__block cwt__preview">
-      <div class="cwt__preview__container">
-          <div class="cwt__preview__title">
-              <label style="font-size:1.4em;">EPPLY</label><sup style="font-size:0.6em;">alfa1</sup> <br />Akıllı Ön Mülakat Asistanınız
-          </div>
-      </div>
+    <div class="cwt__preview__title">
+        <label style="font-size:1.4em;">EPPLY</label><sup style="font-size:0.6em;">alfa1</sup> <br />Akıllı Ön Mülakat Asistanınız
+    </div>
   </div>
 </template>
 
 
 <template name="LoginPage">
+  <div class="cwt__block cwt__preview_login">
+      <div class="cwt__about__container">
+          <div class="row" style="padding-top:30px;">
+            <div class="col-md-8 offset-sm-2 text-xs-center" style="background:rgb(72,72,72);background:rgba(72,72,72,0.7);color:white;">
+              {{> atForm }}
+            </div>
+          </div>
+      </div>
+  </div>
+</template>
+
+<template name="NotFoundPage">
   <div class="cwt__block cwt__about">
       <div class="cwt__about__container">
-          <div class="row" style="padding-top:20px;">
+          <div class="row" style="padding-top:30px;">
             <div class="col-md-8 offset-sm-2 text-xs-center">
-              {{> atForm }}
+              <h1 style="font-size:4em;"><strong>404</strong></h1>
+              <h2> Aradığınız sayfa bulunamadı </h2>
             </div>
           </div>
       </div>
