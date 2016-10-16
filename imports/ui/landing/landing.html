@@ -1,0 +1,54 @@
+<template name="LandingLayout">
+  <div class="cwt__block cwt__header-fixed">
+      <div class="container">
+          <div class="cwt__header-fixed__container">
+              <div class="row">
+                  <div class="col-xs-3">
+                      <div class="cwt__logo cwt__logo--small">
+                          <a href="{{ pathFor 'home' }}">
+                              <img src="/img/logov1_white.png" alt="Epply" />
+                          </a>
+                      </div>
+                  </div>
+                  <div class="col-xs-9">
+                      <nav class="nav nav-inline pull-xs-right cwt__main-menu cwt__main-menu--dark">
+                          <!-- <div class="cwt__mobile-menu">
+                              <a href="#" class="nav-link cwt__main-menu__link cwt__js-click__about">Hakkımızda</a>
+                          </div> -->
+                          {{#if currentUser }}
+                            <a href="#" class="nav-link btn btn-success cwt__main-menu__link cwt__main-menu__link--button">Panel</a>
+                          {{else}}
+                            <a href="{{ pathFor 'login' }}" class="nav-link btn btn-primary cwt__main-menu__link cwt__main-menu__link--button">Oturum Açın</a>
+                          {{/if}}
+                      </nav>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  {{> Template.dynamic template=main}}
+</template>
+
+
+<template name="LandingPage">
+  <div class="cwt__block cwt__preview">
+      <div class="cwt__preview__container">
+          <div class="cwt__preview__title">
+              <label style="font-size:1.4em;">EPPLY</label><sup style="font-size:0.6em;">alfa1</sup> <br />Akıllı Ön Mülakat Asistanınız
+          </div>
+      </div>
+  </div>
+</template>
+
+
+<template name="LoginPage">
+  <div class="cwt__block cwt__about">
+      <div class="cwt__about__container">
+          <div class="row" style="padding-top:20px;">
+            <div class="col-md-8 offset-sm-2 text-xs-center">
+              {{> atForm }}
+            </div>
+          </div>
+      </div>
+  </div>
+</template>
