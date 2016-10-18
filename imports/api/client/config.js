@@ -4,7 +4,7 @@ import '/imports/ui/landing/landing.html';
 
 // loading mesajlari
 var message = '<p class="loading-message">Yükleniyor</p>';
-var spinner = '<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
+var spinner = '<div class="spinner"><div><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
 Template.LoadingLayout.rendered = function () {
   if ( ! Session.get('loadingSplash') ) {
     this.loading = window.pleaseWait({

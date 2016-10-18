@@ -1,0 +1,72 @@
+<template name="AdminListCompanies">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>Firma Listesi</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;"><a href="{{ pathFor 'admin_add_new_company' }}"><button class="btn btn-secondary"><i class="icmn-plus2"></i> Yeni Firma Ekle</button></a></div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+                    {{#if subsReady 'admin_show_company_list'}}
+                      {{#if companies }}
+                        <div class="margin-bottom-50">
+                            <table class="table table-hover nowrap" id="company_list_table" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Sıra</th>
+                                    <th>Firma Adı</th>
+                                    <th>email</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                                </thead>
+                                <!-- <tfoot>
+                                  <tr>
+                                      <th>Sıra</th>
+                                      <th>Firma Adı</th>
+                                      <th>E-Posta</th>
+                                      <th>İşlemler</th>
+                                  </tr>
+                                </tfoot> -->
+                                <tbody>
+                                  {{#each companies }}
+                                    <tr>
+                                        <td>{{ index }}</td>
+                                        <td>{{ name }}</td>
+                                        <td>{{ email }}</td>
+                                        <td><a style="cursor:pointer;" id="admin-remove-company"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
+                                    </tr>
+                                  {{/each}}
+                                  {{#if companies }}
+                                    <script type="text/javascript">
+                                      $('#company_list_table').DataTable({ responsive: true, language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
+                                    </script>
+                                  {{/if}}
+                                </tbody>
+                            </table>
+                        </div>
+                      {{else}}
+                        Henüz firma eklenmemiş...
+                      {{/if}}
+                    {{else}}
+                      İçerik yükleniyor...
+                    {{/if}}
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

@@ -23,6 +23,10 @@
                           {{#if currentUser }}
                             {{#if isInRole 'admin' }}
                               <a href="{{ pathFor 'admin_dashboard' }}" class="nav-link btn btn-success cwt__main-menu__link cwt__main-menu__link--button"><strong>Kullanıcı Paneli</strong></a>
+                            {{else}}
+                            {{#if isInRole 'company' }}
+                              <a href="{{ pathFor 'company_dashboard' }}" class="nav-link btn btn-success cwt__main-menu__link cwt__main-menu__link--button"><strong>Kullanıcı Paneli</strong></a>
+                            {{/if}}
                             {{/if}}
                             <a id="logout" class="nav-link btn btn-warning cwt__main-menu__link cwt__main-menu__link--button"><strong>Oturum kapat</strong></a>
                           {{else}}

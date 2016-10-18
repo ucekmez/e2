@@ -1,9 +1,9 @@
-<template name="AdminLayout">
-  {{#if isInRole 'admin'}}
-    {{> AdminLeftMenu }}
-    {{> AdminTopMenu }}
+<template name="CompanyLayout">
+  {{#if isInRole 'company'}}
+    {{> CompanyLeftMenu }}
+    {{> CompanyTopMenu }}
     {{> Template.dynamic template=main}}
-    {{> AdminFooter }}
+    {{> CompanyFooter }}
   {{else}}
     {{> NotInRoleLayout}}
   {{/if}}
@@ -11,10 +11,10 @@
 
 
 
-<template name="AdminLeftMenu">
+<template name="CompanyLeftMenu">
   <nav class="left-menu" left-menu>
       <div class="logo-container">
-          <a href="{{ pathFor 'admin_dashboard' }}" class="logo">
+          <a href="{{ pathFor 'company_dashboard' }}" class="logo">
               <img src="/img/logov1_black.png" alt="Epply Recruitment" />
               <img class="logo-inverse" src="/img/logov1_white.png" alt="Epply Recruitment" />
           </a>
@@ -22,14 +22,14 @@
       <div class="left-menu-inner scroll-pane">
           <ul class="left-menu-list left-menu-list-root list-unstyled">
               <li class="left-menu-list-active">
-                  <a class="left-menu-link" href="{{ pathFor 'admin_dashboard' }}">
+                  <a class="left-menu-link" href="{{ pathFor 'company_dashboard' }}">
                       <i class="left-menu-link-icon icmn-home2"></i>
                       <span class="menu-top-hidden">Kontrol Paneli</span>
                   </a>
               </li>
               <li class="left-menu-list-separator "></li>
               <li class="left-menu-list">
-                  <a class="left-menu-link" href="{{ pathFor 'admin_list_companies' }}">
+                  <a class="left-menu-link" href="#">
                       <i class="left-menu-link-icon icmn-home2"></i>
                       <span class="menu-top-hidden">Firmaları Listele</span>
                   </a>
@@ -39,7 +39,7 @@
   </nav>
 </template>
 
-<template name="AdminTopMenu">
+<template name="CompanyTopMenu">
   <nav class="top-menu">
       <div class="menu-icon-container hidden-md-up">
           <div class="animate-menu-button left-menu-toggle">
@@ -57,13 +57,14 @@
                   <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
                       <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-user"></i> Profile</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" id="admin-logout" style="cursor:pointer;"><i class="dropdown-icon icmn-exit"></i> Logout</a>
+                      <a class="dropdown-item" id="company-logout" style="cursor:pointer;"><i class="dropdown-icon icmn-exit"></i> Logout</a>
                   </ul>
               </div>
           </div>
           <div class="menu-info-block">
               <div class="left">
                   <div class="header-buttons">
+                    <strong style="font-size:1.2em;">{{ company.name }}</strong> |
                     {{#each breadcrumb}}
                       {{#if activeClass}}
                         <span class="{{activeClass}} item">{{title}}</span>
@@ -88,7 +89,7 @@
 </template>
 
 
-<template name="AdminMainArea">
+<template name="CompanyMainArea">
   <section class="page-content">
     <div class="page-content-inner">
       <section class="panel">
@@ -103,7 +104,7 @@
 </template>
 
 
-<template name="AdminFooter">
+<template name="CompanyFooter">
   <div class="cwt__footer visible-footer">
       <div class="cwt__footer__top">
         <div class="row">

@@ -10,6 +10,7 @@ router files
 *************************************************/
 import '/imports/ui/landing/routes.js';
 import '/imports/ui/admin/routes.js';
+import '/imports/ui/company/routes.js';
 
 
 /************************************************
@@ -17,6 +18,7 @@ controller files
 *************************************************/
 import '/imports/ui/landing/controller.js';
 import '/imports/ui/admin/controller.js';
+import '/imports/ui/company/controller.js';
 
 
 /************************************************

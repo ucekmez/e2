@@ -1,0 +1,62 @@
+<template name="AdminAddNewCompany">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="panel-heading"><h3>Yeni bir Firma Ekleyin</h3></div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                    <div class="panel-body">
+                      <!-- -->
+
+                      <form id="admin-add-new-company-form">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="form-control-label" for="l0">Firma Adı</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="Firma Adı Ltd. Şti." id="companyname" name="companyname" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="form-control-label" for="l0">Firma E-Posta</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="admin@firma.ltd" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="form-control-label" for="l0">Parola</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="password" class="form-control" placeholder="********" id="password" name="password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-group row">
+                                <div class="col-md-6 offset-md-3">
+                                    <button type="submit" class="btn btn-block btn-secondary"><i class="icmn-floppy-disk"></i> Kaydet</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-block btn-default" id="company-form-reset"><i class="icmn-undo"></i> Sıfırla</button>
+                                </div>
+                            </div>
+                        </div>
+                      </form>
+
+                      <!-- -->
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

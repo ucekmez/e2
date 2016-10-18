@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import '/imports/startup/server';
+
 import shortid from 'shortid';
 
 
@@ -9,7 +11,6 @@ Meteor.startup(() => {
   if (Meteor.users.find().count() === 0) {
     const users = [ {
         name: "Ugur Cekmez",
-        username: "ugur",
         email: "ugur@fililabs.com",
         roles: ['admin'],
         profile : {'name': "", 'gender': "", 'age': "", 'address': "", 'shortid': shortid.generate()}
