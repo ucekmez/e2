@@ -1,0 +1,41 @@
+<template name="CompanyEditForm">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            {{#with form }}
+            <div class="panel-heading show-edit-name" ><i class="edit icon"></i><h3>{{ title }}</h3></div>
+
+            <div class="panel-heading edit-name-form" style="display:none;">
+              <i class="edit icon"></i>
+              <div class="col-xs-8">
+                <input type="text" class="form-control" placeholder="Enter a name for your form" id="new-name-value" value="{{ title }}" />
+              </div>
+            </div>
+
+            {{/with}}
+          </div>
+          <div class="col-xs-4">
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+                    <div class="fb-main"></div>
+
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</template>

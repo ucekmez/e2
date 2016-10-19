@@ -29,9 +29,33 @@
               </li>
               <li class="left-menu-list-separator "></li>
               <li class="left-menu-list">
-                  <a class="left-menu-link" href="#">
+                  <a class="left-menu-link" href="{{ pathFor 'company_list_positions' }}">
                       <i class="left-menu-link-icon icmn-home2"></i>
-                      <span class="menu-top-hidden">Firmaları Listele</span>
+                      <span class="menu-top-hidden">İlan Süreci Yönetimi</span>
+                  </a>
+              </li>
+              <li class="left-menu-list">
+                  <a class="left-menu-link" href="{{ pathFor 'company_list_pis' }}">
+                      <i class="left-menu-link-icon icmn-home2"></i>
+                      <span class="menu-top-hidden">Kişilik Envanterleri</span>
+                  </a>
+              </li>
+              <li class="left-menu-list">
+                  <a class="left-menu-link" href="{{ pathFor 'company_list_forms' }}">
+                      <i class="left-menu-link-icon icmn-home2"></i>
+                      <span class="menu-top-hidden">Anket ve Testler</span>
+                  </a>
+              </li>
+              <li class="left-menu-list">
+                  <a class="left-menu-link" href="{{ pathFor 'company_list_keynotes' }}">
+                      <i class="left-menu-link-icon icmn-home2"></i>
+                      <span class="menu-top-hidden">Online Sunumlar</span>
+                  </a>
+              </li>
+              <li class="left-menu-list">
+                  <a class="left-menu-link" href="{{ pathFor 'company_list_videos' }}">
+                      <i class="left-menu-link-icon icmn-home2"></i>
+                      <span class="menu-top-hidden">Video Kayıtlar</span>
                   </a>
               </li>
           </ul>
@@ -64,7 +88,11 @@
           <div class="menu-info-block">
               <div class="left">
                   <div class="header-buttons">
-                    <strong style="font-size:1.2em;">{{ company.name }}</strong> |
+
+                    <i class="icmn-office" style="color:ccc !important;"></i>
+                    <strong style="font-size:1.2em;margin-right:14px;">{{ company.name }}</strong>
+
+                    <i class="icmn-folder-open" style="color:ccc !important;"></i>
                     {{#each breadcrumb}}
                       {{#if activeClass}}
                         <span class="{{activeClass}} item">{{title}}</span>

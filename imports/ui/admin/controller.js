@@ -53,6 +53,18 @@ template events
 Template.AdminTopMenu.events({
   'click #admin-logout'(event, instance) {
     AccountsTemplates.logout();
+  },
+  'click .left-menu-toggle'(event, instance) {
+    $(this).toggleClass('active');
+    $('nav.left-menu').toggleClass('left-menu-showed');
+    $('.main-backdrop').toggleClass('main-backdrop-showed');
+  },
+  'click nav.left-menu a.left-menu-link'(event, instance) {
+    if (!$(this).parent().hasClass('left-menu-list-submenu')) {
+      $('.left-menu-toggle').removeClass('active');
+      $('nav.left-menu').removeClass('left-menu-showed');
+      $('.main-backdrop').removeClass('main-backdrop-showed')
+    }
   }
 });
 
@@ -107,4 +119,13 @@ Template.AdminListCompanies.events({
       }
     });
   },
+});
+
+
+Template.AdminFooter.events({
+  'click .main-backdrop'(event, instance) {
+    $('.left-menu-toggle').removeClass('active');
+    $('nav.left-menu').removeClass('left-menu-showed');
+    $('.main-backdrop').removeClass('main-backdrop-showed');
+  }
 });

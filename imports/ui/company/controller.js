@@ -1,5 +1,12 @@
 import { Companies } from '/imports/api/collections/companies.js';
 
+import './forms/forms.js';
+import './keynotes/keynotes.js';
+import './pis/pis.js';
+import './positions/positions.js';
+import './videos/videos.js';
+
+
 const datatable_lang = {
   processing:     "İşleniyor...",
   search:         "Kayıt içinde ara",
@@ -46,5 +53,18 @@ template events
 Template.CompanyTopMenu.events({
   'click #company-logout'(event, instance) {
     AccountsTemplates.logout();
+  },
+  'click .left-menu-toggle'(event, instance) {
+    $(this).toggleClass('active');
+    $('nav.left-menu').toggleClass('left-menu-showed');
+    $('.main-backdrop').toggleClass('main-backdrop-showed');
+  },
+});
+
+Template.CompanyFooter.events({
+  'click .main-backdrop'(event, instance) {
+    $('.left-menu-toggle').removeClass('active');
+    $('nav.left-menu').removeClass('left-menu-showed');
+    $('.main-backdrop').removeClass('main-backdrop-showed');
   }
 });

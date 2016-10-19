@@ -6,7 +6,8 @@
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
-    "meteor-node-stubs": "~0.2.0",
-    "shortid": "^2.2.6"
+    "meteor-node-stubs": "^0.2.3",
+    "shortid": "^2.2.6",
+    "underscore": "^1.8.3"
   }
 }

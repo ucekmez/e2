@@ -1,10 +1,17 @@
 export const Companies = new Mongo.Collection('companies');
 
+import shortid from 'shortid';
+
 Companies.attachSchema(new SimpleSchema({
-  name: { type: String, max: 256 },
-  user: { type: String, optional: true },
-  email: { type: String, optional: true },
-  createdAt : {
+  name            : { type: String, max: 256 },
+  user            : { type: String, optional: true },
+  email           : { type: String, optional: true },
+  shortid : {
+    type: String,
+    autoValue: function() { if (this.isInsert) { return shortid.generate(); } },
+    optional: true
+  },
+  createdAt       : {
     type: Date,
     autoValue: function() {
       if (this.isInsert) { return new Date(); }
@@ -12,7 +19,7 @@ Companies.attachSchema(new SimpleSchema({
       else { this.unset(); }
     }
   },
-  updatedAt: {
+  updatedAt       : {
     type: Date,
     autoValue: function() { if (this.isUpdate) { return new Date(); } },
     denyInsert: true,

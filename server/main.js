@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import '/imports/startup/server';
 
 import shortid from 'shortid';
-
+Sortable.collections = ['slides'];
 
 /**********************************************
       init the admin user
