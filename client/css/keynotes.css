@@ -42,21 +42,22 @@
   width:100%;
 }
 
-#slide-add-icon {
+#company-slide-add-icon {
   position:relative;
   z-index:10;
   margin: auto;
 }
 
-#slide-delete-icon {
+#company-slide-delete-icon {
   z-index:999;
   position:absolute;
   float:left;
   margin-left: -10px;
-  margin-top: 4px;
+  margin-top:-10px;
   color: red;
   font-size:30px;
 }
+
 
 
 /*
@@ -80,7 +81,7 @@
   height:400px;
 }
 
-#start-editing {
+#company-start-editing {
   padding:10px;
   position: fixed;
 }

@@ -7,6 +7,8 @@ import '/imports/api/collections/keynotes.js';
 import '/imports/api/collections/pis.js';
 import '/imports/api/collections/positions.js';
 import '/imports/api/collections/videos.js';
+import '/imports/api/collections/predefined.js';
+import '/imports/api/collections/sectors.js';
 
 
 // methods

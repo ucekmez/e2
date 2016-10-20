@@ -1,0 +1,71 @@
+<template name="CompanyEditKeynote">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            {{#with keynote }}
+            <div class="panel-heading keynote-show-edit-name" ><h3><i class="icmn-pencil7" style="font-size:0.8em;"></i> {{ title }}</h3></div>
+
+            <div class="panel-heading keynote-edit-name-keynote" style="display:none;">
+              <i class="edit icon"></i>
+              <div class="col-xs-8">
+                <input type="text" class="form-control" placeholder="Enter a name for your form" id="keynote-new-name-value" value="{{ title }}" />
+              </div>
+            </div>
+
+            {{/with}}
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_keynotes' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Sunum Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <!-- -->
+
+                  <div class="col-xs-3 thumbnails">
+                    <ul class="keynote-thumbnails">
+                      {{#sortable items=slides options=sortableOptions}}
+                        <li class="keynote-slide panel" id="company-slide-thumbnail">
+                          <i class="icmn-cross red-icon big-icon" style="cursor:pointer" id="company-slide-delete-icon" aria-hidden="true"></i>
+                          <span>{{{ scaleText content }}}</span>
+                        </li>
+                      {{/sortable}}
+                      <div class="add-icon-container"><i class="icmn-plus2 green-icon very-huge-icon" style="cursor:pointer;" id="company-slide-add-icon" aria-hidden="true"></i></div>
+                    </ul>
+                  </div>
+
+                  <div class="col-xs-9">
+                    <div id="company-start-editing">
+                        <h3 style="margin-top:64px;"><i class="icmn-point-left very-huge-icon gray-icon" style="margin-right:10px;"></i>
+                          Düzenlemek için bir slayt seçin veya
+                          <i class="icmn-plus2 green-icon huge-icon" style="cursor:pointer;" id="company-slide-add-icon" aria-hidden="true"></i>
+                          ile yeni bir tane oluşturun! </h3>
+                    </div>
+                    {{#each slides }}
+                      {{> CompanyEditSingleSlide}}
+                    {{/each}}
+                  </div>
+
+
+                <!-- -->
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</template>
+
+
+
+<template name="CompanyEditSingleSlide">
+  <div id="slide-{{_id}}" class="slide-area passive panel">
+    {{> froalaReactive getFEContext disableRightClick=true}}
+  </div>
+</template>

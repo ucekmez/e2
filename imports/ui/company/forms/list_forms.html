@@ -31,7 +31,8 @@
                                     <th>Sıra</th>
                                     <th>Form Adı</th>
                                     <th>Form Tipi</th>
-                                    <th>Oluşturulma Zamanı</th>
+                                    <th>Oluşturulma</th>
+                                    <th>Güncelleme</th>
                                     <th>İşlemler</th>
                                 </tr>
                                 </thead>
@@ -47,9 +48,10 @@
                                   {{#each forms }}
                                     <tr>
                                         <td>{{ index }}</td>
-                                        <td><a href="{{ pathFor 'company_edit_form' formId=_id }}"><i class="icmn-pencil7"></i> {{ title }}</a></td>
+                                        <td><a href="{{ pathFor 'company_edit_form' formId=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ title }}</a></td>
                                         <td>{{#if equals type "form"}}Anket{{else}}{{#if equals type "test"}}Test{{else}}Ön Koşul{{/if}}{{/if}}</td>
                                         <td>{{ dateFromNow createdAt }}</td>
+                                        <td>{{#if updatedAt}}{{ dateFromNow updatedAt }}{{else}}--{{/if}}</td>
                                         <td><a style="cursor:pointer;" id="company-remove-form"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
                                     </tr>
                                   {{/each}}

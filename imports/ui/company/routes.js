@@ -72,6 +72,7 @@ companyKeynoteRoutes.route('/list', { name: 'company_list_keynotes',
   subscriptions: function(params, queryParams) {
       if(Meteor.isClient) {
         this.register('company_list_keynotes', Meteor.subscribe("company_list_keynotes"));
+        this.register('company_list_keynotes_slides_for_count', Meteor.subscribe("company_list_keynotes_slides_for_count"));
         this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
       }
   },
@@ -81,6 +82,22 @@ companyKeynoteRoutes.route('/list', { name: 'company_list_keynotes',
     NProgress.done();
   }
 });
+
+companyKeynoteRoutes.route('/edit/:keynoteId', { name: 'company_edit_keynote',
+  breadcrumb: { parent: "company_list_keynotes", title: "Online Sunum Düzenleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_keynote_preview', Meteor.subscribe("company_keynote_preview", params.keynoteId));
+      this.register('company_keynote_slides_preview', Meteor.subscribe("company_keynote_slides_preview", params.keynoteId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyEditKeynote' });
+    NProgress.done();
+  }
+});
+
 
 
 

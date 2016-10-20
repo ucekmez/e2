@@ -66,29 +66,29 @@ template events
 ***********************************************/
 
 Template.CompanyEditForm.events({
-  'click .show-edit-name'(event, instance) {
-    $('.show-edit-name').hide();
-    $('.edit-name-form').show();
-    $("#new-name-value").focus();
-    $("#new-name-value").focusout(function() {
-      $('.show-edit-name').show();
-      $('.edit-name-form').hide();;
-      $('#new-name-value').val($(".show-edit-name h3").text());
+  'click .form-show-edit-name'(event, instance) {
+    $('.form-show-edit-name').hide();
+    $('.form-edit-name-form').show();
+    $("#form-new-name-value").focus();
+    $("#form-new-name-value").focusout(function() {
+      $('.form-show-edit-name').show();
+      $('.form-edit-name-form').hide();;
+      $('#form-new-name-value').val($(".form-show-edit-name h3").text());
     });
   },
-  'keypress input#new-name-value'(event, instance) {
+  'keypress input#form-new-name-value'(event, instance) {
     if (event.which == 13) {
-      const new_name = $('#new-name-value').val();
+      const new_name = $('#form-new-name-value').val();
       Meteor.call('company_edit_form_name', FlowRouter.getParam('formId'), new_name, function(err, data) {
         if (!err) {
           toastr.info("Form adı değiştirildi!");
-          $('.show-edit-name').show();
-          $('.edit-name-form').hide();
+          $('.form-show-edit-name').show();
+          $('.form-edit-name-form').hide();
         }else {
           toastr.warning(err);
         }
       });
-      $('#new-name-value').val(new_name);
+      $('#form-new-name-value').val(new_name);
     }
   }
 });

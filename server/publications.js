@@ -1,6 +1,6 @@
 import { Companies } from '/imports/api/collections/companies.js';
 import { Forms } from '/imports/api/collections/forms.js';
-import { Keynotes } from '/imports/api/collections/keynotes.js';
+import { Keynotes,Slides } from '/imports/api/collections/keynotes.js';
 import { PIGroups } from '/imports/api/collections/pis.js';
 import { Positions } from '/imports/api/collections/positions.js';
 import { InterviewQuestions } from '/imports/api/collections/videos.js';
@@ -47,6 +47,26 @@ Meteor.publish("company_form_preview", function(form_id) {
 Meteor.publish("company_list_keynotes", function() {
   if (Roles.userIsInRole(this.userId, ['company'])) {
     return Keynotes.find({ user: this.userId });
+  }
+});
+
+Meteor.publish("company_list_keynotes_slides_for_count", function() {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return Slides.find({ user: this.userId },{
+      fields: {'keynote':1 }
+    });
+  }
+});
+
+Meteor.publish("company_keynote_preview", function(keynote_id) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return Keynotes.find({ _id: keynote_id });
+  }
+});
+
+Meteor.publish("company_keynote_slides_preview", function(keynote_id) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return Slides.find({ keynote: keynote_id });
   }
 });
 
