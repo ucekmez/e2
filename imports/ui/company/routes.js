@@ -43,7 +43,7 @@ companyFormRoutes.route('/list', { name: 'company_list_forms',
   }
 });
 
-companyFormRoutes.route('/edit/:formId', { name: 'edit_form',
+companyFormRoutes.route('/edit/:formId', { name: 'company_edit_form',
   breadcrumb: { parent: "company_list_forms", title: "Form Düzenleme" },
   subscriptions: function(params, queryParams) {
     if(Meteor.isClient) {

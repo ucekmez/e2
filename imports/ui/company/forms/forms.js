@@ -1,5 +1,7 @@
 import { Forms } from '/imports/api/collections/forms.js';
 
+import Stickyfill from 'stickyfill';
+
 import './list_forms.html';
 import './edit_form.html';
 
@@ -31,6 +33,9 @@ Template.CompanyEditForm.onRendered(function() {
           $("a[data-field-type='dropdown']").remove();
           $("a[data-field-type='section_break']").remove();
       }
+      const stickyfill = Stickyfill();
+      stickyfill.add($('.fb-left')[0]);
+
     }
   });
 });
@@ -42,7 +47,15 @@ Template.CompanyEditForm.helpers({
   }
 });
 
-
+Template.CompanyListForms.helpers({
+  forms() {
+    return Forms.find({ user: Meteor.userId() })
+    .map(function(document, index) {
+      document.index = index + 1;
+      return document;
+    });
+  },
+});
 
 
 
@@ -90,5 +103,14 @@ Template.CompanyListForms.events({
   'click #add_new_prerequisite_right'(event, instance) { // ana sayfadaki buton
     f_add_new_prerequisite(event ,instance);
   },
+  'click #company-remove-form'(event, instance) {
+    Meteor.call('company_remove_form', this._id, function(err, data) {
+      if (err) {
+        toastr.error(err);
+      }else {
+        toastr.success("Form kayıtlardan silindi!");
+      }
+    });
+  }
 
 });

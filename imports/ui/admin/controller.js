@@ -4,29 +4,6 @@ import './add_new_company.html';
 import './list_companies.html';
 
 
-const datatable_lang = {
-  processing:     "İşleniyor...",
-  search:         "Kayıt içinde ara",
-  lengthMenu:     "_MENU_ kayıt göster",
-  info:           "Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",
-  infoEmpty:      "Kayıt bulunamadı.",
-  infoFiltered:   "(_MAX_ kayıt arasından filtrelendi)",
-  infoPostFix:    "",
-  loadingRecords: "Yükleniyor...",
-  zeroRecords:    "Kayıt bulunamadı.",
-  emptyTable:     "Tabloda veri yok.",
-  paginate: {
-      first:      "İlk",
-      previous:   "Önceki",
-      next:       "Sonraki",
-      last:       "Son"
-  },
-  aria: {
-      sortAscending:  ": artan biçimde sıralar",
-      sortDescending: ": azalan biçimde sıralar"
-  }
-};
-
 
 /**********************************************
 template helpers
@@ -39,9 +16,6 @@ Template.AdminListCompanies.helpers({
         document.index = index + 1;
         return document;
       });
-  },
-  datatable_lang() {
-    return datatable_lang;
   },
 });
 

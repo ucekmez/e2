@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-xs-8">
             {{#with form }}
-            <div class="panel-heading show-edit-name" ><i class="edit icon"></i><h3>{{ title }}</h3></div>
+            <div class="panel-heading show-edit-name" ><h3><i class="icmn-pencil7" style="font-size:0.8em;"></i> {{ title }}</h3></div>
 
             <div class="panel-heading edit-name-form" style="display:none;">
               <i class="edit icon"></i>
@@ -17,21 +17,24 @@
             {{/with}}
           </div>
           <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_forms' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Anket Listesine Dön</button></a>
+            </div>
           </div>
         </div>
       </section>
       <div class="dashboard-container">
         <div class="row">
             <div class="col-xl-12">
-                <div class="panel panel-with-borders m-b-0">
-                  <div class="panel-body">
+                
+
                     <!-- -->
 
                     <div class="fb-main"></div>
 
                     <!-- -->
-                  </div>
-                </div>
+
+
             </div>
         </div>
       </div>

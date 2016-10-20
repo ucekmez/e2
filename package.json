@@ -6,8 +6,10 @@
   },
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "ion-rangeslider": "^2.1.4",
     "meteor-node-stubs": "^0.2.3",
     "shortid": "^2.2.6",
+    "stickyfill": "^1.1.1",
     "underscore": "^1.8.3"
   }
 }

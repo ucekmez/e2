@@ -2,7 +2,7 @@
 .fb-clear{clear:both}
 .fb-main{margin:0 auto;position:relative;}
 .fb-save-wrapper{position:absolute;right:20px;top:10px}
-.fb-left{float:left;width:280px;padding-top:10px}
+.fb-left{float:left;width:280px;padding-top:90px; position:-webkit-sticky; position:sticky; top:0;}
 .fb-right{margin-left:280px;border-left:1px solid #ddd;padding-left:10px;min-height:100%;overflow:hidden}
 .fb-no-response-fields{color:#999}
 .fb-tabs{list-style:none;margin:0 0 20px 0;padding:0 0 0 20px;border-bottom:1px solid #ccc}
@@ -24,7 +24,7 @@
 .fb-field-wrapper:hover .subtemplate-wrapper{border-radius:3px}
 .fb-field-wrapper .actions-wrapper{display:none;position:absolute;bottom:-7px;right:5px;z-index:3}
 .fb-field-wrapper .actions-wrapper a{display:inline-block;padding:2px 8px}
-.edit-response-field input,.edit-response-field textarea,.edit-response-field select{border:thin solid #ddd;border-radius:.25em;max-width:170px;padding-left:5px;padding-top:5px;padding-bottom:5px;display:inline-block;height:auto;vertical-align:middle}
+.edit-response-field input,.edit-response-field textarea,.edit-response-field select{border:thin solid #ddd;border-radius:.25em;padding-left:5px;padding-top:5px;padding-bottom:5px;display:inline-block;height:auto;vertical-align:middle}
 .edit-response-field input:focus,.edit-response-field textarea:focus,.edit-response-field select:focus{outline:none;border:thin solid #1abc9c}
 .edit-response-field select{font-size:12px}
 .fb-field-wrapper .subtemplate-wrapper{border:1px dashed transparent;margin-bottom:10px;padding:10px;position:relative}
@@ -69,4 +69,9 @@
 
 .form-builder-checkbox-input {
   margin-right:4px;
+}
+
+.selected-form-question,
+.ui-draggable-dragging {
+  background: #eee;
 }

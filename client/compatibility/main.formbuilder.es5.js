@@ -1215,7 +1215,7 @@ Meteor.startup(function() {
         //Create and append the visible helper
         this.helper = this._createHelper(event);
 
-        this.helper.addClass("ui-draggable-dragging btn btn-secondary");
+        this.helper.addClass("ui-draggable-dragging");
 
         //Cache the helper size
         this._cacheHelperProportions();
@@ -8289,7 +8289,7 @@ Meteor.startup(function() {
           arguments);
       }
 
-      ViewFieldView.prototype.className = "fb-field-wrapper ui segment ";
+      ViewFieldView.prototype.className = "fb-field-wrapper panel ";
 
       ViewFieldView.prototype.events = {
         'click .subtemplate-wrapper': 'focusEditView',
@@ -8345,7 +8345,7 @@ Meteor.startup(function() {
         var attrs;
         attrs = _.clone(this.model.attributes);
         delete attrs['id'];
-        attrs['label'] += ' Copy';
+        attrs['label'] += ' (Kopya)';
         return this.parentView.createField(attrs, {
           position: this.model.indexInDOM() + 1
         });
@@ -8637,7 +8637,7 @@ Meteor.startup(function() {
             return function() {
               var $helper;
               $helper = $(
-                "<div class='ui segment response-field-draggable-helper' />"
+                "<div class='panel response-field-draggable-helper' />"
               );
               $helper.css({
                 width: _this.$responseFields.width(),
@@ -8679,8 +8679,8 @@ Meteor.startup(function() {
           function() {
             return $(this).data('cid') === model.cid;
           });
-        $responseFieldEl.addClass('panel panel-default raised').siblings(
-          '.fb-field-wrapper').removeClass('panel panel-default raised');
+        $responseFieldEl.addClass('panel-default selected-form-question').siblings(
+          '.fb-field-wrapper').removeClass('panel-default selected-form-question');
         if (this.editView) {
           if (this.editView.model.cid === model.cid) {
             this.$el.find(".fb-tabs a[data-target=\"#editField\"]")
@@ -8710,7 +8710,7 @@ Meteor.startup(function() {
 
       BuilderView.prototype.scrollLeftWrapper = function(
         $responseFieldEl) {
-        this.unlockLeftWrapper();
+        /*this.unlockLeftWrapper();
         if (!$responseFieldEl[0]) {
           return;
         }
@@ -8720,7 +8720,7 @@ Meteor.startup(function() {
             return function() {
               return _this.lockLeftWrapper();
             };
-          })(this));
+          })(this)); */ // burasi ortadaki soru paneli secilince yukari kaydiriyor
       };
 
       BuilderView.prototype.lockLeftWrapper = function() {
@@ -9608,7 +9608,7 @@ Meteor.startup(function() {
             '" type="checkbox"  class=\'js-default-updated\' />Doğru</label>';
         }
         __p +=
-          '<a style="margin-left:4px;cursor:pointer;" class="js-add-option" title="Add Option"><i class=\'big green plus icon\'></i></a>\r\n  <a class="js-remove-option" title="Remove Option"><i class=\'big red remove icon\'></i></a>\r\n</div>\r\n\r\n';
+          '<a style="margin-left:4px;cursor:pointer;" class="js-add-option" title="Seçenek Ekle"><i class=\'icmn-plus2 big-icon green-icon\'></i></a>\r\n  <a style=\'cursor:pointer;margin-left:4px;\' class="js-remove-option" title="Seçenek Sil"><i class=\'icmn-minus2 big-icon red-icon\'></i></a>\r\n</div>\r\n\r\n';
         if (typeof includeOther !== 'und*00efined') {;
           __p +=
             '\r\n  <label>\r\n    <input id="otheractive" type=\'checkbox\' data-rv-checked=\'model.' +
@@ -9640,7 +9640,7 @@ Meteor.startup(function() {
         '<div class=\'fb-edit-section-header\'>Ranges</div>\r\n\r\n<div class=\'option field\' data-rv-each-option=\'model.' +
         ((__t = (Formbuilder.options.mappings.OPTIONS)) == null ? '' :
           __t) +
-        '\'>\r\n  Min: <input type="text" data-rv-input="option:min" class=\'validate option-label-input\' placeholder="En Düşük Değer" /><br/>\r\n  Seçenek: <input type="text" data-rv-input="option:min_label" class=\'option-label-input\' placeholder="En Düşük Değer" /><br/>\r\n  Max: <input type="text" data-rv-input="option:max" class=\'option-label-input\' placeholder="En Yüksek Değer" /><br/>\r\n  Seçenek: <input type="text" data-rv-input="option:max_label" class=\'option-label-input\' placeholder="En Yüksek Değer" /><br/>\r\n  Value: <input type="text" data-rv-input="option:value" class=\'option-label-input\' placeholder="Varsayılan Değer" /><br/>\r\n  <a class="js-add-option" title="Aralık Ekle"><i class=\'big green plus icon\'></i></a>\r\n  <a class="js-remove-option" title="Aralık Sil"><i class=\'big red remove icon\'></i></a>\r\n</div>\r\n\r\n<div class=\'fb-bottom-add\'>\r\n  <a class="js-add-option">Aralık Ekle</a>\r\n</div>';
+        '\'>\r\n  Min: <input type="text" data-rv-input="option:min" class=\'validate option-label-input\' placeholder="En Düşük Değer" /><br/>\r\n  Seçenek: <input type="text" data-rv-input="option:min_label" class=\'option-label-input\' placeholder="En Düşük Değer" /><br/>\r\n  Max: <input type="text" data-rv-input="option:max" class=\'option-label-input\' placeholder="En Yüksek Değer" /><br/>\r\n  Seçenek: <input type="text" data-rv-input="option:max_label" class=\'option-label-input\' placeholder="En Yüksek Değer" /><br/>\r\n  Value: <input type="text" data-rv-input="option:value" class=\'option-label-input\' placeholder="Varsayılan Değer" /><br/>\r\n  <a class="js-add-option" title="Aralık Ekle"><i class=\'icmn-plus2 big-icon green-icon\'></i></a>\r\n  <a class="js-remove-option" title="Aralık Sil"><i class=\'icmn-minus2 big-icon red-icon\'></i></a>\r\n</div>\r\n\r\n<div class=\'fb-bottom-add\'>\r\n  <a class="js-add-option">Aralık Ekle</a>\r\n</div>';
 
     }
     return __p
@@ -9797,7 +9797,7 @@ Meteor.startup(function() {
       __e = _.escape;
     with(obj) {
       __p +=
-        '<div class=\'fb-left ui sticky\'>\r\n  <ul class=\'fb-tabs\'>\r\n    <li class=\'active\'><a data-target=\'#addField\'>Soru Ekle</a></li>\r\n    <li><a data-target=\'#editField\'>Düzenle</a></li>\r\n  </ul>\r\n\r\n  <div class=\'fb-tab-content\'>\r\n    ' +
+        '<div class=\'fb-left\'>\r\n  <ul class=\'fb-tabs\'>\r\n    <li class=\'active\'><a data-target=\'#addField\'>Soru Ekle</a></li>\r\n    <li><a data-target=\'#editField\'>Düzenle</a></li>\r\n  </ul>\r\n\r\n  <div class=\'fb-tab-content\'>\r\n    ' +
         ((__t = (Formbuilder.templates['partials/add_field']())) ==
           null ? '' : __t) +
         '\r\n    ' +
@@ -9916,7 +9916,7 @@ Meteor.startup(function() {
       __e = _.escape;
     with(obj) {
       __p +=
-        '<div class=\'actions-wrapper\'>\r\n  <a class="js-duplicate" title="Duplicate Field"><i class=\'big green plus icon\'></i></a>\r\n  <a class="js-clear" title="Remove Field"><i class=\'big red remove icon\'></i></a>\r\n</div>';
+        '<div class=\'actions-wrapper\' style="padding-bottom:20px;" >\r\n  <a class="js-duplicate" title="Duplicate Field"><i class=\'icmn-plus2 big-icon green-icon\'></i></a>\r\n  <a class="js-clear" title="Remove Field"><i class=\'icmn-minus2 big-icon red-icon\'></i></a>\r\n</div>';
 
     }
     return __p

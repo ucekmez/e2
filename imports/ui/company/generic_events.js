@@ -3,7 +3,7 @@ f_add_new_form = function(event, instance) {
     if (err) {
       toastr.error('Form oluşturulamadı!');
     }else {
-      FlowRouter.go("edit_form", {formId: data});
+      FlowRouter.go("company_edit_form", {formId: data});
     }
   });
 };
@@ -13,7 +13,7 @@ f_add_new_test = function(event, instance) {
     if (err) {
       toastr.error('Form oluşturulamadı!');
     }else {
-      FlowRouter.go("edit_form", {formId: data});
+      FlowRouter.go("company_edit_form", {formId: data});
     }
   });
 };
@@ -24,7 +24,7 @@ f_add_new_prerequisite = function(event, instance) {
     if (err) {
       toastr.error('Form oluşturulamadı!');
     }else {
-      FlowRouter.go("edit_form", {formId: data});
+      FlowRouter.go("company_edit_form", {formId: data});
     }
   });
 };

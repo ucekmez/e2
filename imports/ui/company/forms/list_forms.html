@@ -3,10 +3,10 @@
     <div class="page-content-inner">
       <section class="panel">
         <div class="row">
-          <div class="col-xs-8">
+          <div class="col-xs-6">
             <div class="panel-heading"><h3>Form Listesi</h3></div>
           </div>
-          <div class="col-xs-4">
+          <div class="col-xs-6">
             <div class="panel-heading" style="float:right;">
               <a style="cursor:pointer;" id="add_new_prerequisite_right"><button class="btn btn-secondary"><i class="icmn-plus2"></i> Ön Koşul</button></a>
               <a style="cursor:pointer;" id="add_new_test_right"><button class="btn btn-secondary"><i class="icmn-plus2"></i> Test</button></a>
@@ -22,7 +22,52 @@
                   <div class="panel-body">
                     <!-- -->
 
-                    İçerik
+                    {{#if subsReady 'company_list_forms'}}
+                      {{#if forms }}
+                        <div class="margin-bottom-50">
+                            <table class="table table-hover nowrap" id="company_list_forms_table" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Sıra</th>
+                                    <th>Form Adı</th>
+                                    <th>Form Tipi</th>
+                                    <th>Oluşturulma Zamanı</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                                </thead>
+                                <!-- <tfoot>
+                                  <tr>
+                                      <th>Sıra</th>
+                                      <th>Firma Adı</th>
+                                      <th>E-Posta</th>
+                                      <th>İşlemler</th>
+                                  </tr>
+                                </tfoot> -->
+                                <tbody>
+                                  {{#each forms }}
+                                    <tr>
+                                        <td>{{ index }}</td>
+                                        <td><a href="{{ pathFor 'company_edit_form' formId=_id }}"><i class="icmn-pencil7"></i> {{ title }}</a></td>
+                                        <td>{{#if equals type "form"}}Anket{{else}}{{#if equals type "test"}}Test{{else}}Ön Koşul{{/if}}{{/if}}</td>
+                                        <td>{{ dateFromNow createdAt }}</td>
+                                        <td><a style="cursor:pointer;" id="company-remove-form"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
+                                    </tr>
+                                  {{/each}}
+                                  {{#if forms }}
+                                    <script type="text/javascript">
+                                      $('#company_list_forms_table').DataTable({ responsive: true, language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
+                                    </script>
+                                  {{/if}}
+                                </tbody>
+                            </table>
+                        </div>
+                      {{else}}
+                        Henüz form eklenmemiş...
+                      {{/if}}
+                    {{else}}
+                      İçerik yükleniyor...
+                    {{/if}}
+
                     <!-- -->
                   </div>
                 </div>

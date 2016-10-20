@@ -46,7 +46,7 @@ Meteor.methods({
   },
 
 
-  remove_form(id) { Forms.remove(id); },
+  company_remove_form(id) { Forms.remove(id); },
 
 
 });
