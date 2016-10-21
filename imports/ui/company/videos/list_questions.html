@@ -1,14 +1,14 @@
-<template name="CompanyListKeynotes">
+<template name="CompanyListVideoQuestions">
   <section class="page-content">
     <div class="page-content-inner">
       <section class="panel">
         <div class="row">
           <div class="col-xs-8">
-            <div class="panel-heading"><h3>Online Sunum Listesi</h3></div>
+            <div class="panel-heading"><h3>Video Soru Listesi</h3></div>
           </div>
           <div class="col-xs-4">
             <div class="panel-heading" style="float:right;">
-              <a style="cursor:pointer;" id="add_new_keynote_right"><button class="btn btn-secondary"><i class="icmn-plus2"></i> Yeni Sunum</button></a>
+              <a href="{{ pathFor 'company_add_new_video_question' }}"><button class="btn btn-secondary"><i class="icmn-plus2"></i> Yeni Soru</button></a>
             </div>
           </div>
         </div>
@@ -20,16 +20,17 @@
                   <div class="panel-body">
                     <!-- -->
 
-                    {{#if subsReady 'company_list_keynotes'}}
-                      {{#if keynotes }}
+
+                    {{#if subsReady 'company_list_video_questions'}}
+                      {{#if questions }}
                         <div class="margin-bottom-50">
-                            <table class="table table-hover nowrap" id="company_list_keynotes_table" width="100%">
+                            <table class="table table-hover nowrap" id="company_list_video_questions_table" width="100%">
                                 <thead>
                                 <tr>
                                     <th>Sıra</th>
-                                    <th>Sunum Adı</th>
-                                    <th>Slayt Sayısı</th>
-                                    <th>Güncelleme</th>
+                                    <th>Soru</th>
+                                    <th>Cevaplama Süresi</th>
+                                    <th>Oluşturulma</th>
                                     <th>İşlemler</th>
                                 </tr>
                                 </thead>
@@ -42,18 +43,18 @@
                                   </tr>
                                 </tfoot> -->
                                 <tbody>
-                                  {{#each keynotes }}
+                                  {{#each questions }}
                                     <tr>
                                         <td>{{ index }}</td>
-                                        <td><a href="{{ pathFor 'company_edit_keynote' keynoteId=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ title }}</a></td>
-                                        <td>{{ numberOfSlides _id }}</td>
-                                        <td>{{#if updatedAt}}{{ dateFromNow updatedAt }}{{else}}{{ dateFromNow createdAt }}{{/if}}</td>
-                                        <td><a style="cursor:pointer;" id="company-remove-keynote"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
+                                        <td><a href="{{ pathFor 'company_edit_video_question' questionId=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ content }}</a></td>
+                                        <td>{{ time }} saniye</td>
+                                        <td style="padding-left:16px;">{{ dateFromNow createdAt }}</td>
+                                        <td style="padding-left:16px;"><a style="cursor:pointer;" id="company-remove-video-question"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
                                     </tr>
                                   {{/each}}
-                                  {{#if keynotes }}
+                                  {{#if questions }}
                                     <script type="text/javascript">
-                                      $('#company_list_keynotes_table').DataTable({ responsive: true, "aoColumnDefs":[{"bSortable":false,"aTargets":[3,4]}], language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
+                                      $('#company_list_video_questions_table').DataTable({ responsive: true, "aoColumnDefs":[{"bSortable":false,"aTargets":[3,4]}], language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
                                     </script>
                                   {{/if}}
                                 </tbody>
@@ -65,6 +66,7 @@
                     {{else}}
                       İçerik yükleniyor...
                     {{/if}}
+
 
                     <!-- -->
                   </div>

@@ -1,5 +1,6 @@
 import { Forms } from '/imports/api/collections/forms.js';
 import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
+import { InterviewQuestions } from '/imports/api/collections/videos.js';
 
 import shortid from 'shortid';
 
@@ -96,5 +97,39 @@ Meteor.methods({
       user : Meteor.userId(),
     });
   },
+
+  /******************************
+    methods related to video interview
+  *******************************/
+
+  company_add_new_interview_question(question, description, responsetime) {
+    let time = 30;
+    if (responsetime == 1) { time = 20; }
+    else if (responsetime == 3) { time = 40; }
+
+    const question_id = InterviewQuestions.insert({
+      content: question,
+      description: description,
+      user: Meteor.userId(),
+      time: time
+    });
+
+    return question_id;
+  },
+
+  company_edit_interview_question(question_id, question, description, responsetime) {
+    let time = 30;
+    if (responsetime == 1) { time = 20; }
+    else if (responsetime == 3) { time = 40; }
+
+    InterviewQuestions.update({ _id: question_id },
+      { $set: {
+        content: question,
+        description: description,
+        time: time
+      }
+    });
+  },
+
 
 });

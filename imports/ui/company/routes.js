@@ -18,7 +18,9 @@ companyRoutes.route('/', { name: 'company_dashboard',
   breadcrumb: { title: "Panel" },
   action() {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyMainArea' });
-    NProgress.done();
+    FlowRouter.subsReady("company_show_company_profile", function() {
+      NProgress.done();
+    });
   }
 });
 
@@ -39,7 +41,9 @@ companyFormRoutes.route('/list', { name: 'company_list_forms',
   breadcrumb: { parent: "company_dashboard", title: "Anket ve Testler" },
   action: function() {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyListForms' });
-    NProgress.done();
+    FlowRouter.subsReady("company_list_forms", function() {
+      NProgress.done();
+    });
   }
 });
 
@@ -53,7 +57,9 @@ companyFormRoutes.route('/edit/:formId', { name: 'company_edit_form',
   },
   action: function(params) {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyEditForm' });
-    NProgress.done();
+    FlowRouter.subsReady("company_form_preview", function() {
+      NProgress.done();
+    });
   }
 });
 
@@ -79,7 +85,9 @@ companyKeynoteRoutes.route('/list', { name: 'company_list_keynotes',
   breadcrumb: { parent: "company_dashboard", title: "Online Sunumlar" },
   action: function() {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyListKeynotes' });
-    NProgress.done();
+    FlowRouter.subsReady("company_list_keynotes_slides_for_count", function() {
+      NProgress.done();
+    });
   }
 });
 
@@ -94,7 +102,9 @@ companyKeynoteRoutes.route('/edit/:keynoteId', { name: 'company_edit_keynote',
   },
   action: function(params) {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyEditKeynote' });
-    NProgress.done();
+    FlowRouter.subsReady("company_keynote_slides_preview", function() {
+      NProgress.done();
+    });
   }
 });
 
@@ -107,17 +117,51 @@ video routes
 
 const companyVideoRoutes = companyRoutes.group({ prefix: "/videos", name: "companyvideos"});
 
-companyVideoRoutes.route('/list', { name: 'company_list_videos',
+companyVideoRoutes.route('/list', { name: 'company_list_video_questions',
   subscriptions: function(params, queryParams) {
       if(Meteor.isClient) {
-        this.register('company_list_videos', Meteor.subscribe("company_list_videos"));
+        this.register('company_list_video_questions', Meteor.subscribe("company_list_video_questions"));
         this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
       }
   },
-  breadcrumb: { parent: "company_dashboard", title: "Video Kayıtlar" },
+  breadcrumb: { parent: "company_dashboard", title: "Video Sorular" },
   action: function() {
-    BlazeLayout.render('CompanyLayout', { main: 'CompanyListVideos' });
-    NProgress.done();
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyListVideoQuestions' });
+    FlowRouter.subsReady("company_list_video_questions", function() {
+      NProgress.done();
+    });
+  }
+});
+
+companyVideoRoutes.route('/new/question', { name: 'company_add_new_video_question',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+      }
+  },
+  breadcrumb: { parent: "company_list_video_questions", title: "Yeni Soru Ekle" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyAddNewVideoQuestion' });
+    FlowRouter.subsReady("company_show_company_profile", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+companyVideoRoutes.route('/edit/:questionId', { name: 'company_edit_video_question',
+  breadcrumb: { parent: "company_list_video_questions", title: "Video Soru Düzenle" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_video_question_preview', Meteor.subscribe("company_video_question_preview", params.questionId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyEditVideoQuestion' });
+    FlowRouter.subsReady("company_video_question_preview", function() {
+      NProgress.done();
+    });
   }
 });
 
@@ -141,7 +185,9 @@ companyPIsRoutes.route('/list', { name: 'company_list_pis',
   breadcrumb: { parent: "company_dashboard", title: "Kişilik Envanterleri" },
   action: function() {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyListPIs' });
-    NProgress.done();
+    FlowRouter.subsReady("company_list_pis", function() {
+      NProgress.done();
+    });
   }
 });
 
@@ -163,6 +209,8 @@ companyPositionRoutes.route('/list', { name: 'company_list_positions',
   breadcrumb: { parent: "company_dashboard", title: "İlanlar" },
   action: function() {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyListPositions' });
-    NProgress.done();
+    FlowRouter.subsReady("company_list_positions", function() {
+      NProgress.done();
+    });
   }
 });

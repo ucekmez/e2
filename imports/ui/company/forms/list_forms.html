@@ -31,7 +31,6 @@
                                     <th>Sıra</th>
                                     <th>Form Adı</th>
                                     <th>Form Tipi</th>
-                                    <th>Oluşturulma</th>
                                     <th>Güncelleme</th>
                                     <th>İşlemler</th>
                                 </tr>
@@ -50,14 +49,13 @@
                                         <td>{{ index }}</td>
                                         <td><a href="{{ pathFor 'company_edit_form' formId=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ title }}</a></td>
                                         <td>{{#if equals type "form"}}Anket{{else}}{{#if equals type "test"}}Test{{else}}Ön Koşul{{/if}}{{/if}}</td>
-                                        <td>{{ dateFromNow createdAt }}</td>
-                                        <td>{{#if updatedAt}}{{ dateFromNow updatedAt }}{{else}}--{{/if}}</td>
+                                        <td>{{#if updatedAt}}{{ dateFromNow updatedAt }}{{else}}{{ dateFromNow createdAt }}{{/if}}</td>
                                         <td><a style="cursor:pointer;" id="company-remove-form"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
                                     </tr>
                                   {{/each}}
                                   {{#if forms }}
                                     <script type="text/javascript">
-                                      $('#company_list_forms_table').DataTable({ responsive: true, language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
+                                      $('#company_list_forms_table').DataTable({ responsive: true, "aoColumnDefs":[{"bSortable":false,"aTargets":[3,4]}], language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
                                     </script>
                                   {{/if}}
                                 </tbody>

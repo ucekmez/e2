@@ -1,0 +1,78 @@
+<template name="CompanyAddNewVideoQuestion">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>Yeni Video Soru</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_video_questions' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+                    <form id="company-add-new-video-question-form">
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <label class="form-control-label" for="l0">Mülakat Sorusu</label>
+                          </div>
+                          <div class="col-md-9">
+                              <input type="text" class="form-control" placeholder="Lütfen sorunuzu giriniz" id="videoquestion" name="videoquestion" required>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <label class="form-control-label" for="l0">Soru Açıklaması</label>
+                          </div>
+                          <div class="col-md-9">
+                              <input type="text" class="form-control" placeholder="Lütfen bir açıklama giriniz (opsiyonel)" id="videoquestiondesc" name="videoquestiondesc">
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <label class="form-control-label" for="l0">Cevaplama Süresi</label>
+                          </div>
+                          <div class="col-md-9">
+
+                            <div class="form-group">
+                                <select class="form-control" id="videoresponsetime" name="videoresponsetime">
+                                  <option value="1">20 saniye</option>
+                                  <option value="2">30 saniye</option>
+                                  <option value="3">40 saniye</option>
+                                </select>
+                            </div>
+
+                          </div>
+                      </div>
+
+
+                      <div class="form-actions">
+                          <div class="form-group row">
+                              <div class="col-md-6 offset-md-3">
+                                  <button type="submit" class="btn btn-block btn-secondary"><i class="icmn-floppy-disk"></i> Kaydet</button>
+                              </div>
+                              <div class="col-md-3">
+                                  <button type="button" class="btn btn-block btn-default" id="company-add-new-question-form-reset"><i class="icmn-undo"></i> Sıfırla</button>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

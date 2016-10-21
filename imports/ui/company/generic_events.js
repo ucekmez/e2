@@ -50,3 +50,58 @@ f_add_new_keynote = function(event, instance) {
     }
   });
 };
+
+
+
+
+// events related to video question ////////////////////////
+
+f_add_new_video_question = function(event, instance) {
+
+  $('.modal.add-new-question')
+    .modal({
+      //blurring: true,
+      onDeny() {
+        $('.ui.form').form('reset');
+        $('.ui.form').form('clear');
+        Session.set("question-success", false);
+      },
+      onApprove() {
+        $('.ui.form')
+          .form({
+            fields: {
+              question      : 'empty',
+              responsetime  : 'empty',
+            }
+          });
+
+        if ($('.ui.form').form('is valid')) {
+          const question = $('#question').val();
+          const description = $('#description').val();
+          const responsetime = $('#responsetime').val();
+          Meteor.call('add_new_interview_question', question, description, responsetime, function (err, data) {
+            if (err) {
+              toastr.error(err.reason);
+              Session.set("question-success", false);
+            }else {
+              Session.set("question-success", false);
+              $(".ui.form").form('reset');
+              $(".ui.form").form('clear');
+              toastr.success('New Question has been added!');
+              $('.modal.add-new-question').modal('hide');
+              FlowRouter.go('list_questions');
+            }
+          });
+
+          if (!Session.get("question-success")) {
+            Session.set("question-success", false);
+            return false;
+          }
+        }else {
+          toastr.error('Please correct the errors!');
+          return false;
+        }
+      }
+    })
+    .modal('show');
+};

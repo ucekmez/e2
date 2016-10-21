@@ -17,7 +17,7 @@
 .fb-add-field-types a:nth-child(odd){margin-right:3%}
 .fb-add-field-types a .symbol{opacity:.6;margin:0 .25em 0 -1em}
 .fb-response-fields{padding-bottom:150px;}
-.fb-response-fields a.sortable-placeholder{display:block;border:1px dashed #ddd;min-height:80px;height:80px;width:100%}
+.fb-response-fields a.sortable-placeholder{display:block;border:1px dashed #999;min-height:80px;height:80px;width:100%}
 .fb-field-wrapper{cursor:pointer;position:relative;margin-bottom:20px}
 .fb-field-wrapper input{border-radius:3px;border:thin solid #ddd}
 .fb-field-wrapper:hover .actions-wrapper, .actions-wrapper{display:block}
@@ -29,7 +29,7 @@
 .edit-response-field select{font-size:12px}
 .fb-field-wrapper .subtemplate-wrapper{border:1px dashed transparent;margin-bottom:10px;padding:10px;position:relative}
 .fb-field-wrapper .subtemplate-wrapper .cover{position:absolute;top:0;left:0;height:100%;width:100%;z-index:2}
-.fb-field-wrapper .subtemplate-wrapper > label{display:block;border-bottom:thin solid #eee;padding-bottom:3px;margin-bottom:7px}
+.fb-field-wrapper .subtemplate-wrapper > label{display:block;border-bottom:thin solid #fff;padding-bottom:3px;margin-bottom:7px}
 .fb-field-wrapper .input-line{clear:both;}
 .fb-field-wrapper .input-line .above-line{margin-top:7px}
 .fb-field-wrapper .input-line > span{display:inline-block;vertical-align:top}
@@ -73,5 +73,5 @@
 
 .selected-form-question,
 .ui-draggable-dragging {
-  background: #eee;
+  background: #fff;
 }

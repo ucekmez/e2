@@ -24,8 +24,7 @@ Positions.attachSchema(new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    autoValue: function() { if (this.isUpdate) { return new Date(); } },
-    denyInsert: true,
+    autoValue: function() { if (this.isInsert) { return new Date(); } else if (this.isUpdate) { return new Date(); } },
     optional: true
   }
 }));
@@ -66,8 +65,7 @@ SingleProcesses.attachSchema(new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    autoValue: function() { if (this.isUpdate) { return new Date(); } },
-    denyInsert: true,
+    autoValue: function() { if (this.isInsert) { return new Date(); } else if (this.isUpdate) { return new Date(); } },
     optional: true
   }
 }));
@@ -95,8 +93,7 @@ RecruitmentProcesses.attachSchema(new SimpleSchema({
   },
   updatedAt: {
     type: Date,
-    autoValue: function() { if (this.isUpdate) { return new Date(); } },
-    denyInsert: true,
+    autoValue: function() { if (this.isInsert) { return new Date(); } else if (this.isUpdate) { return new Date(); } },
     optional: true
   }
 }));

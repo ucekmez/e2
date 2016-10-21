@@ -92,8 +92,14 @@ Meteor.publish("company_list_positions", function() {
 
 /*** videos ***/
 
-Meteor.publish("company_list_videos", function() {
+Meteor.publish("company_list_video_questions", function() {
   if (Roles.userIsInRole(this.userId, ['company'])) {
     return InterviewQuestions.find({ user: this.userId });
+  }
+});
+
+Meteor.publish("company_video_question_preview", function(question_id) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return InterviewQuestions.find({ _id: question_id });
   }
 });

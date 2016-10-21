@@ -49,7 +49,7 @@ Template.CompanyEditForm.helpers({
 
 Template.CompanyListForms.helpers({
   forms() {
-    return Forms.find({ user: Meteor.userId() })
+    return Forms.find({ user: Meteor.userId() }, { sort: { updatedAt: -1, createdAt: -1  }})
     .map(function(document, index) {
       document.index = index + 1;
       return document;

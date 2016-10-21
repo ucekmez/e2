@@ -9381,9 +9381,9 @@ Meteor.startup(function() {
       __e = _.escape;
     with(obj) {
       __p +=
-        ((__t = (Formbuilder.templates['edit/base_header']())) == null ?
-          '' : __t) +
-        '\r\n' +
+      //  ((__t = (Formbuilder.templates['edit/base_header']())) == null ?
+      //    '' : __t) +
+      //  '\r\n' +
         ((__t = (Formbuilder.templates['edit/common']())) == null ? '' :
           __t) +
         '\r\n' +
@@ -9396,6 +9396,8 @@ Meteor.startup(function() {
     }
     return __p
   };
+
+/*
 
   this["Formbuilder"]["templates"]["edit/base_header"] = function(obj) {
     obj || (obj = {});
@@ -9415,15 +9417,17 @@ Meteor.startup(function() {
     return __p
   };
 
+  */
+
   this["Formbuilder"]["templates"]["edit/base_non_input"] = function(obj) {
     obj || (obj = {});
     var __t, __p = '',
       __e = _.escape;
     with(obj) {
       __p +=
-        ((__t = (Formbuilder.templates['edit/base_header']())) == null ?
-          '' : __t) +
-        '\r\n' +
+        //((__t = (Formbuilder.templates['edit/base_header']())) == null ?
+        //  '' : __t) +
+      //  '\r\n' +
         ((__t = (Formbuilder.fields[rf.get(Formbuilder.options.mappings
           .FIELD_TYPE)].edit({
           rf: rf
@@ -9465,7 +9469,7 @@ Meteor.startup(function() {
       __e = _.escape;
     with(obj) {
       __p +=
-        '<div class=\'fb-edit-section-header\'>Soru</div>\r\n\r\n<div class=\'fb-common-wrapper\'>\r\n  <div class=\'fb-label-description\'>\r\n    ' +
+        '<div class=\'fb-edit-section-header\' style=\'font-size:1.2em;\'>Soru</div>\r\n\r\n<div class=\'fb-common-wrapper\'>\r\n  <div class=\'fb-label-description\'>\r\n    ' +
         ((__t = (Formbuilder.templates['edit/label_description']())) ==
           null ? '' : __t) +
         '\r\n  </div>\r\n  <div class=\'fb-common-checkboxes\'>\r\n    ' +
@@ -9579,7 +9583,7 @@ Meteor.startup(function() {
     with(obj) {
         // console.dir(rf.attributes.field_type);
         __p +=
-          '<div class=\'fb-edit-section-header field\'>Options</div>\r\n\r\n';
+          '<div class=\'fb-edit-section-header field\' style=\'font-size:1.2em;\'>Seçenekler</div>\r\n\r\n';
         if (typeof includeBlank !== 'undefined') {;
           __p +=
             '\r\n  <label>\r\n    <input id="includeblank" type=\'checkbox\' data-rv-checked=\'model.' +
@@ -9815,7 +9819,7 @@ Meteor.startup(function() {
       __e = _.escape;
     with(obj) {
       __p +=
-        '<div class=\'fb-right\'>\r\n  <div class=\'fb-no-response-fields\'>No response fields</div>\r\n  <div class=\'fb-response-fields\'></div>\r\n</div>\r\n';
+        '<div class=\'fb-right\'>\r\n  <div class=\'fb-no-response-fields\'><h3 style="margin-top:64px;"><i class="icmn-point-left very-huge-icon gray-icon" style="margin-right:10px;"></i>Formu düzenlemek için lütfen sol menüden soru ekleyiniz.</h3></div>\r\n  <div class=\'fb-response-fields\'></div>\r\n</div>\r\n';
 
     }
     return __p

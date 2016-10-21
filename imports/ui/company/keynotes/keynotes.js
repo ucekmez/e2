@@ -9,6 +9,19 @@ import './edit_keynote.html';
 template helpers
 ***********************************************/
 
+Template.CompanyListKeynotes.helpers({
+  keynotes() {
+    return Keynotes.find({ user: Meteor.userId()}, { sort: { updatedAt: -1, createdAt : -1 }})
+    .map(function(document, index) {
+      document.index = index + 1;
+      return document;
+    });
+  },
+  numberOfSlides(keynote_id) {
+    return Slides.find({ keynote: keynote_id }).count();
+  }
+});
+
 Template.CompanyEditSingleSlide.onRendered(function() {
   $('.fr-toolbar').addClass("panel");
   $('.fr-wrapper').addClass("panel");
@@ -39,19 +52,6 @@ Template.CompanyEditKeynote.helpers({
       }
     }
   },
-});
-
-Template.CompanyListKeynotes.helpers({
-  keynotes() {
-    return Keynotes.find({ user: Meteor.userId()})
-    .map(function(document, index) {
-      document.index = index + 1;
-      return document;
-    });
-  },
-  numberOfSlides(keynote_id) {
-    return Slides.find({ keynote: keynote_id }).count();
-  }
 });
 
 
