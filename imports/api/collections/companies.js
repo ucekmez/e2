@@ -6,6 +6,7 @@ Companies.attachSchema(new SimpleSchema({
   name            : { type: String, max: 256 },
   user            : { type: String, optional: true },
   email           : { type: String, optional: true },
+
   shortid : {
     type: String,
     autoValue: function() { if (this.isInsert) { return shortid.generate(); } },

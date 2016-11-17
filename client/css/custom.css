@@ -192,3 +192,15 @@ table.dataTable thead .sorting_asc_disabled {
 table.dataTable thead .sorting_desc_disabled {
   background-image: url("/img/sorting/sort_desc_disabled.png");
 }
+
+
+/*   bootstrap tags input */
+
+.bootstrap-tagsinput {
+  display: block !important;
+}
+
+.bootstrap-tagsinput input {
+  width:100%;
+  padding-left:10px;
+}

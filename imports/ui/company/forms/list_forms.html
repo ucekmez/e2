@@ -1,5 +1,43 @@
 <template name="CompanyListForms">
   <section class="page-content">
+    <div class="dashboard-container">
+
+
+
+      <div class="row">
+          <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-6">
+              <div class="widget widget-seven">
+                <div class="carousel-item next left">
+                    <div class="widget-body">
+                        <div class="widget-body-icon">
+                            <i class="fa fa-language"></i>
+                        </div>
+                        <a href="{{ pathFor 'company_list_lang_tests' }}" class="widget-body-inner">
+                            <h2>Dil Testleri Modülü</h2>
+                            <p>Zorluk derecelerine göre hazır testler oluşturun.</p>
+                        </a>
+                    </div>
+                </div>
+              </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-sm-6 col-xs-6">
+              <div class="widget widget-seven">
+                <div class="carousel-item next left">
+                    <div class="widget-body">
+                        <div class="widget-body-icon">
+                            <i class="fa fa-file-text-o"></i>
+                        </div>
+                        <a href="{{ pathFor 'company_list_tech_tests' }}" class="widget-body-inner">
+                            <h2>Teknik Testler Modülü</h2>
+                            <p>Sektör bazlı geniş soru havuzundan en ideal soru kombinasyonunu oluşturun.</p>
+                        </a>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
     <div class="page-content-inner">
       <section class="panel">
         <div class="row">
@@ -16,6 +54,8 @@
         </div>
       </section>
       <div class="dashboard-container">
+
+
         <div class="row">
             <div class="col-xl-12">
                 <div class="panel panel-with-borders m-b-0">

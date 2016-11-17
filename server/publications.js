@@ -4,6 +4,8 @@ import { Keynotes,Slides } from '/imports/api/collections/keynotes.js';
 import { PIGroups } from '/imports/api/collections/pis.js';
 import { Positions } from '/imports/api/collections/positions.js';
 import { InterviewQuestions } from '/imports/api/collections/videos.js';
+import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates, PredefinedTechTopics } from '/imports/api/collections/predefined.js';
+import { Sectors } from '/imports/api/collections/sectors.js';
 
 
 /******* subs for admin **********/
@@ -37,6 +39,27 @@ Meteor.publish("company_list_forms", function() {
 Meteor.publish("company_form_preview", function(form_id) {
   if (Roles.userIsInRole(this.userId, ['company'])) {
     return Forms.find({ _id: form_id });
+  }
+});
+
+Meteor.publish("company_list_lang_tests", function() {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return PredefinedLanguageTemplates.find({ user: this.userId });
+  }
+});
+
+Meteor.publish("company_list_tech_tests", function() {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return [
+      PredefinedTechnicalTemplates.find({ user: this.userId }),
+      Sectors.find()
+    ];
+  }
+});
+
+Meteor.publish("company_list_sectors", function() {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return Sectors.find();
   }
 });
 

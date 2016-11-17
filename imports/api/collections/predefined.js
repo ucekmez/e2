@@ -1,7 +1,22 @@
 import shortid from 'shortid';
 
-export const PredefinedLanguageQuestions = new Mongo.Collection('predefined_language_questions');
+export const PredefinedLanguageQuestions  = new Mongo.Collection('predefined_language_questions');
 export const PredefinedTechnicalQuestions = new Mongo.Collection('predefined_technical_questions');
+export const PredefinedTechTopics         = new Mongo.Collection('predefined_tech_topics');
+
+
+PredefinedTechTopics.allow({
+  insert: function (userId, doc) {
+    if (userId && (Roles.userIsInRole(userId, ['admin']))) { return true; }
+  },
+  update: function (userId, doc, fields, modifier) {
+    // burayi yalnizca oturum acan company VE admin degistirebilir
+    if (userId && (Roles.userIsInRole(userId, ['admin']))) { return true; }
+  },
+  remove: function (userId, doc, fields, modifier) {
+    if (userId && (Roles.userIsInRole(userId, ['admin']))) { return true; }
+  }
+});
 
 
 export const PredefinedLanguageTemplates = new Mongo.Collection('predefined_language_templates');

@@ -114,8 +114,8 @@ Template.CompanyEditVideoQuestion.events({
     });
   },
   'click #company-edit-question-form-reset'(event, instance) {
-    $('#videoquestion').val()?$('#videoquestion').val(""):"";
-    $('#videoquestiondesc').val()?$('#videoquestiondesc').val(""):"";
-    $('#videoresponsetime').val("1");
+    $('#videoquestion-edit').val()?$('#videoquestion-edit').val(""):"";
+    $('#videoquestiondesc-edit').val()?$('#videoquestiondesc-edit').val(""):"";
+    $('#videoresponsetime-edit').val("1");
   },
 });

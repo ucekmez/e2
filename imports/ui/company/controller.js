@@ -35,7 +35,7 @@ const datatable_lang = {
 
 
 /**********************************************
-template events
+template helpers
 ***********************************************/
 
 Template.CompanyTopMenu.helpers({

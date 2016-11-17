@@ -1,9 +1,13 @@
 import { Forms } from '/imports/api/collections/forms.js';
+import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates, PredefinedTechTopics } from '/imports/api/collections/predefined.js';
+import { Sectors } from '/imports/api/collections/sectors.js';
 
 import Stickyfill from 'stickyfill';
 
 import './list_forms.html';
 import './edit_form.html';
+import './lang_tests.html';
+import './tech_tests.html';
 
 import '../generic_events.js';
 
@@ -58,6 +62,26 @@ Template.CompanyListForms.helpers({
 });
 
 
+Template.CompanyListLangTests.helpers({
+  tests() {
+    return PredefinedLanguageTemplates.find({},{ sort: { createdAt: -1}})
+      .map(function(document, index) {
+        document.index = index + 1;
+        return document;
+      });
+  },
+});
+
+Template.CompanyListTechTests.helpers({
+  tests() {
+    return PredefinedTechnicalTemplates.find({},{ sort: { createdAt: -1}})
+      .map(function(document, index) {
+        document.index = index + 1;
+        return document;
+      });
+  },
+});
+
 
 
 
@@ -111,6 +135,118 @@ Template.CompanyListForms.events({
         toastr.success("Form kayıtlardan silindi!");
       }
     });
-  }
+  },
 
+});
+
+
+
+Template.CompanyAddNewLangTest.events({
+  'submit #company-add-new-lang-test-form'(event, instance) {
+    event.preventDefault();
+
+    const testname     = $('#langtestname').val();
+    const language     = $('#langtestlanguage').val();
+    const level        = $('#langtestlevel').val();
+    const numquestions = $('#langtestnumquestions').val();
+
+    Meteor.call('company_add_new_lang_test_template', testname, language, level, numquestions, function (err, data) {
+      if (err) {
+        toastr.error(err.reason);
+      }else {
+        toastr.success('Test eklendi!');
+        FlowRouter.go('company_list_lang_tests');
+      }
+    });
+  },
+
+  'click #company-add-new-lang-test-reset'(event, instance) {
+    $('#langtestname').val()?$('#langtestname').val(""):"";
+    $('#langtestlanguage').val("");
+    $('#langtestlevel').val("");
+    $('#langtestnumquestions').val()?$('#langtestnumquestions').val(""):"";
+  },
+});
+
+Template.CompanyListLangTests.events({
+  'click #company-remove-lang-test'(event, instance) {
+    Meteor.call('company_remove_lang_test', this._id, function(err, data) {
+      if (err) {
+        toastr.error(err);
+      }else {
+        toastr.success("Test kayıtlardan silindi!");
+      }
+    });
+  },
+});
+
+
+Template.CompanyAddNewTechTest.helpers({
+  sectors() {
+    return Sectors.find();
+  }
+});
+
+
+Template.CompanyAddNewTechTest.events({
+  'submit #company-add-new-tech-test-form'(event, instance) {
+    event.preventDefault();
+
+    const testname     = $('#techtestname').val();
+    const sector       = $('#techtestsector').val();
+    const relatedto    = $('#techtestrelatedto').tagsinput('items');
+    const level        = $('#techtestlevel').val();
+    const numquestions = $('#techtestnumquestions').val();
+
+    Meteor.call('company_add_new_tech_test_template', testname, sector, level, numquestions, relatedto, function (err, data) {
+      if (err) {
+        toastr.error(err.reason);
+      }else {
+        toastr.success('Test eklendi!');
+        FlowRouter.go('company_list_tech_tests');
+      }
+    });
+  },
+
+  'click #company-add-new-tech-test-reset'(event, instance) {
+    $('#techtestname').val()?$('#techtestname').val(""):"";
+    $('#techtestsector').val("");
+    $('#techtestlevel').val("");
+    $('#techtestnumquestions').val()?$('#techtestnumquestions').val(""):"";
+    $('#techtestrelatedto').val()?$('#techtestrelatedto').val(""):"";
+    $('.bootstrap-tagsinput').children().not('input').remove();
+  },
+});
+
+Template.CompanyListLangTests.events({
+  'click #company-remove-tech-test'(event, instance) {
+    Meteor.call('company_remove_tech_test', this._id, function(err, data) {
+      if (err) {
+        toastr.error(err);
+      }else {
+        toastr.success("Test kayıtlardan silindi!");
+      }
+    });
+  },
+});
+
+
+
+//// helpers
+
+
+Template.registerHelper("getLanguageHelper", function(slug){
+  if (slug === "english") { return "İngilizce"; }
+});
+
+
+Template.registerHelper("getSectorHelper", function(slug){
+  return Sectors.findOne({ slug: slug }).name;
+});
+
+
+Template.registerHelper("getLevelHelper", function(level_id){
+  if (level_id === "easy") { return "Kolay"; }
+  if (level_id === "moderate") { return "Orta"; }
+  if (level_id === "hard") { return "Zor"; }
 });

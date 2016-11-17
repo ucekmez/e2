@@ -20,7 +20,6 @@ Meteor.startup(() => {
     users.forEach(function(user) {
       const id = Accounts.createUser({
         email: user.email,
-        username: user.username,
         password: "asdasd",
         profile: user.profile
       });

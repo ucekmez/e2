@@ -9612,16 +9612,20 @@ Meteor.startup(function() {
             '" type="checkbox"  class=\'js-default-updated\' />Doğru</label>';
         }
         __p +=
-          '<a style="margin-left:4px;cursor:pointer;" class="js-add-option" title="Seçenek Ekle"><i class=\'icmn-plus2 big-icon green-icon\'></i></a>\r\n  <a style=\'cursor:pointer;margin-left:4px;\' class="js-remove-option" title="Seçenek Sil"><i class=\'icmn-minus2 big-icon red-icon\'></i></a>\r\n</div>\r\n\r\n';
+          '<a style="margin-left:4px;margin-top:6px;position:absolute;cursor:pointer;" class="js-add-option" title="Seçenek Ekle"><i class=\'icmn-plus2 big-icon green-icon\'></i></a>\r\n  <a style=\'cursor:pointer;margin-left:30px;margin-top:6px;position:absolute;\' class="js-remove-option" title="Seçenek Sil"><i class=\'icmn-minus2 big-icon red-icon\'></i></a>\r\n</div>\r\n\r\n';
         if (typeof includeOther !== 'und*00efined') {;
           __p +=
-            '\r\n  <label>\r\n    <input id="otheractive" type=\'checkbox\' data-rv-checked=\'model.' +
-            ((__t = (Formbuilder.options.mappings.INCLUDE_OTHER)) == null ?
-              '' : __t) +
-            '\' />\r\n <label for="otheractive">Diğer</label></label>\r\n  <input type=\'text\' data-rv-input=\'model.' +
+
+
+            '<input type=\'text\' data-rv-input=\'model.' +
             ((__t = (Formbuilder.options.mappings.INCLUDE_OTHER_VALUE)) ==
               null ? '' : __t) +
-            '\' />\r\n  <label>\r\n    <br /><input id="otherchecked" type=\'checkbox\' data-rv-checked=\'model.' +
+            '\' /> <label><label>    <input id="otheractive" type=\'checkbox\' data-rv-checked=\'model.' +
+            ((__t = (Formbuilder.options.mappings.INCLUDE_OTHER)) == null ?
+              '' : __t) +
+              '\' />\r\n <label for="otheractive">Diğer</label></label>\r\n ' +
+
+             '<br /><input id="otherchecked" type=\'checkbox\' data-rv-checked=\'model.' +
             ((__t = (Formbuilder.options.mappings.INCLUDE_OTHER_CHECKED)) ==
               null ? '' : __t) +
             '\' />\r\n    <label for="otherchecked">Diğer seçeneği işaretli gelsin</label>\r\n  </label>\r\n';
@@ -9819,7 +9823,7 @@ Meteor.startup(function() {
       __e = _.escape;
     with(obj) {
       __p +=
-        '<div class=\'fb-right\'>\r\n  <div class=\'fb-no-response-fields\'><h3 style="margin-top:64px;"><i class="icmn-point-left very-huge-icon gray-icon" style="margin-right:10px;"></i>Formu düzenlemek için lütfen sol menüden soru ekleyiniz.</h3></div>\r\n  <div class=\'fb-response-fields\'></div>\r\n</div>\r\n';
+        '<div class=\'fb-right\'>\r\n  <div class=\'fb-no-response-fields\'><h3 style="margin-top:24px;position:fixed;z-index:-1;"><i class="icmn-point-left very-huge-icon gray-icon" style="margin-right:10px;"></i>Formu düzenlemek için lütfen sol menüden soru ekleyiniz.</h3></div>\r\n  <div class=\'fb-response-fields\'></div>\r\n</div>\r\n';
 
     }
     return __p

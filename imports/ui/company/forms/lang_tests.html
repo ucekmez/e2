@@ -1,0 +1,179 @@
+<template name="CompanyListLangTests">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>Hazır Dil Testleri</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_add_new_lang_test' }}"><button class="btn btn-secondary"><i class="icmn-plus2"></i> Yeni Dil Testi</button></a>
+              <a href="{{ pathFor 'company_list_forms' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+
+                    {{#if subsReady 'company_list_lang_tests'}}
+                      {{#if tests }}
+                        <div class="margin-bottom-50">
+                            <table class="table table-hover nowrap" id="company_list_lang_tests_table" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Sıra</th>
+                                    <th>Test Adı</th>
+                                    <th>Dil</th>
+                                    <th>Seviye</th>
+                                    <th>Soru Sayısı</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                                </thead>
+                                <!-- <tfoot>
+                                  <tr>
+                                      <th>Sıra</th>
+                                      <th>Firma Adı</th>
+                                      <th>E-Posta</th>
+                                      <th>İşlemler</th>
+                                  </tr>
+                                </tfoot> -->
+                                <tbody>
+                                  {{#each tests }}
+                                    <tr>
+                                        <td>{{ index }}</td>
+                                        <td><a href="{{ pathFor 'company_edit_lang_test' testId=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ title }}</a></td>
+                                        <td>{{ getLanguageHelper language }}</td>
+                                        <td>{{ getLevelHelper level }}</td>
+                                        <td>{{ numquestions }}</td>
+                                        <td style="padding-left:16px;"><a style="cursor:pointer;" id="company-remove-lang-test"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
+                                    </tr>
+                                  {{/each}}
+                                  {{#if tests }}
+                                    <script type="text/javascript">
+                                      $('#company_list_lang_tests_table').DataTable({ responsive: true, "aoColumnDefs":[{"bSortable":false,"aTargets":[5]}], language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
+                                    </script>
+                                  {{/if}}
+                                </tbody>
+                            </table>
+                        </div>
+                      {{else}}
+                        Henüz dil testi eklenmemiş...
+                      {{/if}}
+                    {{else}}
+                      İçerik yükleniyor...
+                    {{/if}}
+
+
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+
+
+
+
+<template name="CompanyAddNewLangTest">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>Yeni Hazır Dil Testi Ekle</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_lang_tests' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+                    <form id="company-add-new-lang-test-form">
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <label class="form-control-label" for="langtestname">Test Adı</label>
+                          </div>
+                          <div class="col-md-9">
+                              <input type="text" class="form-control" placeholder="Testi tanımlamak için bir başlık giriniz" id="langtestname" name="langtestname" required>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <label class="form-control-label" for="langtestlanguage">Dil Seçimi</label>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="form-group">
+                                <select class="form-control" id="langtestlanguage" name="langtestlanguage">
+                                  <option value="">Dil</option>
+                                  <option value="english">İngilizce</option>
+                                </select>
+                            </div>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <label class="form-control-label" for="langtestlevel">Zorluk Seviyesi</label>
+                          </div>
+                          <div class="col-md-9">
+                            <div class="form-group">
+                                <select class="form-control" id="langtestlevel" name="langtestlevel">
+                                  <option value="">Seviye</option>
+                                  <option value="easy">Kolay (Beginner, Elementary)</option>
+                                  <option value="moderate">Orta (Pre-intermediate, Intermediate)</option>
+                                  <option value="hard">Zor (Upper-intermediate, Advanced)</option>
+                                </select>
+                            </div>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <div class="col-md-3">
+                              <label class="form-control-label" for="langtestnumquestions">Soru Sayısı</label>
+                          </div>
+                          <div class="col-md-9">
+                              <input type="text" class="form-control" placeholder="Soru sayısını giriniz" id="langtestnumquestions" name="langtestnumquestions" required>
+                          </div>
+                      </div>
+
+
+                      <div class="form-actions">
+                          <div class="form-group row">
+                              <div class="col-md-6 offset-md-3">
+                                  <button type="submit" class="btn btn-block btn-secondary"><i class="icmn-floppy-disk"></i> Kaydet</button>
+                              </div>
+                              <div class="col-md-3">
+                                  <button type="button" class="btn btn-block btn-default" id="company-add-new-lang-test-reset"><i class="icmn-undo"></i> Sıfırla</button>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

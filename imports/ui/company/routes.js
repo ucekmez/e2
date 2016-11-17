@@ -65,6 +65,81 @@ companyFormRoutes.route('/edit/:formId', { name: 'company_edit_form',
 
 
 
+/**********************************************
+predefined tests routes
+***********************************************/
+
+
+// lang
+
+companyFormRoutes.route('/lang/list', { name: 'company_list_lang_tests',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_list_lang_tests', Meteor.subscribe("company_list_lang_tests"));
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+      }
+  },
+  breadcrumb: { parent: "company_list_forms", title: "Hazır Dil Testleri" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyListLangTests' });
+    FlowRouter.subsReady("company_list_lang_tests", function() {
+      NProgress.done();
+    });
+  }
+});
+
+companyFormRoutes.route('/lang/new', { name: 'company_add_new_lang_test',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+      }
+  },
+  breadcrumb: { parent: "company_list_lang_tests", title: "Yeni Dil Testi Ekle" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyAddNewLangTest' });
+    FlowRouter.subsReady("company_show_company_profile", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+// tech
+
+companyFormRoutes.route('/tech/list', { name: 'company_list_tech_tests',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_list_tech_tests', Meteor.subscribe("company_list_tech_tests"));
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+      }
+  },
+  breadcrumb: { parent: "company_list_forms", title: "Hazır Teknik Testler" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyListTechTests' });
+    FlowRouter.subsReady("company_list_tech_tests", function() {
+      NProgress.done();
+    });
+  }
+});
+
+companyFormRoutes.route('/tech/new', { name: 'company_add_new_tech_test',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+        this.register('company_list_sectors', Meteor.subscribe("company_list_sectors"));
+      }
+  },
+  breadcrumb: { parent: "company_list_tech_tests", title: "Yeni Teknik Test Ekle" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyAddNewTechTest' });
+    FlowRouter.subsReady("company_list_sectors", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+
 
 
 

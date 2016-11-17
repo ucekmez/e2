@@ -97,3 +97,42 @@ RecruitmentProcesses.attachSchema(new SimpleSchema({
     optional: true
   }
 }));
+
+
+
+
+
+export const Applications = new Mongo.Collection('user_applications');
+
+Applications.attachSchema(new SimpleSchema({
+  position        : { type: String },
+  position_title  : { type: String, optional: true },
+  user            : { type: String, max: 64},
+  user_name       : { type: String, max: 64, optional: true },
+  email           : { type: String, max: 128 },
+
+  prerequisites_responses : { type: [String], optional: true }, // FormResponses ID
+  test_responses          : { type: [String], optional: true }, // FormResponses ID
+  survey_responses        : { type: [String], optional: true }, // FormResponses ID
+  pi_responses            : { type: [String], optional: true }, // PIResponses ID
+  keynote_responses       : { type: [String], optional: true }, // KeynoteResponses ID
+  video_responses         : { type: [String], optional: true }, // VideoResponses ID
+
+  totalpoints : { type: Number, min: 0, optional: true },
+
+
+  createdAt: {
+    type: Date,
+    autoValue: function() {
+      if (this.isInsert) { return new Date(); }
+      else if (this.isUpsert) { $setOnInsert: new Date(); }
+      else { this.unset(); }
+    }
+  },
+  updatedAt: {
+    type: Date,
+    autoValue: function() { if (this.isUpdate) { return new Date(); } },
+    denyInsert: true,
+    optional: true
+  }
+}));

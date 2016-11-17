@@ -1,6 +1,8 @@
 import { Forms } from '/imports/api/collections/forms.js';
 import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
 import { InterviewQuestions } from '/imports/api/collections/videos.js';
+import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates } from '/imports/api/collections/predefined.js';
+
 
 import shortid from 'shortid';
 
@@ -130,6 +132,47 @@ Meteor.methods({
       }
     });
   },
+
+
+  /******************************
+    methods related to predefined tests
+  *******************************/
+
+  company_add_new_lang_test_template(testname, language, level, numquestions) {
+    const template_id = PredefinedLanguageTemplates.insert({
+      title: testname,
+      user: Meteor.userId(),
+      language: language,
+      level: level,
+      numquestions: numquestions,
+    });
+
+    return template_id;
+  },
+
+  company_remove_lang_test(test_id) {
+    PredefinedLanguageTemplates.remove(test_id);
+  },
+
+
+
+  company_add_new_tech_test_template(testname, sector, level, numquestions, relatedto) {
+    const template_id = PredefinedTechnicalTemplates.insert({
+      title: testname,
+      user: Meteor.userId(),
+      sector: sector,
+      level: level,
+      numquestions: numquestions,
+      related_to: relatedto
+    });
+
+    return template_id;
+  },
+
+  company_remove_tech_test(test_id) {
+    PredefinedTechnicalTemplates.remove(test_id);
+  },
+
 
 
 });
