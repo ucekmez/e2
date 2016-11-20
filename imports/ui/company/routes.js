@@ -241,6 +241,28 @@ companyVideoRoutes.route('/edit/:questionId', { name: 'company_edit_video_questi
 });
 
 
+companyVideoRoutes.route('/preview/:questionId', { name: 'company_preview_video_question_record',
+  breadcrumb: { parent: "company_list_video_questions", title: "Video Soru Önizleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_video_question_preview', Meteor.subscribe("company_video_question_preview", params.questionId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  triggersExit: [function() {
+    if (typeof(q_player) !== "undefined") {
+      q_player.recorder.destroy();
+    }
+  }],
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewQuestionRecord' });
+    FlowRouter.subsReady("company_video_question_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
 
 
 

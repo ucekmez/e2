@@ -1,0 +1,90 @@
+<template name="CompanyPreviewQuestionRecord">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>Video Soru Düzenle</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_video_questions' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+                    {{#with question}}
+                      <h2>
+                        {{ content }}<br />
+                        <span class="label label-default" style="font-size:0.6em !important;">{{ description }}</span>
+                      </h2>
+                      <video id="companyInterviewPreviewRecord" class="ui raised segment video-js vjs-default-skin" controls></video>
+                      <script type="text/javascript">Session.set("OK_LOAD_PLAYER", true)</script>
+                      {{ player }}
+                    {{/with}}
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+
+<template name="CompanyPreviewQuestionAnswer">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>Video Soru Düzenle</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_video_questions' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+                    <h2>{{ question.content }} <sup><i class="info icon description" data-content="{{ question.description }}"></i></sup></h2>
+
+                    {{#if video_url }}
+
+                      <video id="preview-answer" class="ui raised segment video-js vjs-default-skin"
+                        preload="auto" controls>
+                        <source src="{{ video_url.link }}?play=true" type="{{ video_url.type }}">
+                        <p class="vjs-no-js">
+                          To view this video please enable JavaScript, and consider upgrading to a web browser
+                          that supports HTML5 video
+                        </p>
+                      </video>
+
+                    {{ else }}
+                      <p>
+                        There is no answer recorded for this question!
+                      </p>
+                    {{/if}}
+
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

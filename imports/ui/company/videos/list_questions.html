@@ -49,7 +49,10 @@
                                         <td><a href="{{ pathFor 'company_edit_video_question' questionId=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ content }}</a></td>
                                         <td>{{ time }} saniye</td>
                                         <td style="padding-left:16px;">{{ dateFromNow createdAt }}</td>
-                                        <td style="padding-left:16px;"><a style="cursor:pointer;" id="company-remove-video-question"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
+                                        <td style="padding-left:16px;">
+                                          <a style="cursor:pointer;" id="company-remove-video-question"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a>
+                                          <a href="{{ pathFor 'company_preview_video_question_record' questionId=_id }}"><i class="fa fa-eye big-icon blue-icon" aria-hidden="true"></i></a>
+                                        </td>
                                     </tr>
                                   {{/each}}
                                   {{#if questions }}

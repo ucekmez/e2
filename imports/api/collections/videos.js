@@ -59,6 +59,13 @@ InterviewQuestions.allow({
 export const Videos = new FilesCollection({
   collectionName: 'Videos',
   allowClientCode: false, // Disallow remove files from Client
+  storagePath: function () {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    return '/Users/ugur/Desktop/FILISRC/e2/data/videos/'+year+'/'+month;
+  },
   onBeforeUpload: function (file) {
     // Allow upload files under 10MB, and only in png/jpg/jpeg formats
     if (file.size <= 50485760) {
