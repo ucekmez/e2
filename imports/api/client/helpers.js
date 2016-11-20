@@ -1,3 +1,5 @@
+import { Sectors } from '/imports/api/collections/sectors.js';
+
 Template.registerHelper("scaleText", function(content){
   if (content) {
     let c = content.replace(new RegExp("[1][0-9]px","gm"), "6px");
@@ -44,4 +46,21 @@ Template.registerHelper('equals', function(s1, s2){
 
 Template.registerHelper('equalsOr', function(s1, s2, s3){
   return s1 === s2 || s1 === s3;
+});
+
+
+Template.registerHelper("getLanguageHelper", function(slug){
+  if (slug === "english") { return "İngilizce"; }
+});
+
+
+Template.registerHelper("getSectorHelper", function(slug){
+  return Sectors.findOne({ slug: slug }).name;
+});
+
+
+Template.registerHelper("getLevelHelper", function(level_id){
+  if (level_id === "easy") { return "Kolay"; }
+  if (level_id === "moderate") { return "Orta"; }
+  if (level_id === "hard") { return "Zor"; }
 });

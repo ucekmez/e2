@@ -1,7 +1,7 @@
 import { Companies } from '/imports/api/collections/companies.js';
 import { Forms } from '/imports/api/collections/forms.js';
 import { Keynotes,Slides } from '/imports/api/collections/keynotes.js';
-import { PIGroups } from '/imports/api/collections/pis.js';
+import { PIGroups, PIs } from '/imports/api/collections/pis.js';
 import { Positions } from '/imports/api/collections/positions.js';
 import { InterviewQuestions } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates, PredefinedTechTopics } from '/imports/api/collections/predefined.js';
@@ -97,9 +97,21 @@ Meteor.publish("company_keynote_slides_preview", function(keynote_id) {
 /*** pis ***/
 
 
+Meteor.publish("company_list_pigroups", function() {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return [
+      PIGroups.find({ user: this.userId }),
+      Sectors.find()
+    ]
+  }
+});
+
 Meteor.publish("company_list_pis", function() {
   if (Roles.userIsInRole(this.userId, ['company'])) {
-    return PIGroups.find({ user: this.userId });
+    return [
+      PIs.find({}, { fields: { 'scale': 1, 'shortid': 1, 'slug': 1 } }),
+      Sectors.find()
+    ];
   }
 });
 

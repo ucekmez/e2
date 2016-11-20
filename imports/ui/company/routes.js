@@ -250,16 +250,32 @@ pis routes
 
 const companyPIsRoutes = companyRoutes.group({ prefix: "/pis", name: "companypis"});
 
-companyPIsRoutes.route('/list', { name: 'company_list_pis',
+companyPIsRoutes.route('/list', { name: 'company_list_pigroups',
   subscriptions: function(params, queryParams) {
       if(Meteor.isClient) {
-        this.register('company_list_pis', Meteor.subscribe("company_list_pis"));
+        this.register('company_list_pigroups', Meteor.subscribe("company_list_pigroups"));
         this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
       }
   },
   breadcrumb: { parent: "company_dashboard", title: "Kişilik Envanterleri" },
   action: function() {
-    BlazeLayout.render('CompanyLayout', { main: 'CompanyListPIs' });
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyListPIGroups' });
+    FlowRouter.subsReady("company_list_pigroups", function() {
+      NProgress.done();
+    });
+  }
+});
+
+companyPIsRoutes.route('/new', { name: 'company_add_new_pi_combination',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+        this.register('company_list_pis', Meteor.subscribe("company_list_pis"));
+      }
+  },
+  breadcrumb: { parent: "company_list_pigroups", title: "Yeni Envanter" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyAddNewPICombination' });
     FlowRouter.subsReady("company_list_pis", function() {
       NProgress.done();
     });

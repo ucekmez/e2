@@ -3,10 +3,10 @@
     <div class="page-content-inner">
       <section class="panel">
         <div class="row">
-          <div class="col-xs-8">
+          <div class="col-md-6">
             <div class="panel-heading"><h3>Hazır Teknik Testler</h3></div>
           </div>
-          <div class="col-xs-4">
+          <div class="col-md-6">
             <div class="panel-heading" style="float:right;">
               <a href="{{ pathFor 'company_add_new_tech_test' }}"><button class="btn btn-secondary"><i class="icmn-plus2"></i> Yeni Teknik Test</button></a>
               <a href="{{ pathFor 'company_list_forms' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
@@ -154,7 +154,15 @@
                               <label class="form-control-label" for="techtestnumquestions">Soru Sayısı</label>
                           </div>
                           <div class="col-md-9">
-                              <input type="text" class="form-control" placeholder="Soru sayısını giriniz" id="techtestnumquestions" name="techtestnumquestions" required>
+                            <div class="form-group">
+                                <select class="form-control" id="techtestnumquestions" name="techtestnumquestions">
+                                  <option value="">Sayı</option>
+                                  <option value="10">10</option>
+                                  <option value="20">20</option>
+                                  <option value="30">30</option>
+                                </select>
+                            </div>
+
                           </div>
                       </div>
 

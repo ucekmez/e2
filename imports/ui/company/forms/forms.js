@@ -164,7 +164,7 @@ Template.CompanyAddNewLangTest.events({
     $('#langtestname').val()?$('#langtestname').val(""):"";
     $('#langtestlanguage').val("");
     $('#langtestlevel').val("");
-    $('#langtestnumquestions').val()?$('#langtestnumquestions').val(""):"";
+    $('#langtestnumquestions').val("");
   },
 });
 
@@ -212,13 +212,13 @@ Template.CompanyAddNewTechTest.events({
     $('#techtestname').val()?$('#techtestname').val(""):"";
     $('#techtestsector').val("");
     $('#techtestlevel').val("");
-    $('#techtestnumquestions').val()?$('#techtestnumquestions').val(""):"";
+    $('#techtestnumquestions').val("");
     $('#techtestrelatedto').val()?$('#techtestrelatedto').val(""):"";
     $('.bootstrap-tagsinput').children().not('input').remove();
   },
 });
 
-Template.CompanyListLangTests.events({
+Template.CompanyListTechTests.events({
   'click #company-remove-tech-test'(event, instance) {
     Meteor.call('company_remove_tech_test', this._id, function(err, data) {
       if (err) {
@@ -233,20 +233,3 @@ Template.CompanyListLangTests.events({
 
 
 //// helpers
-
-
-Template.registerHelper("getLanguageHelper", function(slug){
-  if (slug === "english") { return "İngilizce"; }
-});
-
-
-Template.registerHelper("getSectorHelper", function(slug){
-  return Sectors.findOne({ slug: slug }).name;
-});
-
-
-Template.registerHelper("getLevelHelper", function(level_id){
-  if (level_id === "easy") { return "Kolay"; }
-  if (level_id === "moderate") { return "Orta"; }
-  if (level_id === "hard") { return "Zor"; }
-});

@@ -41,7 +41,7 @@ Template.CompanyListVideoQuestions.events({
     f_add_new_video_question(event, instance);
   },
   'click #company-remove-video-question'(event, instance) {
-    Meteor.call('company_remove_video_question', this._id);
+    Meteor.call('company_remove_interview_question', this._id);
   },
 });
 

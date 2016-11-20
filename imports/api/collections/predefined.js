@@ -26,6 +26,7 @@ PredefinedLanguageTemplates.attachSchema(new SimpleSchema({
   language        : { type: String, max: 32},
   level           : { type: String, max: 32},
   numquestions    : { type: Number, min: 1 },
+  
   shortid : {
     type: String,
     autoValue: function() { if (this.isInsert) { return shortid.generate(); } },
@@ -75,6 +76,7 @@ PredefinedTechnicalTemplates.attachSchema(new SimpleSchema({
   level           : { type: String, max: 32},
   sector          : { type: String, max: 32},
   numquestions    : { type: Number, min: 1 },
+  related_to      : { type: [String] },
   shortid : {
     type: String,
     autoValue: function() { if (this.isInsert) { return shortid.generate(); } },

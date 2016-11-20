@@ -2,6 +2,7 @@ import { Forms } from '/imports/api/collections/forms.js';
 import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
 import { InterviewQuestions } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates } from '/imports/api/collections/predefined.js';
+import { PIs, PIGroups } from '/imports/api/collections/pis.js';
 
 
 import shortid from 'shortid';
@@ -133,21 +134,34 @@ Meteor.methods({
     });
   },
 
+  company_remove_interview_question(question_id) {
+    InterviewQuestions.remove(question_id);
+  },
+
 
   /******************************
     methods related to predefined tests
   *******************************/
 
   company_add_new_lang_test_template(testname, language, level, numquestions) {
-    const template_id = PredefinedLanguageTemplates.insert({
-      title: testname,
-      user: Meteor.userId(),
-      language: language,
-      level: level,
-      numquestions: numquestions,
-    });
+    const question_times = ["10","20","30"];
+    const languages = ["english"];
+    const levels = ["easy","moderate","hard"];
 
-    return template_id;
+
+    if (question_times.indexOf(numquestions) == -1 || languages.indexOf(language) == -1 || levels.indexOf(level) == -1) {
+      throw new Meteor.Error(450, 'Hata! Geçersiz seçim');
+    }else {
+      const template_id = PredefinedLanguageTemplates.insert({
+        title: testname,
+        user: Meteor.userId(),
+        language: language,
+        level: level,
+        numquestions: numquestions,
+      });
+
+      return template_id;
+    }
   },
 
   company_remove_lang_test(test_id) {
@@ -157,16 +171,24 @@ Meteor.methods({
 
 
   company_add_new_tech_test_template(testname, sector, level, numquestions, relatedto) {
-    const template_id = PredefinedTechnicalTemplates.insert({
-      title: testname,
-      user: Meteor.userId(),
-      sector: sector,
-      level: level,
-      numquestions: numquestions,
-      related_to: relatedto
-    });
+    const question_times = ["10","20","30"];
+    const sectors = ["bilisim"];
+    const levels = ["easy","moderate","hard"];
 
-    return template_id;
+    if (question_times.indexOf(numquestions) == -1 || sectors.indexOf(sector) == -1 || levels.indexOf(level) == -1) {
+      throw new Meteor.Error(450, 'Hata! Geçersiz seçim');
+    }else {
+      const template_id = PredefinedTechnicalTemplates.insert({
+        title: testname,
+        user: Meteor.userId(),
+        sector: sector,
+        level: level,
+        numquestions: numquestions,
+        related_to: relatedto
+      });
+
+      return template_id;
+    }
   },
 
   company_remove_tech_test(test_id) {
@@ -174,5 +196,25 @@ Meteor.methods({
   },
 
 
+
+    /******************************
+      methods related to pis and pigroups
+    *******************************/
+
+
+  company_add_new_pigroup(name, sector, chosens) {
+    //const selected_pis = PIs.find({ shortid: { $in : chosens }});
+    PIGroups.insert({
+      user: Meteor.userId(),
+      name: name,
+      type: "custom",
+      sector: sector,
+      scales: chosens
+    });
+  },
+
+  company_remove_pigroup(pigroup_id) {
+    PIGroups.remove(pigroup_id);
+  },
 
 });
