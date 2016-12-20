@@ -6,7 +6,7 @@ Forms.attachSchema(new SimpleSchema({
   title           : { type: String, max: 128 },
   user            : { type: String, max: 64},
   type            : { type: String, max:32 },
-  payload         : {type: String, max:16384, optional: true},
+  payload         : { type: String, optional: true},
   shortid : {
     type: String,
     autoValue: function() { if (this.isInsert) { return shortid.generate(); } },

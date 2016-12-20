@@ -58,7 +58,7 @@ InterviewQuestions.allow({
 
 export const Videos = new FilesCollection({
   collectionName: 'Videos',
-  allowClientCode: false, // Disallow remove files from Client
+  //allowClientCode: false, // Disallow remove files from Client
   storagePath: function () {
     const date = new Date();
     const year = date.getFullYear();

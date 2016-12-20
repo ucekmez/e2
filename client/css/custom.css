@@ -1,3 +1,33 @@
+.fr-toolbar.fr-desktop.fr-inline { z-index:999; }
+
+.fr-wrapper-keynote-preview .fr-wrapper {
+  -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.reveal.slide .present {
+  width:90%;
+}
+
+
+
+
+.list-remove-button-style {
+  cursor:pointer;
+  margin-left:6px;
+  padding-left:6px;
+  border-left:1px dashed gray;
+}
+
+.vjs-progress-control.vjs-control {
+  max-width:390px;
+}
+
+#company_list_video_questions_table_paginate {
+  margin-top:20px;
+}
+
 .landing-general {
   background-color: #000 !important;
 }
@@ -123,9 +153,9 @@ label.error {
 /********** fr-wrapper ***********************/
 
 .fr-wrapper {
-  border: none !important;
-  -webkit-box-shadow: 0 2px 10px -2px rgba(55, 58, 60, .3) !important;
-  box-shadow: 0 2px 10px -2px rgba(55, 58, 60, .3) !important;
+  border: none;
+  -webkit-box-shadow: 0 2px 10px -2px rgba(55, 58, 60, .3);
+  box-shadow: 0 2px 10px -2px rgba(55, 58, 60, .3);
 }
 
 /**********  datatables sorting ************/

@@ -49,18 +49,18 @@ Template.CompanyPreviewQuestionRecord.helpers({
           plugins: {
               // videojs-record plugin options
               record: {
-                  image: false,
-                  audio: true,
-                  video: {
-                    mandatory: {
-                      minWidth: 320,
-                      minHeight: 240
-                    }
-                  },
-                  frameWidth: 320,
-                  frameHeight: 240,
-                  maxLength: question.time,
-                  debug: false
+                image: false,
+                audio: true,
+                video: {
+                  mandatory: {
+                    minWidth: 320,
+                    minHeight: 240
+                  }
+                },
+                frameWidth: 320,
+                frameHeight: 240,
+                maxLength: question.time,
+                debug: false
               }
           }
         });
@@ -89,15 +89,18 @@ Template.CompanyPreviewQuestionRecord.helpers({
           const upload_state = Videos.insert({
             file: data,
             streams: 'dynamic',
-            chunkSize: 'dynamic'
+            chunkSize: 'dynamic',
+            meta: { 'question': question._id, 'companypreview': true, 'createdAt': new Date(), 'company': Meteor.userId()}
           }, false);
+
+          upload_state.on('start', function() {
+            Meteor.call('company_clear_video_preview_saved_before', question._id, function(err, data) {});
+          });
+
           upload_state.on('end', function (err, fileObj) {
             if (err) {
               toastr.warning("Video Kaydedilemedi!");
             } else {
-              //Meteor.call('save_video_response_preview', question._id, fileObj._id, function() {
-              //  toastr.info("Your response has been saved!");
-              //});
               toastr.info("Video başarıyla kaydedildi!");
             }
           });
@@ -119,6 +122,30 @@ Template.CompanyPreviewQuestionRecord.helpers({
   }
 });
 
+
+Template.CompanyPreviewQuestionAnswer.helpers({
+  question() {
+    return InterviewQuestions.findOne();
+  },
+  video() {
+    return Videos.findOne();
+  },
+  player() {
+    const video = Videos.findOne();
+
+      if (video && Session.get("OK_LOAD_PLAYER")) {
+
+        setTimeout(function () {
+          a_player = videojs("companyInterviewPreviewAnswer", {
+            techOrder: ["html5", "flash"],
+            "width": 640,
+            "height": 480,
+            "poster": "/img/fililabs_logo.png",
+          });
+        }, 1000);
+      }
+  }
+});
 
 
 

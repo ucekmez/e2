@@ -42,3 +42,42 @@
   </section>
 
 </template>
+
+
+
+<template name="CompanyPreviewForm">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            {{#with form }}
+              <div class="panel-heading"><h3><i>{{ title }}</i> Önizleme</h3></div>
+            {{/with}}
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_forms' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Anket Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+              <div class="panel panel-with-borders m-b-0">
+                <div class="panel-body">
+
+                    <!-- -->
+
+
+                    <!-- -->
+
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

@@ -10,3 +10,9 @@ import '/imports/api/client/config.js';
   template helpers
 */
 import '/imports/api/client/helpers.js';
+
+
+$('body').on('change', '.sadece-bir-dogru-var', function() {
+  $(".sadece-bir-dogru-var").prop('checked',false);
+  $(this).prop('checked',true);
+});

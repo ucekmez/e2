@@ -1,0 +1,97 @@
+<template name="CompanyPreviewKeynote">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3><i>"{{ keynote.title }}"</i> Önizleme</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a id="edit-inline-keynote" style="cursor:pointer;" class="btn btn-default"><i class="icmn-wrench2"></i> Düzenle</a>
+              <a href="{{ pathFor 'company_edit_keynote' keynoteId=keynote._id }}"><button class="btn btn-default"><i class="icmn-undo"></i> Sunuma Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+
+
+                    <div class="reveal">
+                      <div class="slides" style="overflow:hidden;">
+                        {{#if subsReady 'company_keynote_preview'}}
+                          {{#each slides }}
+                          <section style="padding:40px;">
+                            <div class="showsingleslide">{{{ content }}}</div>
+                            <div class="editsingleslide" style="display:none;">{{> froalaReactive getFEContext disableRightClick=true}}</div>
+                          </section>
+                          {{else }}
+                          <section>There is no slide in this keynote..</section>
+                          {{/each}}
+                        {{else }}
+                          <section>Loading...</section>
+                        {{/if}}
+                      </div>
+                    </div>
+
+
+
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+
+
+
+
+<!--
+
+                               ____
+                            _.' :  `._
+                        .-.'`.  ;   .'`.-.
+               __      / : ___\ ;  /___ ; \      __
+             ,'_ ""=-.:__;".-.";: :".-.":__;.-="" _`,
+             :' `.t""=-.. '<@.`;_  ',@:` ..-=""j.' `;
+                  `:-.._J '-.-'L__ `-.-' L_..-;'
+                    "-.__ ;  .-"  "-.  : __.-"
+                        L ' /.======.\ ' J
+                         "-.   "__"   .-"
+                        __.l"-:_JL_;-";.__
+                     .-j/'.;  ;""""  / .'\"-.
+                   .' /:`. "-.:     .-" .';  `.
+                .-"  / ;  "-. "-..-" .-"  :    "-.
+             .+"-.  : :      "-.__.-"      ;-._   \
+             ; \  `.; ;                    : : "+. ;
+             :  ;   ; ;                    : ;  : \:
+             ;  :   ; :                    ;:   ;  :
+            : \  ;  :  ;                  : ;  /  ::
+            ;  ; :   ; :                  ;   :   ;:
+            :  :  ;  :  ;                : :  ;  : ;
+            ;\    :   ; :                ; ;     ; ;
+            : `."-;   :  ;              :  ;    /  ;
+             ;    -:   ; :              ;  : .-"   :
+             :\     \  :  ;            : \.-"      :
+              ;`.    \  ; :            ;.'_..-=  / ;
+              :  "-.  "-:  ;          :/."      .'  :
+               \         \ :          ;/  __        :
+                \       .-`.\        /t-""  ":-+.   :
+                 `.  .-"    `l    __/ /`. :  ; ; \  ;
+                   \   .-" .-"-.-"  .' .'j \  /   ;/
+                    \ / .-"   /.     .'.' ;_:'    ;
+                     :-""-.`./-.'     /    `.___.'
+                           \ `t  ._  /
+                            "-.t-._:'
+
+-->

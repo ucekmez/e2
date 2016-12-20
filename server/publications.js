@@ -3,7 +3,7 @@ import { Forms } from '/imports/api/collections/forms.js';
 import { Keynotes,Slides } from '/imports/api/collections/keynotes.js';
 import { PIGroups, PIs } from '/imports/api/collections/pis.js';
 import { Positions } from '/imports/api/collections/positions.js';
-import { InterviewQuestions } from '/imports/api/collections/videos.js';
+import { InterviewQuestions, Videos } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates, PredefinedTechTopics } from '/imports/api/collections/predefined.js';
 import { Sectors } from '/imports/api/collections/sectors.js';
 
@@ -83,15 +83,13 @@ Meteor.publish("company_list_keynotes_slides_for_count", function() {
 
 Meteor.publish("company_keynote_preview", function(keynote_id) {
   if (Roles.userIsInRole(this.userId, ['company'])) {
-    return Keynotes.find({ _id: keynote_id });
+    return [
+      Keynotes.find({ _id: keynote_id }),
+      Slides.find({ keynote: keynote_id })
+    ];
   }
 });
 
-Meteor.publish("company_keynote_slides_preview", function(keynote_id) {
-  if (Roles.userIsInRole(this.userId, ['company'])) {
-    return Slides.find({ keynote: keynote_id });
-  }
-});
 
 
 /*** pis ***/
@@ -136,5 +134,14 @@ Meteor.publish("company_list_video_questions", function() {
 Meteor.publish("company_video_question_preview", function(question_id) {
   if (Roles.userIsInRole(this.userId, ['company'])) {
     return InterviewQuestions.find({ _id: question_id });
+  }
+});
+
+Meteor.publish("company_video_question_preview_record", function(question_id) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return [
+      InterviewQuestions.find({ _id: question_id }),
+      Videos.find({ 'meta.companypreview': true, 'meta.company': this.userId, 'meta.question': question_id }).cursor
+    ];
   }
 });

@@ -48,7 +48,10 @@
                                         <td><a href="{{ pathFor 'company_edit_keynote' keynoteId=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ title }}</a></td>
                                         <td>{{ numberOfSlides _id }}</td>
                                         <td>{{#if updatedAt}}{{ dateFromNow updatedAt }}{{else}}{{ dateFromNow createdAt }}{{/if}}</td>
-                                        <td><a style="cursor:pointer;" id="company-remove-keynote"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
+                                        <td>
+                                          <a href="{{ pathFor 'company_preview_keynote' keynoteId=_id }}"><i class="fa fa-eye big-icon green-icon" aria-hidden="true"></i></a>
+                                          <a class="list-remove-button-style" id="company-remove-keynote"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a>
+                                        </td>
                                     </tr>
                                   {{/each}}
                                   {{#if keynotes }}

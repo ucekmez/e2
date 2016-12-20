@@ -63,6 +63,24 @@ companyFormRoutes.route('/edit/:formId', { name: 'company_edit_form',
   }
 });
 
+companyFormRoutes.route('/preview/:formId', { name: 'company_preview_form',
+  breadcrumb: { parent: "company_list_forms", title: "Form Önizleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_form_preview', Meteor.subscribe("company_form_preview", params.formId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewForm' });
+    FlowRouter.subsReady("company_form_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+
 
 
 /**********************************************
@@ -171,13 +189,31 @@ companyKeynoteRoutes.route('/edit/:keynoteId', { name: 'company_edit_keynote',
   subscriptions: function(params, queryParams) {
     if(Meteor.isClient) {
       this.register('company_keynote_preview', Meteor.subscribe("company_keynote_preview", params.keynoteId));
-      this.register('company_keynote_slides_preview', Meteor.subscribe("company_keynote_slides_preview", params.keynoteId));
       this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
     }
   },
   action: function(params) {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyEditKeynote' });
-    FlowRouter.subsReady("company_keynote_slides_preview", function() {
+    FlowRouter.subsReady("company_keynote_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+companyKeynoteRoutes.route('/preview/:keynoteId', { name: 'company_preview_keynote',
+  breadcrumb: { parent: "company_list_keynotes", title: "Sunum Önizleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_keynote_preview', Meteor.subscribe("company_keynote_preview", params.keynoteId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  triggersExit: [function() {
+    if (typeof Reveal !== 'undefined') { Reveal.removeEventListeners(); }
+  }],
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewKeynote' });
+    FlowRouter.subsReady("company_keynote_preview", function() {
       NProgress.done();
     });
   }
@@ -241,7 +277,7 @@ companyVideoRoutes.route('/edit/:questionId', { name: 'company_edit_video_questi
 });
 
 
-companyVideoRoutes.route('/preview/:questionId', { name: 'company_preview_video_question_record',
+companyVideoRoutes.route('/preview/record/:questionId', { name: 'company_preview_video_question_record',
   breadcrumb: { parent: "company_list_video_questions", title: "Video Soru Önizleme" },
   subscriptions: function(params, queryParams) {
     if(Meteor.isClient) {
@@ -257,6 +293,28 @@ companyVideoRoutes.route('/preview/:questionId', { name: 'company_preview_video_
   action: function(params) {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewQuestionRecord' });
     FlowRouter.subsReady("company_video_question_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+companyVideoRoutes.route('/preview/watch/:questionId', { name: 'company_preview_video_question_answer',
+  breadcrumb: { parent: "company_list_video_questions", title: "Video Soru Önizleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_video_question_preview_record', Meteor.subscribe("company_video_question_preview_record", params.questionId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  triggersExit: [function() {
+    if (typeof(a_player) !== "undefined") {
+      a_player.dispose();
+    }
+  }],
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewQuestionAnswer' });
+    FlowRouter.subsReady("company_video_question_preview_record", function() {
       NProgress.done();
     });
   }

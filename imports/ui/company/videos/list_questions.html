@@ -50,8 +50,9 @@
                                         <td>{{ time }} saniye</td>
                                         <td style="padding-left:16px;">{{ dateFromNow createdAt }}</td>
                                         <td style="padding-left:16px;">
-                                          <a style="cursor:pointer;" id="company-remove-video-question"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a>
-                                          <a href="{{ pathFor 'company_preview_video_question_record' questionId=_id }}"><i class="fa fa-eye big-icon blue-icon" aria-hidden="true"></i></a>
+                                          <a href="{{ pathFor 'company_preview_video_question_record' questionId=_id }}"><i class="fa fa-video-camera big-icon blue-icon" aria-hidden="true"></i></a>
+                                          <a href="{{ pathFor 'company_preview_video_question_answer' questionId=_id }}"><i class="fa fa-eye big-icon green-icon" aria-hidden="true"></i></a>
+                                          <a class="list-remove-button-style" id="company-remove-video-question"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                   {{/each}}

@@ -1,6 +1,7 @@
 Meteor.startup(function() {
   //console.log(window.location.href);
 
+
   var Node = Node || {
     ELEMENT_NODE: 1,
     ATTRIBUTE_NODE: 2,
@@ -7955,6 +7956,8 @@ Meteor.startup(function() {
       });
     }
 
+    var shortid = require('shortid');
+
     var DeepModel = Backbone.Model.extend({
 
       // Override constructor
@@ -7962,7 +7965,7 @@ Meteor.startup(function() {
       constructor: function(attributes, options) {
         var defaults;
         var attrs = attributes || {};
-        this.cid = _.uniqueId('c');
+        this.cid = shortid.generate(); //_.uniqueId('c');
         this.attributes = {};
         if (options && options.collection) this.collection =
           options.collection;
@@ -8842,8 +8845,8 @@ Meteor.startup(function() {
           COUNTRY_VALUE: 'field_options.country_value',
           INCLUDE_OTHER_CHECKED: 'field_options.include_other_option_checked',
           UPLOADED_IMAGE_VALUE: 'field_options.uploaded_image_value',
-          ANSWERDURATION: 'field_options.answerduration'
-            //TRUECHOICE: 'field_options.truechoice'
+          ANSWERDURATION: 'field_options.answerduration',
+          //TRUECHOICE: 'field_options.truechoice'
         },
         dict: {
           ALL_CHANGES_SAVED: 'All changes saved',
@@ -8932,7 +8935,7 @@ Meteor.startup(function() {
           label: "",
           checked: false,
           id: 0,
-          truechoice: true
+          truechoice: false
 
         }, {
           label: "",
@@ -8975,11 +8978,13 @@ Meteor.startup(function() {
         attrs.field_options.options = [{
           label: "",
           checked: false,
-          id: 0
+          id: 0,
+          truechoice: false
         }, {
           label: "",
           checked: false,
-          id: 1
+          id: 1,
+          truechoice: false
         }];
         attrs.field_options.include_blank_option = false;
         return attrs;
@@ -9228,13 +9233,11 @@ Meteor.startup(function() {
         attrs.field_options.options = [{
           label: "",
           checked: false,
-          id: 0,
-          truechoice: true
+          id: 0
         }, {
           label: "",
           checked: false,
-          id: 1,
-          truechoice: false
+          id: 1
         }];
         attrs.field_options.include_other_option_value = '';
         attrs.field_options.include_other_option_checked = false;
@@ -9597,39 +9600,20 @@ Meteor.startup(function() {
             __t) +
           '\'>\r\n  <input type="text" data-rv-input="option:label" class=\'option-label-input\'  placeholder="Seçenek"/>\r\n ';
 
-        // console.log("formType: " + formType);
+
+
+
         if (rf.attributes.field_type == "radio" && (formType == "test" || formType == "prerequisite")) {
-          // console.log("girdi radio");
-          __p += '<label><input  data-rv-checked="option:truechoice"' +
-            '" type="checkbox"  class=\'js-default-updated\' />Doğru</label>';
+          __p += '<label><input name="isTrue" data-rv-checked="option:truechoice" type="checkbox"  class=\'js-default-updated sadece-bir-dogru-var\' />Doğru</label>';
+
         }
-        // console.log("ft: " + rf.attributes.field_type + " fType: " +
-        //   formType);
+
         if (rf.attributes.field_type == "checkboxes" && (formType == "test" || formType == "prerequisite")) {
-          // console.log("girdi chk");
-          __p +=
-            '<label><input name="isTrue"  data-rv-checked="option:truechoice"' +
-            '" type="checkbox"  class=\'js-default-updated\' />Doğru</label>';
+          __p += '<label><input name="isTrue" data-rv-checked="option:truechoice" type="checkbox"  class=\'js-default-updated\' />Doğru</label>';
         }
+
         __p +=
           '<a style="margin-left:4px;margin-top:6px;position:absolute;cursor:pointer;" class="js-add-option" title="Seçenek Ekle"><i class=\'icmn-plus2 big-icon green-icon\'></i></a>\r\n  <a style=\'cursor:pointer;margin-left:30px;margin-top:6px;position:absolute;\' class="js-remove-option" title="Seçenek Sil"><i class=\'icmn-minus2 big-icon red-icon\'></i></a>\r\n</div>\r\n\r\n';
-        if (typeof includeOther !== 'und*00efined') {;
-          __p +=
-
-
-            '<input type=\'text\' data-rv-input=\'model.' +
-            ((__t = (Formbuilder.options.mappings.INCLUDE_OTHER_VALUE)) ==
-              null ? '' : __t) +
-            '\' /> <label><label>    <input id="otheractive" type=\'checkbox\' data-rv-checked=\'model.' +
-            ((__t = (Formbuilder.options.mappings.INCLUDE_OTHER)) == null ?
-              '' : __t) +
-              '\' />\r\n <label for="otheractive">Diğer</label></label>\r\n ' +
-
-             '<br /><input id="otherchecked" type=\'checkbox\' data-rv-checked=\'model.' +
-            ((__t = (Formbuilder.options.mappings.INCLUDE_OTHER_CHECKED)) ==
-              null ? '' : __t) +
-            '\' />\r\n    <label for="otherchecked">Diğer seçeneği işaretli gelsin</label>\r\n  </label>\r\n';
-        };
         __p +=
           '\r\n\r\n<div class=\'fb-bottom-add\'>\r\n  <a class="js-add-option" style="cursor:pointer;">Seçenek ekle</a>\r\n</div>\r\n';
 

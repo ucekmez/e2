@@ -1,6 +1,6 @@
 import { Forms } from '/imports/api/collections/forms.js';
 import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
-import { InterviewQuestions } from '/imports/api/collections/videos.js';
+import { InterviewQuestions, Videos } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates } from '/imports/api/collections/predefined.js';
 import { PIs, PIGroups } from '/imports/api/collections/pis.js';
 
@@ -137,6 +137,16 @@ Meteor.methods({
   company_remove_interview_question(question_id) {
     InterviewQuestions.remove(question_id);
   },
+
+  company_clear_video_preview_saved_before(question_id) {
+    const exists = Videos.findOne({ 'meta.companypreview': true, 'meta.company': Meteor.userId(), 'meta.question': question_id });
+
+    if (exists) {
+      Videos.remove(exists._id);
+    }
+
+  },
+
 
 
   /******************************

@@ -4,7 +4,7 @@
       <section class="panel">
         <div class="row">
           <div class="col-xs-8">
-            <div class="panel-heading"><h3>Video Soru Düzenle</h3></div>
+            <div class="panel-heading"><h3>Örnek Kayıt Alma</h3></div>
           </div>
           <div class="col-xs-4">
             <div class="panel-heading" style="float:right;">
@@ -45,7 +45,7 @@
       <section class="panel">
         <div class="row">
           <div class="col-xs-8">
-            <div class="panel-heading"><h3>Video Soru Düzenle</h3></div>
+            <div class="panel-heading"><h3>Örnek Kayıt İzleme</h3></div>
           </div>
           <div class="col-xs-4">
             <div class="panel-heading" style="float:right;">
@@ -60,24 +60,31 @@
                 <div class="panel panel-with-borders m-b-0">
                   <div class="panel-body">
                     <!-- -->
-                    <h2>{{ question.content }} <sup><i class="info icon description" data-content="{{ question.description }}"></i></sup></h2>
 
-                    {{#if video_url }}
+                    {{#with question}}
+                      <h2>
+                        {{ content }}<br />
+                        <span class="label label-default" style="font-size:0.6em !important;">{{ description }}</span>
+                      </h2>
 
-                      <video id="preview-answer" class="ui raised segment video-js vjs-default-skin"
-                        preload="auto" controls>
-                        <source src="{{ video_url.link }}?play=true" type="{{ video_url.type }}">
-                        <p class="vjs-no-js">
-                          To view this video please enable JavaScript, and consider upgrading to a web browser
-                          that supports HTML5 video
-                        </p>
-                      </video>
 
-                    {{ else }}
-                      <p>
-                        There is no answer recorded for this question!
-                      </p>
-                    {{/if}}
+                      {{#if video }}
+                        <video id="companyInterviewPreviewAnswer" class="ui raised segment video-js vjs-default-skin"
+                          preload="auto" data-setup='{"techOrder": ["html5", "flash"]}' controls>
+                          <source src="{{ video.link }}?play=true" type="{{ video.type }}">
+                          <p class="vjs-no-js">
+                            To view this video please enable JavaScript, and consider upgrading to a web browser
+                            that supports HTML5 video
+                          </p>
+                        </video>
+                        <script type="text/javascript">Session.set("OK_LOAD_PLAYER", true)</script>
+                        {{ player }}
+                      {{else}}
+                        Bu soru için henüz bir kayıt yapılmamış.
+                      {{/if}}
+
+                    {{/with}}
+
 
                     <!-- -->
                   </div>

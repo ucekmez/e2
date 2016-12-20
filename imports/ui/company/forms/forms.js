@@ -47,7 +47,7 @@ Template.CompanyEditForm.onRendered(function() {
 
 Template.CompanyEditForm.helpers({
   form() {
-    return Forms.findOne({_id: FlowRouter.getParam('formId')});
+    return Forms.findOne();
   }
 });
 
@@ -82,6 +82,11 @@ Template.CompanyListTechTests.helpers({
   },
 });
 
+Template.CompanyPreviewForm.helpers({
+  form() {
+    return Forms.findOne();
+  },
+});
 
 
 
@@ -213,8 +218,8 @@ Template.CompanyAddNewTechTest.events({
     $('#techtestsector').val("");
     $('#techtestlevel').val("");
     $('#techtestnumquestions').val("");
-    $('#techtestrelatedto').val()?$('#techtestrelatedto').val(""):"";
     $('.bootstrap-tagsinput').children().not('input').remove();
+    $('#techtestrelatedto').tagsinput("removeAll");
   },
 });
 
@@ -233,3 +238,8 @@ Template.CompanyListTechTests.events({
 
 
 //// helpers
+
+
+Template.registerHelper("formPayload", function(payload){
+  return JSON.parse(payload).fields;
+});

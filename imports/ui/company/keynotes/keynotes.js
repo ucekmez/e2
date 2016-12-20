@@ -2,6 +2,7 @@ import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
 
 import './list_keynotes.html';
 import './edit_keynote.html';
+import './preview_keynote.html';
 
 
 
@@ -11,7 +12,7 @@ template helpers
 
 Template.CompanyListKeynotes.helpers({
   keynotes() {
-    return Keynotes.find({ user: Meteor.userId()}, { sort: { updatedAt: -1, createdAt : -1 }})
+    return Keynotes.find({}, { sort: { updatedAt: -1, createdAt : -1 }})
     .map(function(document, index) {
       document.index = index + 1;
       return document;
@@ -29,13 +30,10 @@ Template.CompanyEditSingleSlide.onRendered(function() {
 
 Template.CompanyEditKeynote.helpers({
   keynote() {
-    return Keynotes.findOne({_id: FlowRouter.getParam('keynoteId')});
+    return Keynotes.findOne();
   },
   slides() {
-    const result_keynote = Keynotes.findOne(FlowRouter.getParam('keynoteId'));
-    if (result_keynote && result_keynote.user === Meteor.userId()) {
-      return Slides.find({keynote: FlowRouter.getParam('keynoteId')}, { sort: {order: 1} });
-    }
+    return Slides.find({}, { sort: {order: 1} });
   },
   sortableOptions() {
     return {
@@ -88,6 +86,53 @@ Template.CompanyEditSingleSlide.helpers({
 });
 
 
+Template.CompanyPreviewKeynote.helpers({
+  keynote() {
+    return Keynotes.findOne();
+  },
+  slides() {
+    return Slides.find({}, { sort: {order: 1} });
+  },
+  getFEContext() {
+    const self = this;
+    return {
+      _value: self.content, // set HTML content
+      _keepMarkers: true, // preserving cursor markers
+      _className: "fr-wrapper-keynote-preview", // Override wrapper class
+      toolbarInline: true, // Set some FE options
+      initOnClick: false, // Set some FE options
+      tabSpaces: false, // Set some FE options
+      disableRightClick: false,
+      maxCharacters: 2048,
+      width: '100%',
+      height: '400',
+      heightMax: '600',
+      toolbarButtons: ['bold', 'italic', 'underline', 'fontFamily', 'fontSize', 'color', 'paragraphStyle', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'quote', 'insertHR', 'insertLink', 'insertImage', 'insertVideo', 'insertFile', 'insertTable', 'html'],
+      "_oncontentChanged": function (e, editor) { // FE save.before event handler function:
+        // Get edited HTML from Froala-Editor
+        const newHTML = editor.html.get(true /* keep_markers */);
+        // Do something to update the edited value provided by the Froala-Editor plugin, if it has changed:
+        if (!_.isEqual(newHTML, self.content)) {
+          Slides.update({_id: self._id}, {
+            $set: {content: newHTML}
+          });
+          toastr.success('Sunum güncellendi!');
+        }
+        return false; // Stop Froala Editor from POSTing to the Save URL
+      },
+    };
+  }
+});
+
+
+Template.CompanyPreviewKeynote.onRendered(function() {
+  FlowRouter.subsReady("company_keynote_preview", function() {
+    $.getScript("/js/reveal.js")
+      .done(function(script, textStatus) {
+        Reveal.initialize();
+    });
+  });
+});
 
 /**********************************************
 template events
@@ -153,5 +198,27 @@ Template.CompanyEditKeynote.events({
       Session.set("active-slide-before", this._id);
     }
     $('#slide-' + this._id).removeClass('passive').addClass('active');
+  }
+});
+
+
+Template.CompanyPreviewKeynote.events({
+  'click #edit-inline-keynote'(event, instance) {
+    let edit = Session.get("inlineedit");
+    if (!edit) {
+      $('.showsingleslide').hide();
+      $('.editsingleslide').show();
+      $('#edit-inline-keynote').removeClass("btn-default");
+      $('#edit-inline-keynote').addClass("button-secondary");
+      $('#edit-inline-keynote').html('<i class="icmn-wrench"></i> Düzenle')
+      Session.set("inlineedit", true);
+    }else {
+      $('.showsingleslide').show();
+      $('.editsingleslide').hide();
+      $('#edit-inline-keynote').removeClass("button-secondary");
+      $('#edit-inline-keynote').addClass("btn-default");
+      $('#edit-inline-keynote').html('<i class="icmn-wrench2"></i> Düzenle')
+      Session.set("inlineedit", false);
+    }
   }
 });
