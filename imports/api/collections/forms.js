@@ -60,6 +60,7 @@ FormResponses.attachSchema(new SimpleSchema({
   user_name: { type: String, max: 64, optional: true },
   email: { type: String, max: 128 },
   response: { type: String, max: 64 },
+  company_preview : { type: Boolean, optional: true},
   createdAt: {
     type: Date,
     autoValue: function() {

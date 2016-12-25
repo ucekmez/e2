@@ -236,10 +236,145 @@ Template.CompanyListTechTests.events({
 });
 
 
+f_check_question_time = function(event, instance) {
+  Session.set("test-start-time", moment.now());
+  Session.set("test-question-start-time", moment.now());
+  if ($('.question-active .question-remaining-time').length > 0) {
+    const max_time_allowed = $('.question-active .question-remaining-time').text();
+    let show_last_5_seconds = true;
+    QUESTION_INTERVAL = Meteor.setInterval(function(){
+      let remaining_seconds = max_time_allowed - moment().subtract(Session.get("test-question-start-time")).seconds();
+      $('.question-active .question-remaining-time').text(remaining_seconds);
+      if (show_last_5_seconds && remaining_seconds <= 5) {
+        toastr.warning("Son 5 saniye!"); show_last_5_seconds = false;
+        $('.question-active .question-remaining-time-badget').addClass('red-icon');
+      }
+      if (remaining_seconds < 1) {
+        Meteor.clearInterval(QUESTION_INTERVAL);
+        if ($('.question-active .question-submit-next-test').length > 0) {
+          $('.question-active .question-submit-next-test').click();
+          toastr.info("Soru süresi doldu!");
+        }else {
+          $('.question-active .question-submit-last-test').click();
+          toastr.info("Test sonlandırıldı!");
+         }
+      }
+    }, 1000);
+  }
+}
+
+
+/* her sorunun tek bir seferde dolduruldugunu varsayarak cekiyor
+f_get_form_response = function(event, instance) {
+  const question = $('.question-active .question-content').text();
+  const cid = $('.question-active .question-content').attr('id');
+  if ($('.question-active .type-radio').length == 1) {
+    const selected = $('.question-active .type-radio input:checked');
+    return {label: question, cid: cid, val: selected.attr('id') || "", type: "radio"};
+  }
+  else if ($('.question-active .type-checkboxes').length == 1) {
+    const checks = $('.question-active .type-checkboxes input:checked').map(function() { return this.id; }).get();
+    return {label: question, cid: cid, val: checks, type: "checkboxes"};
+  }
+  else if ($('.question-active .type-paragraph').length == 1) {
+    const text = $('.type-paragraph input').val();
+    return {label: question, cid: cid, val: text, type: "paragraph"};
+  }
+  else if ($('.question-active .type-dropdown').length == 1) {
+    const selected = $('.type-dropdown select').val();
+    return {label: question, cid: cid, val: selected, type: "dropdown"};
+  }
+  else if ($('.question-active .type-number').length == 1) {
+    const number = $('.type-number input').val();
+    return {label: question, cid: cid, val: number, type: "number"};
+  }
+  else if ($('.question-active .type-range').length == 1) {
+    const selected = $('.type-range input').val();
+    return {label: question, cid: cid, val: selected, type: "range"};
+  }
+}
+*/
+
+
+f_get_test_response = function(event, instance) {
+  const question = $('.question-active .question-content').text();
+  const cid = $('.question-active .question-content').attr('id');
+  if ($('.question-active .type-radio').length == 1) {
+    const selected = $('.question-active .type-radio input:checked');
+    return {label: question, cid: cid, val: selected.attr('id') || "", type: "radio"};
+  }
+  else if ($('.question-active .type-checkboxes').length == 1) {
+    const checks = $('.question-active .type-checkboxes input:checked').map(function() { return this.id; }).get();
+    return {label: question, cid: cid, val: checks, type: "checkboxes"};
+  }
+}
+
+f_open_completed_message = function(event, instance) {
+  const active = $('.form-all-questions-area');
+
+  active.addClass('question-hide');
+  active.next().removeClass('question-hide').addClass('question-active');
+  active.remove();
+}
+
+f_open_next_question = function(event, instance, where) {
+  const active = $('.question-active');
+
+  if (where === "question" || where === "last") {
+    const response = f_get_test_response(event, instance);
+    console.log(response); // tam burada veritabanina yazacagiz
+  }
+
+  active.addClass('question-hide').removeClass('question-active');
+  active.next().removeClass('question-hide').addClass('question-active');
+  active.remove();
+}
+
+
+
+Template.CompanyPreviewForm.events({
+  'click .question-start-test'(event, instance) { // start test and prerequisite form
+    f_open_next_question(event, instance, "start");
+    f_check_question_time(event, instance);
+  },
+  'click .question-submit-next-test'(event, instance) { // submit test
+    if (typeof(QUESTION_INTERVAL) != "undefined") { Meteor.clearInterval(QUESTION_INTERVAL); }
+    f_open_next_question(event, instance, "question");
+    f_check_question_time(event, instance);
+  },
+  'click .question-submit-next-prereq'(event, instance) { // submit test
+    f_open_next_question(event, instance, "question");
+  },
+  'click .question-continue-test'(event, instance) { // continue to test and prerequisite form
+    f_open_next_question(event, instance, "continue");
+    f_check_question_time(event, instance);
+  },
+  'click .question-submit-last-test'(event, instance) { // finish test and prerequisite form
+    if (typeof(QUESTION_INTERVAL) != "undefined") { Meteor.clearInterval(QUESTION_INTERVAL); }
+    f_open_completed_message(event, instance);
+    console.log("finished");
+  },
+  'click .question-submit-last-prereq'(event, instance) { // finish test and prerequisite form
+    f_open_completed_message(event, instance);
+    console.log("finished");
+  },
+  'click .question-submit-last-survey'(event, instance) { // submit survey
+    f_open_completed_message(event, instance);
+    console.log("finished");
+  },
+});
+
+
 
 //// helpers
 
 
 Template.registerHelper("formPayload", function(payload){
   return JSON.parse(payload).fields;
+});
+
+Template.registerHelper("equalsIndex", function(index, fields, pos){
+  if (pos === 'first') { return (index === 0) ? true : false; }
+  else if(pos === 'last') { return (index === fields.length-1) ? true : false; }
+  else { if (pos < fields.length) { return pos - 1 === index; } }
 });

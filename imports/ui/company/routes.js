@@ -64,6 +64,7 @@ companyFormRoutes.route('/edit/:formId', { name: 'company_edit_form',
 });
 
 companyFormRoutes.route('/preview/:formId', { name: 'company_preview_form',
+  triggersExit: [function() {if (typeof(QUESTION_INTERVAL) != "undefined") { Meteor.clearInterval(QUESTION_INTERVAL); }}],
   breadcrumb: { parent: "company_list_forms", title: "Form Önizleme" },
   subscriptions: function(params, queryParams) {
     if(Meteor.isClient) {
