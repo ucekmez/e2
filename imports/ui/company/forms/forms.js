@@ -295,7 +295,7 @@ f_get_form_response = function(event, instance) {
 }
 */
 
-
+// test ve prereq sorularinin cevaplarini fetch eder
 f_get_test_response = function(event, instance) {
   const question = $('.question-active .question-content').text();
   const cid = $('.question-active .question-content').attr('id');
@@ -309,58 +309,109 @@ f_get_test_response = function(event, instance) {
   }
 }
 
+
+// test sonu mesajini acar
 f_open_completed_message = function(event, instance) {
   const active = $('.form-all-questions-area');
-
   active.addClass('question-hide');
   active.next().removeClass('question-hide').addClass('question-active');
   active.remove();
 }
 
+// sorunun cevabini isler. Burada veritabanina yazma islemi yapilir
+f_get_response = function(event, instance) {
+  const response = f_get_test_response(event, instance);
+  console.log(response);
+}
+
+// mevcut ekrani silip sonraki ekrani getirir
 f_open_next_question = function(event, instance, where) {
   const active = $('.question-active');
-
-  if (where === "question" || where === "last") {
-    const response = f_get_test_response(event, instance);
-    console.log(response); // tam burada veritabanina yazacagiz
-  }
-
   active.addClass('question-hide').removeClass('question-active');
   active.next().removeClass('question-hide').addClass('question-active');
   active.remove();
 }
 
-
+// onkosul sorularinda zorunlu cevaplama seceneginin validasyonunu yapar
+f_check_if_prereq_filled = function(event, instance) {
+  if ($('.question-active .type-radio.required-question').length == 1) {
+    const selected = $('.question-active .type-radio.required-question input:checked');
+    return selected.length > 0 ? true : false;
+  }
+  else if ($('.question-active .type-checkboxes.required-question').length == 1) {
+    const checks = $('.question-active .type-checkboxes.required-question input:checked').map(function() { return this.id; }).get();
+    return checks.length > 0 ? true : false;
+  }else { return true;}
+}
 
 Template.CompanyPreviewForm.events({
   'click .question-start-test'(event, instance) { // start test and prerequisite form
-    f_open_next_question(event, instance, "start");
+    f_open_next_question(event, instance);
     f_check_question_time(event, instance);
   },
   'click .question-submit-next-test'(event, instance) { // submit test
     if (typeof(QUESTION_INTERVAL) != "undefined") { Meteor.clearInterval(QUESTION_INTERVAL); }
-    f_open_next_question(event, instance, "question");
+    f_get_response(event, instance);
+    f_open_next_question(event, instance);
     f_check_question_time(event, instance);
   },
   'click .question-submit-next-prereq'(event, instance) { // submit test
-    f_open_next_question(event, instance, "question");
+    const can_continue = f_check_if_prereq_filled(event, instance);
+    if (can_continue) {
+      f_get_response(event, instance);
+      f_open_next_question(event, instance);
+    }else { toastr.warning("Lütfen soruyu cevaplayın!"); }
   },
   'click .question-continue-test'(event, instance) { // continue to test and prerequisite form
-    f_open_next_question(event, instance, "continue");
+    f_open_next_question(event, instance);
     f_check_question_time(event, instance);
   },
   'click .question-submit-last-test'(event, instance) { // finish test and prerequisite form
     if (typeof(QUESTION_INTERVAL) != "undefined") { Meteor.clearInterval(QUESTION_INTERVAL); }
+    f_get_response(event, instance);
     f_open_completed_message(event, instance);
     console.log("finished");
   },
   'click .question-submit-last-prereq'(event, instance) { // finish test and prerequisite form
-    f_open_completed_message(event, instance);
-    console.log("finished");
+    const can_continue = f_check_if_prereq_filled(event, instance);
+    if (can_continue) {
+      f_get_response(event, instance);
+      f_open_completed_message(event, instance);
+      console.log("finished");
+    }else { toastr.warning("Lütfen soruyu cevaplayın!"); }
+
   },
   'click .question-submit-last-survey'(event, instance) { // submit survey
-    f_open_completed_message(event, instance);
-    console.log("finished");
+
+    const result_form = Forms.findOne();
+    if (result_form && result_form.payload) {
+      const fields = JSON.parse(result_form.payload).fields;
+      const response = new Array();
+
+      const field_validations = {};
+      fields.forEach(function(field) {
+        if(field.field_type === 'number') {
+          const min = parseInt(field.field_options.min);
+          const max = parseInt(field.field_options.max);
+          field_validations[field.cid]   = { required: field.required, number: true, range: [min,max] }
+        }else if(field.field_type === 'range') {
+          const min = parseInt(field.field_options.min);
+          const max = parseInt(field.field_options.max);
+          field_validations[field.cid]   = { required: field.required, range: [min,max] }
+        }else {
+          field_validations[field.cid]   = { required: field.required }
+        }
+      });
+
+      $("#company-test-prereq-survey-form").validate({ rules: field_validations });
+
+      if($("#company-test-prereq-survey-form").valid()) {
+        f_open_completed_message(event, instance);
+        console.log("finished");
+      }else {
+        toastr.warning("Lütfen zorunlu soruları cevaplayın!");
+      }
+    }
   },
 });
 

@@ -252,6 +252,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 /****** form validation error messages *******/
 
+
 label.error {
   color:red;
   position:absolute;
@@ -260,6 +261,14 @@ label.error {
   top:0;
   margin-top:8px;
   margin-right:24px;
+}
+
+.type-number label.error {
+	margin-right:84px;
+}
+
+.type-dropdown label.error {
+	margin-right:34px;
 }
 
 

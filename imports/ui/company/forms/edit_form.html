@@ -71,13 +71,14 @@
                     <!-- -->
 
                     {{#with form}}
+                      <form id="company-test-prereq-survey-form">
                       {{#with toJSON payload}}
                         <div class="form-all-questions-area">
                           {{#if equalsOr ../type 'test' 'prerequisite' }}
                             <div class="form-question-area question-active">
                               <div class="form-group row">
                                   <div class="col-md-12">
-                                    <button type="submit" class="btn btn-block btn-secondary question-start-test"><i class="icmn-clock"></i> Başla!</button>
+                                    <button type="button" class="btn btn-block btn-secondary question-start-test"><i class="icmn-clock"></i> Başla!</button>
                                   </div>
                               </div>
                             </div>
@@ -96,7 +97,7 @@
 
 
                               {{#if equals field_type "radio" }}
-                                <div class="form-group type-radio">
+                                <div class="form-group type-radio {{#if required }}required-question{{/if}}">
                                   {{#each field_options.options }}
                                     <div class="radio">
                                       <label class="question-label">
@@ -110,11 +111,11 @@
                               {{/if}}
 
                               {{#if equals field_type "checkboxes" }}
-                                <div class="form-group type-checkboxes">
+                                <div class="form-group type-checkboxes {{#if required }}required-question{{/if}}">
                                   {{#each field_options.options }}
                                     <div class="checkbox">
                                       <label class="question-label">
-                                        <input type="checkbox" name="{{ ../cid }}" id="{{ shortid }}" checked="{{ checked }}" tabindex="0" class="hidden" value="{{ label }}">
+                                        <input type="checkbox" name="{{ ../cid }}" id="{{ shortid }}" checked="{{ checked }}" tabindex="0" class="hidden" value="{{ label }}" required="{{ required }}">
                                         <label class="question-label">{{ label }}</label>
                                       </label>
                                     </div>
@@ -126,15 +127,17 @@
 
                               {{#if equals field_type "paragraph" }}
                                 <div class="form-group type-paragraph">
-                                  <input type="text" class="form-control" placeholder="{{ field_options.value }}" name="{{ ../cid }}" maxlength="{{field_options.maxlength}}" minlength="{{field_options.minlength}}" required="{{ required }}">
+                                  <input type="text" class="form-control" placeholder="{{ field_options.value }}" name="{{ cid }}" maxlength="{{field_options.maxlength}}" minlength="{{field_options.minlength}}" required="{{ required }}">
                                 </div>
                               {{/if}}
 
                               {{#if equals field_type "number" }}
                                 <div class="form-group type-number">
                                   <div class="input-group">
-                                    <input type="number" class="form-control" name="{{ ../cid }}" placeholder="{{ field_options.value }}" step="{{ field_options.step }}" min="{{ field_options.min }}" max="{{ field_options.max }}" required="{{ required }}">
-                                    <div class="input-group-addon">{{ field_options.units }}</div>
+                                    <input type="number" class="form-control" name="{{ cid }}" placeholder="{{ field_options.value }}" step="{{ field_options.step }}" min="{{ field_options.min }}" max="{{ field_options.max }}" required="{{ required }}">
+                                    {{#if field_options.units}}
+                                      <div class="input-group-addon">{{ field_options.units }}</div>
+                                    {{/if}}
                                   </div>
                                 </div>
                               {{/if}}
@@ -145,7 +148,7 @@
                                     <div class="col-md-12">
                                       <div class="input-group">
                                         <div class="input-group-addon range">Katılıyorum</div>
-                                        <input class="range" type="range" name="{{ ../cid }}" min="{{ field_options.min }}" max="{{ field_options.max }}" step="1" required="{{ required }}">
+                                        <input class="range" type="range" name="{{ cid }}" min="{{ field_options.min }}" max="{{ field_options.max }}" step="1" required="{{ required }}">
                                         <div class="input-group-addon range">Katılmıyorum</div>
                                       </div>
                                     </div>
@@ -157,9 +160,9 @@
 
                               {{#if equals field_type "dropdown" }}
                                 <div class="form-group type-dropdown">
-                                  <select class="form-control" id="{{ ../cid }}" name="{{ ../cid }}">
+                                  <select class="form-control" name="{{ cid }}" required="{{ required }}">
                                     {{#if field_options.include_blank_option }}
-                                      <option selected disabled hidden></option>
+                                      <option value=""></option>
                                     {{/if}}
                                     {{#each field_options.options }}
                                       <option value="{{ label }}" checked="{{ checked }}">{{ label }}</option>
@@ -178,15 +181,15 @@
                                           {{/if}}
                                           {{#if equalsIndex @index ../fields 'last'}}
                                             {{#if equals ../../type 'test' }}
-                                              <button type="submit" class="btn btn-block btn-secondary question-submit-last-test"><i class="icmn-floppy-disk"></i> Tamamla</button>
+                                              <button type="button" class="btn btn-block btn-secondary question-submit-last-test"><i class="icmn-floppy-disk"></i> Tamamla</button>
                                             {{else}}
-                                              <button type="submit" class="btn btn-block btn-secondary question-submit-last-prereq"><i class="icmn-floppy-disk"></i> Tamamla</button>
+                                              <button type="button" class="btn btn-block btn-secondary question-submit-last-prereq"><i class="icmn-floppy-disk"></i> Tamamla</button>
                                             {{/if}}
                                           {{else}}
                                             {{#if equals ../../type 'test' }}
-                                              <button type="submit" class="btn btn-block btn-secondary question-submit-next-test"><i class="icmn-checkmark"></i> Kaydet ve Devam et</button>
+                                              <button type="button" class="btn btn-block btn-secondary question-submit-next-test"><i class="icmn-checkmark"></i> Kaydet ve Devam et</button>
                                             {{else}}
-                                              <button type="submit" class="btn btn-block btn-secondary question-submit-next-prereq"><i class="icmn-checkmark"></i> Kaydet ve Devam et</button>
+                                              <button type="button" class="btn btn-block btn-secondary question-submit-next-prereq"><i class="icmn-checkmark"></i> Kaydet ve Devam et</button>
                                             {{/if}}
                                           {{/if}}
                                         </div>
@@ -200,7 +203,7 @@
                                             {{#if field_options.answerduration }}
                                               <span style="font-size:2em;"><span class="question-remaining-time">{{field_options.answerduration}}</span> saniye kaldı...</span>
                                             {{/if}}
-                                              <button type="submit" class="btn btn-block btn-secondary question-submit-last-survey"><i class="icmn-floppy-disk"></i> Tamamla</button>
+                                              <button type="button" class="btn btn-block btn-secondary question-submit-last-survey"><i class="icmn-floppy-disk"></i> Tamamla</button>
                                           </div>
                                       </div>
                                   </div>
@@ -213,7 +216,7 @@
                               <div class="form-question-area question-hide">
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                      <button type="submit" class="btn btn-block btn-secondary question-continue-test"><i class="icmn-clock"></i> Sonraki soruya geç!</button>
+                                      <button type="button" class="btn btn-block btn-secondary question-continue-test"><i class="icmn-clock"></i> Sonraki soruya geç!</button>
                                     </div>
                                 </div>
                               </div>
@@ -231,6 +234,7 @@
                             </div>
                           </div>
                       {{/with}}
+                      </form>
                     {{/with}}
 
 
