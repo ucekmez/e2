@@ -1,4 +1,4 @@
-import { Forms } from '/imports/api/collections/forms.js';
+import { Forms, FormResponses } from '/imports/api/collections/forms.js';
 import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
 import { InterviewQuestions, Videos } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates } from '/imports/api/collections/predefined.js';
@@ -49,8 +49,146 @@ Meteor.methods({
     Forms.update({ _id: id }, { $set: { payload: payload } });
   },
 
-  company_remove_form(id) { Forms.remove(id); },
+  company_remove_form(id) {
+    Forms.remove(id);
+    FormResponses.remove({form: id}); // remove related responses, too.
+   },
 
+   company_remove_form_response(id) {
+     FormResponses.remove(id);
+   },
+
+
+
+  company_add_new_survey_response_for_preview(response, form_id) {
+    const user            = Meteor.user();
+    const already_exists  = FormResponses.findOne({ $and : [{ form: form_id}, {user: user._id}]});
+
+    if (already_exists) {
+      FormResponses.update({ $and : [{ form: form_id}, {user: user._id}]}, {
+        $set: { response: response } // set the new one
+      });
+      return already_exists._id;
+    }else {
+      const user_name = (user.profile && user.profile.name) ?  user.profile.name : "";
+      const user_email = (user.emails) ? user.emails[0].address : "";
+
+      const form_response_id = FormResponses.insert({
+        form: form_id,
+        user: user._id,
+        user_name: user_name,
+        email: user_email,
+        response: response,
+        company_preview: true,
+        first_response_date : new Date()
+      });
+      return form_response_id;
+    }
+  },
+
+  company_add_new_prereq_response_for_preview(response, form_id) {
+    const user            = Meteor.user();
+    const already_exists  = FormResponses.findOne({ $and : [{ form: form_id}, {user: user._id}]});
+
+    if (already_exists) {
+      FormResponses.update({ $and : [{ form: form_id}, {user: user._id}]}, {
+        $addToSet: { response: response } // set the new one
+      });
+      return already_exists._id;
+    }else {
+      const user_name = (user.profile && user.profile.name) ?  user.profile.name : "";
+      const user_email = (user.emails) ? user.emails[0].address : "";
+
+      const form_response_id = FormResponses.insert({
+        form: form_id,
+        user: user._id,
+        user_name: user_name,
+        email: user_email,
+        response: [response],
+        company_preview: true,
+        first_response_date : new Date()
+      });
+      return form_response_id;
+    }
+  },
+
+  company_add_bulk_question_to_test_for_preview(field, form_id) {
+    const user            = Meteor.user();
+    const already_exists  = FormResponses.findOne({ $and : [{ form: form_id}, {user: user._id}]});
+    if (already_exists) {
+      FormResponses.update({ $and : [{ form: form_id}, {user: user._id}]}, {
+        $addToSet: { response: {
+          "cid": field.cid,
+          "label": field.label,
+          "val": [],
+          "type": field.field_type,
+          "bulk": true}
+        }
+      });
+    }else {
+      const user_name = (user.profile && user.profile.name) ?  user.profile.name : "";
+      const user_email = (user.emails) ? user.emails[0].address : "";
+      const form_response_id = FormResponses.insert({
+        form: form_id,
+        user: user._id,
+        user_name: user_name,
+        email: user_email,
+        response: [{"cid": field.cid, "label": field.label, "val": [], "type": field.field_type, "bulk": true}],
+        company_preview: true,
+        first_response_date : new Date()
+      });
+    }
+  },
+
+  company_test_check_if_bulk_remains(form_id) {
+    const user            = Meteor.user();
+    const already_exists  = FormResponses.findOne({ $and : [{ form: form_id}, {user: user._id}]});
+    if (already_exists) {
+      FormResponses.update({ $and : [{ form: form_id}, {user: user._id}, { 'response.bulk': true}]}, {
+        $set: { 'response.$.bulk': false, 'response.$.date': new Date() }
+      });
+    }
+  },
+
+  company_add_new_test_response_for_preview(response, form_id) {
+    //console.log(response);
+    const user            = Meteor.user();
+    const already_exists  = FormResponses.findOne({ $and : [{ form: form_id}, {user: user._id}]});
+
+    if (already_exists) {
+      FormResponses.update({ $and : [{ form: form_id}, {user: user._id}, {'response.cid': response.cid}]}, {
+        $set: {
+          'response.$.label': response.label,
+          'response.$.cid'  : response.cid,
+          'response.$.val'  : response.val,
+          'response.$.type' : response.field_type,
+          'response.$.bulk' : false,
+          'response.$.date' : new Date()
+        } // set the new one
+      });
+      return already_exists._id;
+    }else {
+      const user_name = (user.profile && user.profile.name) ?  user.profile.name : "";
+      const user_email = (user.emails) ? user.emails[0].address : "";
+
+      const form_response_id = FormResponses.insert({
+        form: form_id,
+        user: user._id,
+        user_name: user_name,
+        email: user_email,
+        response: [response],
+        company_preview: true,
+        first_response_date : new Date()
+      });
+
+      FormResponses.update({ $and : [{ form: form_id}, {user: user._id}, {'response.cid': response.cid}]}, {
+        $set: { 'response.$': response, 'response.$.date': new Date() } // set the new one
+      });
+
+
+      return form_response_id;
+    }
+  },
 
   /******************************
     methods related to keynotes

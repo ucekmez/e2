@@ -1,0 +1,165 @@
+<template name="CompanyPreviewFormTest">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            {{#with form }}
+              <div class="panel-heading"><h3><i>{{ title }}</i> Önizleme</h3></div>
+            {{/with}}
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_forms' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Anket Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+              <div class="panel panel-with-borders m-b-0">
+                <div class="panel-body">
+
+                    <!-- -->
+
+                    {{#with form}}
+                      <form id="company-preview-test-form">
+                      {{#with toJSONTest payload}}
+                        <div class="form-all-questions-area">
+                          {{#if result }}
+                            {{#with result}}
+
+                              {{#if field}}
+                                <div class="form-question-area start-button question-active">
+                                  <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <button type="button" class="btn btn-block btn-secondary question-start-test">
+                                          {{#if responseStartedBefore }}
+                                            <i class="icmn-clock"></i> Devam et!
+                                          {{else}}
+                                            <i class="icmn-clock"></i> Başla!
+                                          {{/if}}
+                                        </button>
+                                      </div>
+                                  </div>
+                                </div>
+                              {{else}}
+                                <div class="form-group row">
+                                  <div class="col-md-12" style="font-size:3em;">
+                                    Bu form doldurulmuştur!
+
+                                    <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <a href="{{ pathFor 'company_preview_form_result' formId=../../_id}}">
+                                          <button type="button" class="btn btn-block btn-secondary question-show-result"><i class="icmn-calculator2"></i> Sonucu gör!</button>
+                                        </a>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              {{/if}}
+
+                              {{#if CONTINUE_TEST field.cid }}
+                                <div class="form-question-area question-active question">
+                                  <h2>
+                                    <label for="{{ field.cid }}">
+                                      <span class="question-content" id="{{ field.cid }}">{{ field.label }}</span>
+                                      {{#if field.required}}<sup style="color:red;font-size:0.5em;">*</sup>{{/if}}
+                                      {{#if field.field_options.description }}
+                                        <span class="label label-default" style="font-size:0.6em !important;">{{ field.field_options.description}}</span>
+                                      {{/if}}
+                                      </label>
+                                  </h2>
+
+
+                                  {{#if equals field.field_type "radio" }}
+                                    <div class="form-group type-radio {{#if field.required }}required-question{{/if}}">
+                                      {{#each field.field_options.options }}
+                                        <div class="radio">
+                                          <label class="question-label">
+                                            <input type="radio" name="{{ ../field.cid }}" id="{{ shortid }}" checked="{{ checked }}" tabindex="0" class="hidden" value="{{ label }}">
+                                            <label class="question-label">{{ label }}</label>
+                                          </label>
+                                        </div>
+                                        <br />
+                                      {{/each}}
+                                    </div>
+                                  {{/if}}
+
+                                  {{#if equals field.field_type "checkboxes" }}
+                                    <div class="form-group type-checkboxes {{#if field.required }}required-question{{/if}}">
+                                      {{#each field.field_options.options }}
+                                        <div class="checkbox">
+                                          <label class="question-label">
+                                            <input type="checkbox" name="{{ ../field.cid }}" id="{{ shortid }}" checked="{{ checked }}" tabindex="0" class="hidden" value="{{ label }}" required="{{ required }}">
+                                            <label class="question-label">{{ label }}</label>
+                                          </label>
+                                        </div>
+                                        <br />
+                                      {{/each}}
+                                    </div>
+                                  {{/if}}
+
+
+                                  <div class="form-actions">
+                                      <div class="form-group row">
+                                          <div class="col-md-12">
+                                            {{#if field.field_options.answerduration }}
+                                              <span style="font-size:2em;" class="question-remaining-time-badget"><span class="question-remaining-time {{ field.cid }}">{{field.field_options.answerduration}}</span> saniye kaldı...</span>
+                                            {{/if}}
+
+                                            {{#if isLast}}
+                                              <button type="button" class="btn btn-block btn-secondary question-submit-last-test"><i class="icmn-floppy-disk"></i> Tamamla</button>
+                                            {{else}}
+                                              <button type="button" class="btn btn-block btn-secondary question-submit-next-test"><i class="icmn-checkmark"></i> Kaydet ve Devam et</button>
+                                            {{/if}}
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                </div>
+                              {{/if}}
+
+                            {{/with}}
+
+                          {{/if}}
+                        </div>
+
+                          <div class="form-question-area completed question-hide">
+                            <div class="form-group row">
+                                <div class="col-md-12" style="font-size:3em;">
+                                  Test tamamlandı!
+
+                                  <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <a href="{{ pathFor 'company_preview_form_result' formId=../_id}}">
+                                          <button type="button" class="btn btn-block btn-secondary question-show-result"><i class="icmn-calculator2"></i> Sonucu gör!</button>
+                                        </a>
+                                      </div>
+                                  </div>
+
+                                </div>
+                            </div>
+                          </div>
+                      {{else}}
+                        <div class="form-group row">
+                          <div class="col-md-12" style="font-size:3em;">
+                            Bu form boştur!
+                          </div>
+                        </div>
+                      {{/with}}
+                      </form>
+                    {{/with}}
+
+                    <!-- -->
+
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

@@ -1,3 +1,5 @@
+import { CSession } from '/client/main.js';
+
 import './layout.html';
 
 /**********************************************
@@ -63,8 +65,7 @@ companyFormRoutes.route('/edit/:formId', { name: 'company_edit_form',
   }
 });
 
-companyFormRoutes.route('/preview/:formId', { name: 'company_preview_form',
-  triggersExit: [function() {if (typeof(QUESTION_INTERVAL) != "undefined") { Meteor.clearInterval(QUESTION_INTERVAL); }}],
+companyFormRoutes.route('/preview/survey/:formId', { name: 'company_preview_form_survey',
   breadcrumb: { parent: "company_list_forms", title: "Form Önizleme" },
   subscriptions: function(params, queryParams) {
     if(Meteor.isClient) {
@@ -73,7 +74,67 @@ companyFormRoutes.route('/preview/:formId', { name: 'company_preview_form',
     }
   },
   action: function(params) {
-    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewForm' });
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewFormSurvey' });
+    FlowRouter.subsReady("company_form_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+companyFormRoutes.route('/preview/test/:formId', { name: 'company_preview_form_test',
+  triggersEnter: [function(context, redirect) {
+    Meteor.call('company_test_check_if_bulk_remains', context.params.formId,
+      function(err, data) { if (err) { console.log(err); } });
+  }],
+  triggersExit: [function() {
+    const result = CSession.findOne({ 'key': 'test_qtime' });
+    if (result) { Meteor.clearInterval(result.value); }
+    CSession.remove({key: /test_.*/});
+  }],
+  breadcrumb: { parent: "company_list_forms", title: "Form Önizleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_form_preview', Meteor.subscribe("company_form_preview", params.formId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewFormTest' });
+    FlowRouter.subsReady("company_form_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+companyFormRoutes.route('/preview/prereq/:formId', { name: 'company_preview_form_prereq',
+  breadcrumb: { parent: "company_list_forms", title: "Form Önizleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_form_preview', Meteor.subscribe("company_form_preview", params.formId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewFormPrereq' });
+    FlowRouter.subsReady("company_form_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+
+companyFormRoutes.route('/preview/result/:formId', { name: 'company_preview_form_result',
+  breadcrumb: { parent: "company_list_forms", title: "Form Önizleme" },
+  subscriptions: function(params, queryParams) {
+    if(Meteor.isClient) {
+      this.register('company_form_preview', Meteor.subscribe("company_form_preview", params.formId));
+      this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+    }
+  },
+  action: function(params) {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewFormResult' });
     FlowRouter.subsReady("company_form_preview", function() {
       NProgress.done();
     });

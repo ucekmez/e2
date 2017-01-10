@@ -51,16 +51,27 @@ Forms.allow({
 
 
 // tum cevaplar burada tutulacak
-export const Responses = new Mongo.Collection('responses');
 export const FormResponses = new Mongo.Collection('form_responses');
 
 FormResponses.attachSchema(new SimpleSchema({
-  form: { type: String, max: 64 },
-  user: { type: String, max: 64},
-  user_name: { type: String, max: 64, optional: true },
-  email: { type: String, max: 128 },
-  response: { type: String, max: 64 },
-  company_preview : { type: Boolean, optional: true},
+  form                  : { type: String, max: 64 },
+  user                  : { type: String, max: 64},
+  user_name             : { type: String, max: 64, optional: true },
+  email                 : { type: String, max: 128 },
+  response              : { type: Array, optional: true },
+  'response.$'          : { type: Object },
+  "response.$.label"    : { type: String },
+  "response.$.cid"      : { type: String },
+  "response.$.val"      : { type: Array },
+  "response.$.val.$"    : { type: Object },
+  "response.$.val.$.id" : { type: String, optional: true },
+  "response.$.val.$.val": { type: String, optional: true },
+  "response.$.type"     : { type: String },
+  "response.$.bulk"     : { type: Boolean, optional: true },
+  "response.$.date"     : { type: Date, optional: true },
+  points                : { type: Number, optional: true },
+  first_response_date   : { type: Date },
+  company_preview       : { type: Boolean, optional: true},
   createdAt: {
     type: Date,
     autoValue: function() {
@@ -76,6 +87,27 @@ FormResponses.attachSchema(new SimpleSchema({
     optional: true
   }
 }));
+
+
+FormResponses.allow({
+  insert: function (userId, doc) {
+    if (userId && (Roles.userIsInRole(userId, ['admin']) || Roles.userIsInRole(userId, ['company']))) {
+      return true;
+    }
+  },
+  update: function (userId, doc, fields, modifier) {
+    // burayi yalnizca oturum acan company VE admin degistirebilir
+    if (userId && (Roles.userIsInRole(userId, ['admin']) || (Roles.userIsInRole(userId, ['company']) && userId === doc.user))) {
+      return true;
+    }
+  },
+  // burayi sadece oturum acan company ve admin degistirebilir
+  remove: function (userId, doc, fields, modifier) {
+    if (userId && (Roles.userIsInRole(userId, ['admin']) || Roles.userIsInRole(userId, ['company']))) {
+      return true;
+    }
+  }
+});
 
 
 

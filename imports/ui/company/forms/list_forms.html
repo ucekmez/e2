@@ -91,7 +91,10 @@
                                         <td>{{#if equals type "form"}}Anket{{else}}{{#if equals type "test"}}Test{{else}}Ön Koşul{{/if}}{{/if}}</td>
                                         <td>{{#if updatedAt}}{{ dateFromNow updatedAt }}{{else}}{{ dateFromNow createdAt }}{{/if}}</td>
                                         <td>
-                                          <a href="{{ pathFor 'company_preview_form' formId=_id }}"><i class="fa fa-eye big-icon green-icon" aria-hidden="true"></i></a>
+                                          {{#if equals type "form"}}<a href="{{ pathFor 'company_preview_form_survey' formId=_id }}"><i class="blue-icon icmn-pencil6" aria-hidden="true"></i></a>{{/if}}
+                                          {{#if equals type "test"}}<a href="{{ pathFor 'company_preview_form_test' formId=_id }}"><i class="blue-icon icmn-pencil6" aria-hidden="true"></i></a>{{/if}}
+                                          {{#if equals type "prerequisite"}}<a href="{{ pathFor 'company_preview_form_prereq' formId=_id }}"><i class="blue-icon icmn-pencil6" aria-hidden="true"></i></a>{{/if}}
+                                          <a href="{{ pathFor 'company_preview_form_result' formId=_id }}"><i class="fa fa-eye big-icon green-icon" aria-hidden="true"></i></a>
                                           <a style="cursor:pointer;" id="company-remove-form"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>

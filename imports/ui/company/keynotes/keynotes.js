@@ -210,7 +210,7 @@ Template.CompanyPreviewKeynote.events({
       $('.editsingleslide').show();
       $('#edit-inline-keynote').removeClass("btn-default");
       $('#edit-inline-keynote').addClass("button-secondary");
-      $('#edit-inline-keynote').html('<i class="icmn-wrench"></i> Düzenle')
+      $('#edit-inline-keynote').html('<i class="icmn-floppy-disk"></i> Kaydet')
       Session.set("inlineedit", true);
     }else {
       $('.showsingleslide').show();

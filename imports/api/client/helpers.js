@@ -1,4 +1,5 @@
 import { Sectors } from '/imports/api/collections/sectors.js';
+import { FormResponses } from '/imports/api/collections/forms.js';
 
 Template.registerHelper("scaleText", function(content){
   if (content) {
@@ -39,6 +40,97 @@ Template.registerHelper('toJSON', function(payload){
     return JSON.parse(payload);
   }
 });
+
+Template.registerHelper("toJSONSurvey", function(payload){
+  if (payload) {
+    const form_response = FormResponses.findOne();
+    if (form_response) {
+      return { fields: [] };
+    }else {
+      return JSON.parse(payload);
+    }
+  }
+});
+
+Template.registerHelper("toJSONPrereq", function(payload){
+  if (payload) {
+    const form_response = FormResponses.findOne();
+    if (form_response) {
+      const existing_payload = JSON.parse(payload);
+      const new_payload = new Array();
+
+      const response_cids = new Array();
+      form_response.response.forEach(function(rsp) {
+        response_cids.push(rsp.cid); // collect existing answer ids.
+      });
+
+      existing_payload.fields.forEach(function(field) {
+        if (response_cids.indexOf(field.cid) == -1) {
+          new_payload.push(field);
+        }
+      });
+
+      if (new_payload.length > 1) {
+        return {result: {field: new_payload[0], isLast: false} };
+      }else if(new_payload.length == 1) {
+        return {result: {field: new_payload[0], isLast: true} };
+      } else {
+        return {result: {field: [], isLast: true} };
+      }
+
+    }else {
+      if (JSON.parse(payload).fields.length > 1) {
+        return {result: {field: JSON.parse(payload).fields[0], isLast: false} };
+      }else if(JSON.parse(payload).fields.length == 1) {
+        return {result: {field: JSON.parse(payload).fields[0], isLast: true} };
+      }else {
+        return {result: {field: [], isLast: true} };
+      }
+    }
+  }
+});
+
+
+Template.registerHelper("toJSONTest", function(payload){
+  if (payload) {
+    const form_response = FormResponses.findOne();
+    if (form_response) {
+      const existing_payload = JSON.parse(payload);
+      const new_payload = new Array();
+
+      const response_cids = new Array();
+      form_response.response.forEach(function(rsp) {
+        if (!(rsp.bulk)) {
+          response_cids.push(rsp.cid); // collect existing answer ids.
+        }
+      });
+
+      existing_payload.fields.forEach(function(field) {
+        if (response_cids.indexOf(field.cid) == -1) {
+          new_payload.push(field);
+        }
+      });
+
+      if (new_payload.length > 1) {
+        return {result: {field: new_payload[0], isLast: false} };
+      }else if(new_payload.length == 1) {
+        return {result: {field: new_payload[0], isLast: true} };
+      } else {
+        return {result: {field: [], isLast: true} };
+      }
+
+    }else {
+      if (JSON.parse(payload).fields.length > 1) {
+        return {result: {field: JSON.parse(payload).fields[0], isLast: false} };
+      }else if(JSON.parse(payload).fields.length == 1) {
+        return {result: {field: JSON.parse(payload).fields[0], isLast: true} };
+      }else {
+        return {result: {field: [], isLast: true} };
+      }
+    }
+  }
+});
+
 
 Template.registerHelper('equals', function(s1, s2){
   return s1 === s2;

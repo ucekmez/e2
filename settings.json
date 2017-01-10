@@ -1,0 +1,10 @@
+{
+	"public":{
+		"connectionBanner":{
+			"connectionLostText":"Sunucu ile bağlantı kesildi!",
+			"tryReconnectText":"Şimdi yeniden bağlan!",
+			"reconnectBeforeCountdownText":"",
+			"reconnectAfterCountdownText":"saniye içinde yeniden bağlanmayı deneyeceğiz."
+		}
+	}
+}

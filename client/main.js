@@ -11,6 +11,8 @@ import '/imports/api/client/config.js';
 */
 import '/imports/api/client/helpers.js';
 
+export const CSession = new Mongo.Collection(null);
+
 
 $('body').on('change', '.sadece-bir-dogru-var', function() {
   $(".sadece-bir-dogru-var").prop('checked',false);

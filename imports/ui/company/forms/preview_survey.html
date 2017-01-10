@@ -1,0 +1,189 @@
+<template name="CompanyPreviewFormSurvey">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            {{#with form }}
+              <div class="panel-heading"><h3><i>{{ title }}</i> Önizleme</h3></div>
+            {{/with}}
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_forms' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Anket Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+              <div class="panel panel-with-borders m-b-0">
+                <div class="panel-body">
+
+                    <!-- -->
+
+                    {{#with form}}
+                      <form id="company-preview-survey-form">
+                      {{#with toJSONSurvey payload}}
+                        <div class="form-all-questions-area">
+                          {{#each fields}}
+                            <div class="form-question-area">
+                              <h2>
+                                <label for="{{ cid }}">
+                                  <span class="question-content" id="{{ cid }}">{{ label }} [{{@index}}]</span>
+                                  {{#if required}}<sup style="color:red;font-size:0.5em;">*</sup>{{/if}}
+                                  {{#if field_options.description }}
+                                    <span class="label label-default" style="font-size:0.6em !important;">{{ field_options.description}}</span>
+                                  {{/if}}
+                                  </label>
+                              </h2>
+
+
+                              {{#if equals field_type "radio" }}
+                                <div class="form-group type-radio {{#if required }}required-question{{/if}}">
+                                  {{#each field_options.options }}
+                                    <div class="radio">
+                                      <label class="question-label">
+                                        <input type="radio" name="{{ ../cid }}" id="{{ shortid }}" checked="{{ checked }}" tabindex="0" class="hidden" value="{{ label }}">
+                                        <label class="question-label">{{ label }}</label>
+                                      </label>
+                                    </div>
+                                    <br />
+                                  {{/each}}
+                                </div>
+                              {{/if}}
+
+                              {{#if equals field_type "checkboxes" }}
+                                <div class="form-group type-checkboxes {{#if required }}required-question{{/if}}">
+                                  {{#each field_options.options }}
+                                    <div class="checkbox">
+                                      <label class="question-label">
+                                        <input type="checkbox" name="{{ ../cid }}" id="{{ shortid }}" checked="{{ checked }}" tabindex="0" class="hidden" value="{{ label }}" required="{{ required }}">
+                                        <label class="question-label">{{ label }}</label>
+                                      </label>
+                                    </div>
+                                    <br />
+                                  {{/each}}
+                                </div>
+                              {{/if}}
+
+
+                              {{#if equals field_type "paragraph" }}
+                                <div class="form-group type-paragraph">
+                                  <input type="text" class="form-control" placeholder="{{ field_options.value }}" name="{{ cid }}" maxlength="{{field_options.maxlength}}" minlength="{{field_options.minlength}}" required="{{ required }}">
+                                </div>
+                              {{/if}}
+
+                              {{#if equals field_type "number" }}
+                                <div class="form-group type-number">
+                                  <div class="input-group">
+                                    <input type="number" class="form-control" name="{{ cid }}" placeholder="{{ field_options.value }}" step="{{ field_options.step }}" min="{{ field_options.min }}" max="{{ field_options.max }}" required="{{ required }}">
+                                    {{#if field_options.units}}
+                                      <div class="input-group-addon">{{ field_options.units }}</div>
+                                    {{/if}}
+                                  </div>
+                                </div>
+                              {{/if}}
+
+                              {{#if equals field_type "range" }}
+                                <div class="form-group type-range">
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="input-group">
+                                        <div class="input-group-addon range">Katılıyorum</div>
+                                        <input class="range" type="range" name="{{ cid }}" min="{{ field_options.min }}" max="{{ field_options.max }}" step="1" required="{{ required }}">
+                                        <div class="input-group-addon range">Katılmıyorum</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              {{/if}}
+
+
+
+                              {{#if equals field_type "dropdown" }}
+                                <div class="form-group type-dropdown">
+                                  <select class="form-control" name="{{ cid }}" required="{{ required }}">
+                                    {{#if field_options.include_blank_option }}
+                                      <option value=""></option>
+                                    {{/if}}
+                                    {{#each field_options.options }}
+                                      <option value="{{ shortid }}" checked="{{ checked }}">{{ label }}</option>
+                                    {{/each}}
+                                  </select>
+                                </div>
+                              {{/if}}
+
+
+                              {{#if equalsIndex @index ../fields 'last' }}
+                                <div class="form-actions">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-block btn-secondary question-submit-last-survey"><i class="icmn-floppy-disk"></i> Tamamla</button>
+                                        </div>
+                                    </div>
+                                </div>
+                              {{/if}}
+
+                            </div>
+
+
+                          {{else}}
+                            {{#if ../payload}}
+                            <div class="form-group row">
+                                <div class="col-md-12" style="font-size:3em;">
+                                  Bu form doldurulmuştur!
+
+                                  <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <a href="{{ pathFor 'company_preview_form_result' formId=../_id}}">
+                                          <button type="button" class="btn btn-block btn-secondary question-show-result"><i class="icmn-calculator2"></i> Sonucu gör!</button>
+                                        </a>
+                                      </div>
+                                  </div>
+
+                                </div>
+                            </div>
+                            {{else}}
+                            <div class="form-group row">
+                                <div class="col-md-12" style="font-size:3em;">
+                                  Bu form boştur!
+                                </div>
+                            </div>
+                            {{/if}}
+                          {{/each}}
+                        </div>
+
+                          <div class="form-question-area completed question-hide">
+                            <div class="form-group row">
+                                <div class="col-md-12" style="font-size:3em;">
+                                  Test tamamlandı!
+
+                                  <div class="form-group row">
+                                      <div class="col-md-12">
+                                        <a href="{{ pathFor 'company_preview_form_result' formId=../_id}}">
+                                          <button type="button" class="btn btn-block btn-secondary question-show-result"><i class="icmn-calculator2"></i> Sonucu gör!</button>
+                                        </a>
+                                      </div>
+                                  </div>
+
+                                </div>
+                            </div>
+                          </div>
+                      {{else}}
+                      {{/with}}
+                      </form>
+                    {{/with}}
+
+
+                    <!-- -->
+
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

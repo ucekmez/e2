@@ -8974,6 +8974,7 @@ Meteor.startup(function() {
 */
 
   (function() {
+    var shortid = require('shortid');
     Formbuilder.registerField('dropdown', {
       order: 24,
       view: "<select class='form-control browser-default' disabled>\n  <% if (rf.get(Formbuilder.options.mappings.INCLUDE_BLANK)) { %>\n    <option value=''></option>\n  <% } %>\n\n  <% for (i in (rf.get(Formbuilder.options.mappings.OPTIONS) || [])) { %>\n    <option <%= (rf.get(Formbuilder.options.mappings.OPTIONS)[i].checked ? 'selected=\"selected\"' : '') %>>\n      <%= rf.get(Formbuilder.options.mappings.OPTIONS)[i].label %>\n    </option>\n  <% } %>\n</select>",
@@ -8983,11 +8984,13 @@ Meteor.startup(function() {
         attrs.field_options.options = [{
           label: "",
           checked: false,
-          id: 0
+          id: 0,
+          shortid: shortid.generate()
         }, {
           label: "",
           checked: false,
-          id: 1
+          id: 1,
+          shortid: shortid.generate()
         }];
         attrs.field_options.include_blank_option = false;
         return attrs;
@@ -9693,7 +9696,7 @@ Meteor.startup(function() {
       __e = _.escape;
     with(obj) {
       __p +=
-        '<div class=\'fb-edit-section-header field\'>Birim Tanımı</div>\r\n<input type="text" class="form-control" data-rv-input="model.' +
+        '<div class=\'fb-edit-section-header field\'>Birim Tanımı</div>\r\n<input type="text" maxlength="6" class="form-control" data-rv-input="model.' +
         ((__t = (Formbuilder.options.mappings.UNITS)) == null ? '' :
           __t) +
         '" />\r\n';

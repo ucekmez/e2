@@ -1,0 +1,83 @@
+
+
+<template name="CompanyPreviewFormResult">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            {{#with form }}
+              <div class="panel-heading"><h3><i>{{ title }}</i> Değerlendirmesi</h3></div>
+            {{/with}}
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_forms' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Anket Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+              <div class="panel panel-with-borders m-b-0">
+                <div class="panel-body">
+
+                    <!-- -->
+
+                    {{#if form_response}}
+                      {{#with form_response}}
+                        {{#each response }}
+                          <h2>{{ label }}</h2>
+
+                          {{#if equalsOr form.type "test" "prerequisite"}}
+                            --- puan: {{ points }}
+                          {{/if}}
+
+                          {{#if responseExists val }} <!-- eger bir cevap var ise-->
+                            {{#if equals type "checkboxes"}} <!-- eger soru checkbox ise birden fazla cevabimiz olabilir-->
+                              {{#each val }}
+                                {{ @index }}: {{ this.val }}<br />
+                              {{/each}}
+                            {{ else }} <!-- eger soru checkbox degil ise-->
+                              {{ val.[0].val }}
+                            {{/if}}
+                          {{ else }} <!-- eger cevap yok ise-->
+                            Cevaplanmadı!
+                          {{/if}}
+
+                        {{/each}}
+                        <div class="form-question-area question-active">
+                          <div class="form-group row">
+                              <div class="col-md-12">
+                                <button type="button" class="btn btn-block btn-secondary company-form-clear-formresponse">
+                                  Cevapları sıfırla!
+                                </button>
+                              </div>
+                          </div>
+                        </div>
+                      {{/with}}
+                    {{ else }}
+                      <h3>Bu form henüz cevaplanmamış!</h3>
+
+                      <div class="form-group row">
+                          <div class="col-md-12">
+
+                            {{#if equals form.type "form"}}<a href="{{ pathFor 'company_preview_form_survey' formId=form._id}}"><button type="button" class="btn btn-block btn-secondary question-open-form">Hemen cevapla!</button></a>{{/if}}
+                            {{#if equals form.type "test"}}<a href="{{ pathFor 'company_preview_form_test' formId=form._id}}"><button type="button" class="btn btn-block btn-secondary question-open-form">Hemen cevapla!</button></a>{{/if}}
+                            {{#if equals form.type "prerequisite"}}<a href="{{ pathFor 'company_preview_form_prereq' formId=form._id}}"><button type="button" class="btn btn-block btn-secondary question-open-form">Hemen cevapla!</button></a>{{/if}}
+                          </div>
+                      </div>
+                    {{/if}}
+
+
+                    <!-- -->
+
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
