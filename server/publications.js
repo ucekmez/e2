@@ -1,7 +1,7 @@
 import { Companies } from '/imports/api/collections/companies.js';
 import { Forms, FormResponses } from '/imports/api/collections/forms.js';
 import { Keynotes,Slides } from '/imports/api/collections/keynotes.js';
-import { PIGroups, PIs } from '/imports/api/collections/pis.js';
+import { PIGroups, PIs, PIResponses } from '/imports/api/collections/pis.js';
 import { Positions } from '/imports/api/collections/positions.js';
 import { InterviewQuestions, Videos } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates, PredefinedTechTopics } from '/imports/api/collections/predefined.js';
@@ -116,6 +116,35 @@ Meteor.publish("company_list_pis", function() {
     ];
   }
 });
+
+Meteor.publish("company_list_pis_preview", function() {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return [
+      PIs.find(),
+      Sectors.find()
+    ];
+  }
+});
+
+
+Meteor.publish("company_selected_pigroup", function(groupId) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return [
+      PIGroups.find({ _id: groupId }),
+    ];
+  }
+});
+
+Meteor.publish("company_selected_pigroup_response", function(groupId) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return [
+      //PIResponses.find({ $and : [{ group: groupId}, {user: this.userId}]}),
+      PIResponses.find(),
+    ];
+  }
+});
+
+
 
 
 /*** positions ***/

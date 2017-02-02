@@ -2,7 +2,7 @@ import { Forms, FormResponses } from '/imports/api/collections/forms.js';
 import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
 import { InterviewQuestions, Videos } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates } from '/imports/api/collections/predefined.js';
-import { PIs, PIGroups } from '/imports/api/collections/pis.js';
+import { PIs, PIGroups, PIResponses } from '/imports/api/collections/pis.js';
 
 
 import shortid from 'shortid';
@@ -359,6 +359,51 @@ Meteor.methods({
       sector: sector,
       scales: chosens
     });
+  },
+
+  company_edit_pigroup(group_id, name, sector, chosens) {
+    PIGroups.update({ _id: group_id}, { $set: {
+      name: name,
+      sector: sector,
+      scales: chosens
+    }});
+  },
+
+  company_add_pi_preview_response(group_id, scale, expression_index, val) {
+    const user = Meteor.user();
+    const already_exists = PIResponses.findOne({ $and : [{ group: group_id}, {user: user._id}]});
+    const response = {}
+    response['scale'] = scale;
+    response['expressions'] = new Array();
+    const expression_answer = { 'index': expression_index, 'val': val, 'date': new Date() };
+    response['expressions'].push(expression_answer);
+
+    if (already_exists) {
+      const expression_exists = PIResponses.findOne({ $and : [{ group: group_id}, {user: user._id}, { 'response.scale': scale}]});
+
+      if (expression_exists) {
+        PIResponses.update({ $and : [{ group: group_id}, {user: user._id}, { 'response.scale': scale}]}, {
+          '$addToSet': {
+            'response.$.expressions': expression_answer
+        }});
+      }else {
+        PIResponses.update({ $and : [{ group: group_id}, {user: user._id}]}, { $addToSet: {
+          response: response
+        }});
+      }
+    }else {
+      const user_name = (user.profile && user.profile.name) ?  user.profile.name : "";
+      const user_email = (user.emails) ? user.emails[0].address : "";
+
+      PIResponses.insert({
+        group: group_id,
+        user: user._id,
+        user_name: user_name,
+        email: user_email,
+        response: [response],
+        company_preview: true,
+      })
+    }
   },
 
   company_remove_pigroup(pigroup_id) {

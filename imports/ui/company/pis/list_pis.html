@@ -29,6 +29,7 @@
                                     <th>Sıra</th>
                                     <th>Envanter Adı</th>
                                     <th>Sektör</th>
+                                    <th>Ölçek Sayısı</th>
                                     <th>İşlemler</th>
                                 </tr>
                                 </thead>
@@ -44,14 +45,19 @@
                                   {{#each pigroups }}
                                     <tr>
                                         <td>{{ index }}</td>
-                                        <td><a href="#" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ name }}</a></td>
-                                        <td>{{ getSectorHelper sector }}</td>
-                                        <td style="padding-left:16px;"><a style="cursor:pointer;" id="company-remove-pigroup"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a></td>
+                                        <td><a href="{{ pathFor 'company_edit_pi_combination' groupID=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ name }}</a></td>
+                                        <td>{{#if sector }}{{ getSectorHelper sector }}{{else}}Seçilmemiş{{/if}}</td>
+                                        <td>{{ getNumberOfScales scales }}</td>
+                                        <td style="padding-left:16px;">
+                                          <a href="{{ pathFor 'company_preview_pi_combination' groupID=_id }}"><i class="blue-icon icmn-pencil6" aria-hidden="true"></i></a>
+                                          <a href="{{ pathFor 'company_preview_pi_combination_result' groupID=_id }}"><i class="fa fa-eye big-icon green-icon" aria-hidden="true"></i></a>
+                                          <a style="cursor:pointer;" id="company-remove-pigroup"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a>
+                                        </td>
                                     </tr>
                                   {{/each}}
                                   {{#if pigroups }}
                                     <script type="text/javascript">
-                                      $('#company_list_pigroups').DataTable({ responsive: true, "aoColumnDefs":[{"bSortable":false,"aTargets":[3]}], language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
+                                      $('#company_list_pigroups').DataTable({ responsive: true, "aoColumnDefs":[{"bSortable":false,"aTargets":[4]}], language: {processing:"İşleniyor...",search:"Kayıt içinde ara",lengthMenu:"_MENU_ kayıt göster",info:"Toplam _TOTAL_ kayıt var. _START_ - _END_ aralığındakiler görüntüleniyor.",infoEmpty:"Kayıt bulunamadı.",infoFiltered:"(_MAX_ kayıt arasından filtrelendi)",infoPostFix:"",loadingRecords: "Yükleniyor...",zeroRecords:"Kayıt bulunamadı.",emptyTable:"Tabloda veri yok.",paginate: {first:"İlk",previous:"Önceki",next:"Sonraki",last:"Son"},aria: {sortAscending:": artan biçimde sıralar",sortDescending: ": azalan biçimde sıralar"}} });
                                     </script>
                                   {{/if}}
                                 </tbody>
@@ -130,7 +136,7 @@
                           </div>
                           <div class="col-md-9">
                             {{#each pis }}
-                            <div class="btn-group" data-toggle="buttons">
+                            <div class="btn-group list-of-pis" data-toggle="buttons">
                                 <label class="btn btn-primary-outline">
                                     <input type="checkbox" name="check_pi" value="{{ shortid }}">
                                     {{ scale }}
@@ -148,11 +154,122 @@
                                   <button type="submit" class="btn btn-block btn-secondary"><i class="icmn-floppy-disk"></i> Kaydet</button>
                               </div>
                               <div class="col-md-3">
-                                  <button type="button" class="btn btn-block btn-default" id="company-add-new-pigroup-gorm-reset"><i class="icmn-undo"></i> Sıfırla</button>
+                                  <button type="button" class="btn btn-block btn-default" id="company-add-new-pigroup-form-reset"><i class="icmn-undo"></i> Sıfırla</button>
                               </div>
                           </div>
                       </div>
                     </form>
+
+
+
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+
+
+
+
+<template name="CompanyEditPICombination">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>"{{ PIGroup.name }}" Envanterini Düzenle</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_pigroups' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+                    {{#with PIGroup }}
+                      <form id="company-edit-pigroup-form">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="form-control-label" for="pigroupname">Envanter Başlığı</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" value="{{ name }}" placeholder="Kişilik envanteri için bir başlık giriniz" id="pigroupname_edit" name="pigroupname_edit" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="form-control-label" for="pigroupsector_edit">Sektör Seçimi</label>
+                            </div>
+                            <div class="col-md-9">
+                              <div class="form-group">
+                                  <select class="form-control" id="pigroupsector_edit" name="pigroupsector_edit">
+                                    <option value="">Sektör</option>
+                                    {{#each sectors }}
+                                      {{#if equals ../sector slug}}
+                                      <option value="{{ slug }}" selected>{{ name }}</option>
+                                      {{else}}
+                                      <option value="{{ slug }}">{{ name }}</option>
+                                      {{/if}}
+                                    {{/each}}
+                                  </select>
+                              </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="form-control-label" for="l0">Mevcut Ölçekler</label>
+                            </div>
+                            <div class="col-md-9">
+                              {{#each pis }}
+                               {{#if isThisPIChecked shortid}}
+                                  <div class="btn-group list-of-pis" data-toggle="buttons">
+                                    <label class="btn btn-primary-outline active">
+                                        <input type="checkbox" name="check_pi_edit" value="{{ shortid }}" checked>
+                                        {{ scale }}
+                                    </label>
+                                  </div>
+                                {{else}}
+                                  <div class="btn-group list-of-pis" data-toggle="buttons">
+                                    <label class="btn btn-primary-outline">
+                                        <input type="checkbox" name="check_pi_edit" value="{{ shortid }}">
+                                        {{ scale }}
+                                    </label>
+                                  </div>
+                                {{/if}}
+                              {{/each}}
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-actions">
+                            <div class="form-group row">
+                                <div class="col-md-6 offset-md-3">
+                                    <button type="submit" class="btn btn-block btn-secondary"><i class="icmn-floppy-disk"></i> Kaydet</button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-block btn-default" id="company-edit-pigroup-form-reset"><i class="icmn-undo"></i> Sıfırla</button>
+                                </div>
+                            </div>
+                        </div>
+                      </form>
+
+                    {{/with}}
 
 
 

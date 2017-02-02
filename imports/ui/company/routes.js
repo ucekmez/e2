@@ -425,6 +425,42 @@ companyPIsRoutes.route('/new', { name: 'company_add_new_pi_combination',
 });
 
 
+companyPIsRoutes.route('/edit/:groupID', { name: 'company_edit_pi_combination',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+        this.register('company_list_pis', Meteor.subscribe("company_list_pis"));
+        this.register('company_selected_pigroup', Meteor.subscribe("company_selected_pigroup", params.groupID));
+      }
+  },
+  breadcrumb: { parent: "company_list_pigroups", title: "Envanter Düzenle" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyEditPICombination' });
+    FlowRouter.subsReady("company_list_pis", function() {
+      NProgress.done();
+    });
+  }
+});
+
+companyPIsRoutes.route('/preview/:groupID', { name: 'company_preview_pi_combination',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+        this.register('company_list_pis_preview', Meteor.subscribe("company_list_pis_preview"));
+        this.register('company_selected_pigroup', Meteor.subscribe("company_selected_pigroup", params.groupID));
+        this.register('company_selected_pigroup_response', Meteor.subscribe("company_selected_pigroup_response", params.groupID));
+      }
+  },
+  breadcrumb: { parent: "company_list_pigroups", title: "Envanter Önizleme" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewPICombination' });
+    FlowRouter.subsReady("company_list_pis_preview", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
 
 /**********************************************
 position routes

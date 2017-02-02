@@ -446,43 +446,22 @@ Template.CompanyPreviewFormSurvey.events({
 });
 
 
-export const f_session_set = function(key, value) {
+const f_session_remove = function(key) {
+  CSession.remove({ 'key': key});
+}
+
+const f_session_set = function(key, value) {
+  f_session_remove(key);
   CSession.insert({ 'key': key, 'value': value });
 }
 
-export const f_session_get = function(key) {
+const f_session_get = function(key) {
   const result = CSession.findOne({ 'key': key });
   if (result) { return result.value; }
 }
 
-export const f_session_remove = function(key) {
-  CSession.remove({ 'key': key});
-}
 
-/*
-const f_check_test_time = function(cid, time) {
-  f_session_set('test_'+cid+'_time', moment.now());
-  let show_last_5_seconds = true;
-  export const QUESTION_INTERVAL = Meteor.setInterval(function() {
-    let remaining_seconds = time - moment().subtract(f_session_get('test_'+cid+'_time')).seconds();
-    $(`.question-remaining-time.${cid}`).text(remaining_seconds);
-    if (show_last_5_seconds && remaining_seconds <= 5) {
-      toastr.warning("Son 5 saniye!"); show_last_5_seconds = false;
-      $('.question-active .question-remaining-time-badget').addClass('red-icon');
-    }
-    if (remaining_seconds < 1) {
-      Meteor.clearInterval(QUESTION_INTERVAL);
-      if ($('.question-active .question-submit-next-test').length > 0) {
-        $('.question-active .question-submit-next-test').click();
-        toastr.info("Soru süresi doldu!");
-      }else {
-        $('.question-active .question-submit-last-test').click();
-        toastr.info("Test sonlandırıldı!");
-       }
-    }
-  }, 1000);
-}
-*/
+
 
 const f_check_test_time = function(cid, time) {
   TimeSync.resync();

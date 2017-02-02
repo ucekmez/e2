@@ -58,11 +58,19 @@ PIGroups.allow({
 
 export const PIResponses = new Mongo.Collection('pi_responses');
 PIResponses.attachSchema(new SimpleSchema({
-  group: { type: String, max: 64 }, // PIGroup ID
-  user: { type: String, max: 64},
-  user_name: { type: String, max: 64, optional: true },
-  email: { type: String, max: 128 },
-  response: { type: String, max: 4096 }, // will be the stringified version of JSON response
+  group                           : { type: String, max: 64 }, // PIGroup ID
+  user                            : { type: String, max: 64},
+  user_name                       : { type: String, max: 64, optional: true },
+  email                           : { type: String, max: 128 },
+  response                        : { type: Array, optional: true },
+  'response.$'                    : { type: Object },
+  "response.$.scale"              : { type: String },
+  "response.$.expressions"        : { type: Array, optional: true },
+  "response.$.expressions.$"      : { type: Object },
+  "response.$.expressions.$.index": { type: Number },
+  "response.$.expressions.$.val"  : { type: Number },
+  finishedAt                      : { type: Date, optional: true },
+  company_preview                 : { type: Boolean, optional: true},
   createdAt: {
     type: Date,
     autoValue: function() {

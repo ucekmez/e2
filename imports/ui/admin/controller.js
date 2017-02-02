@@ -70,7 +70,7 @@ Template.AdminAddNewCompany.events({
         if (err) {
           toastr.error(err.reason);
         }else {
-          toastr.success('New Company has been added!');
+          toastr.success('Yeni firma eklendi!');
           FlowRouter.go('admin_list_companies');
         }
       });
