@@ -23,6 +23,7 @@ Template.LoadingLayout.destroyed = function () {
 };
 
 
+TimeSync.loggingEnabled = false
 
 T9n.setLanguage("tr");
 

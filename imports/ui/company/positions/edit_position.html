@@ -1,0 +1,82 @@
+<template name="CompanyEditPosition">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>"{{ position.title }}" posisyonunu düzenle</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_positions' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Pozisyon Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body">
+                    <!-- -->
+
+                    <form id="company-edit-position-form">
+                      {{#if subsReady 'company_show_position'}}
+                        {{#if position }}
+                          {{#with position }}
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label class="form-control-label" for="positiontitle_edit">Posizyon Başlığı</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" placeholder="Lütfen ilanınız için pozisyon başlığı girin" id="positiontitle_edit" name="positiontitle_edit" value={{ title }} required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label class="form-control-label" for="positiontime_edit">Tarih Aralığı</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" placeholder="05/01/2017 - 06/01/2017" id="positiontime_edit" name="positiontime_edit" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label class="form-control-label" for="positiondescription_edit">Pozisyon Detayı</label>
+                                </div>
+                                <div class="col-md-9" id="positiondescription_edit">
+                                    {{> froalaReactive getFEContext disableRightClick=true}}
+                                </div>
+                            </div>
+
+
+                            <script type="text/javascript">
+                              $('input[name="positiontime_edit"]').daterangepicker({"autoApply": true,"locale": { "format": "DD-MM-YYYY"}, 'startDate': Session.get('opensAt'), 'endDate': Session.get('endsAt')   });
+                            </script>
+                          {{/with}}
+                        {{/if}}
+                      {{/if}}
+
+
+                      <div class="form-actions">
+                          <div class="form-group row">
+                              <div class="col-md-6 offset-md-3">
+                                  <button type="submit" class="btn btn-block btn-secondary"><i class="icmn-floppy-disk"></i> Kaydet</button>
+                              </div>
+                              <div class="col-md-3">
+                                  <button type="button" class="btn btn-block btn-default" id="company-edit-position-form-reset"><i class="icmn-undo"></i> Sıfırla</button>
+                              </div>
+                          </div>
+                      </div>
+                    </form>
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

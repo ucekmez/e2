@@ -4,11 +4,19 @@ export const PIGroups = new Mongo.Collection('pi_groups');
 import shortid from 'shortid';
 
 PIGroups.attachSchema(new SimpleSchema({
-  name            : { type: String, max: 256},
-  user            : { type: String, max: 64},
-  type            : { type: String, max: 16},
-  sector          : { type: String, max: 32, optional: true},
-  scales          : { type: [String] },
+  name                           : { type: String, max: 256},
+  user                           : { type: String, max: 64},
+  type                           : { type: String, max: 16},
+  sector                         : { type: String, max: 32, optional: true},
+  length                         : { type: Number },
+  numscales                      : { type: Number },
+  scales                         : { type: [String] },
+  phrases                        : { type: Array, optional: true },
+  "phrases.$"                    : { type: Object },
+  "phrases.$.index"              : { type: Number },
+  "phrases.$.phrase"             : { type: String }, // phrase sentence
+  "phrases.$.scale"              : { type: String }, // pi scale shortid
+  responsemeans                  : { type: [Number], optional: true },
   shortid : {
     type: String,
     autoValue: function() { if (this.isInsert) { return shortid.generate(); } },
@@ -69,6 +77,13 @@ PIResponses.attachSchema(new SimpleSchema({
   "response.$.expressions.$"      : { type: Object },
   "response.$.expressions.$.index": { type: Number },
   "response.$.expressions.$.val"  : { type: Number },
+  response_acc                    : { type: Array, optional: true },
+  'response_acc.$'                : { type: Object },
+  "response_acc.$.scale"          : { type: String },
+  "response_acc.$.filled"         : { type: Array, optional: true },
+  "response_acc.$.filled.$"       : { type: Number },
+  "response_acc.$.total"          : { type: Number, optional: true },
+  response_result                 : { type: [Number], decimal:true, optional: true },
   finishedAt                      : { type: Date, optional: true },
   company_preview                 : { type: Boolean, optional: true},
   createdAt: {

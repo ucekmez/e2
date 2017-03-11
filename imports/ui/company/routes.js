@@ -1,4 +1,5 @@
 import { CSession } from '/client/main.js';
+import { Positions } from '/imports/api/collections/positions.js';
 
 import './layout.html';
 
@@ -461,6 +462,27 @@ companyPIsRoutes.route('/preview/:groupID', { name: 'company_preview_pi_combinat
 });
 
 
+companyPIsRoutes.route('/result/:groupID/:userID', { name: 'company_preview_pi_result',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+        this.register('company_list_pis_preview_for_result', Meteor.subscribe("company_list_pis_preview_for_result"));
+        this.register('company_selected_pigroup_for_result', Meteor.subscribe("company_selected_pigroup_for_result", params.groupID));
+        this.register('company_selected_pigroup_response_for_result', Meteor.subscribe("company_selected_pigroup_response_for_result", params.groupID, params.userID));
+      }
+  },
+  breadcrumb: { parent: "company_list_pigroups", title: "Envanter Önizleme" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyPreviewPIResult' });
+    FlowRouter.subsReady("company_selected_pigroup_response_for_result", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+
+
 
 /**********************************************
 position routes
@@ -479,6 +501,40 @@ companyPositionRoutes.route('/list', { name: 'company_list_positions',
   action: function() {
     BlazeLayout.render('CompanyLayout', { main: 'CompanyListPositions' });
     FlowRouter.subsReady("company_list_positions", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+companyPositionRoutes.route('/new', { name: 'company_add_new_position',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+      }
+  },
+  breadcrumb: { parent: "company_list_positions", title: "Yeni Pozisyon" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyAddNewPosition' });
+    FlowRouter.subsReady("company_show_company_profile", function() {
+      NProgress.done();
+    });
+  }
+});
+
+
+
+companyPositionRoutes.route('/edit/:positionId', { name: 'company_edit_position',
+  subscriptions: function(params, queryParams) {
+      if(Meteor.isClient) {
+        this.register('company_show_position', Meteor.subscribe("company_show_position", params.positionId));
+        this.register('company_show_company_profile', Meteor.subscribe("company_show_company_profile"));
+      }
+  },
+  breadcrumb: { parent: "company_list_positions", title: "Pozisyon Düzenle" },
+  action: function() {
+    BlazeLayout.render('CompanyLayout', { main: 'CompanyEditPosition' });
+    FlowRouter.subsReady("company_show_position", function() {
       NProgress.done();
     });
   }

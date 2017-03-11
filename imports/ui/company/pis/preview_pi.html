@@ -20,54 +20,65 @@
                   <div class="panel-body" style="text-align:center;">
                     <!-- -->
 
-                      <div class="expression-active start-button">
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                              <button type="button" class="btn btn-block btn-secondary question-start-pi">
-                                Başla!
-                              </button>
+                      {{#with ShowNextPhrase pi }}
+                        {{#if phrase }}
+
+                          <div class="start-button">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                  <button type="button" class="btn btn-block btn-secondary question-start-pi">
+                                    Başla!
+                                  </button>
+                                </div>
                             </div>
-                        </div>
-                      </div>
-
-                      {{#each pi.phrases }}
-                        <div class="company-pi-preview-whole-expression expression-passive" style="width:100%;">
-                          <div class="company-pi-preview-whole-expression-first pi-add-checkmark">
-                            <h3 class="company-pi-expression" id="{{ scale }}">{{ phrase }}</h3>
-                            <table class="table nowrap company-pi-preview-table">
-                                <tbody>
-                                  <tr>
-                                      <td class="td-agree-area"><div class="pi-agree-text">KATILIYORUM</div></td>
-                                      <td class="td-options-area">
-                                        <div class="company_pi_preview_options">
-                                          <label class="option agree-2"><input type="radio" name="{{ scale }}__{{index}}" autocomplete="off" value="1"></label>
-                                          <label class="option agree-1"><input type="radio" name="{{ scale }}__{{index}}" autocomplete="off" value="2"></label>
-                                          <label class="option neutral"><input type="radio" name="{{ scale }}__{{index}}" autocomplete="off" value="3"></label>
-                                          <label class="option disagree-1"><input type="radio" name="{{ scale }}__{{index}}" autocomplete="off" value="4"></label>
-                                          <label class="option disagree-2"><input type="radio" name="{{ scale }}__{{index}}" autocomplete="off" value="5"></label>
-                                          <table class="table table-hover nowrap company-pi-preview-table-mobile">
-                                              <tbody>
-                                                <tr>
-                                                    <td style="width:50%;" class="td-agree-area-mobile"><div class="pi-agree-text-mobile">KATILIYORUM</div></td>
-                                                    <td style="width:50%;" class="td-disagree-area-mobile"><div class="pi-disagree-text-mobile">KATILMIYORUM</div></td>
-                                                </tr>
-                                              </tbody>
-                                          </table>
-                                        </div>
-                                      </td>
-                                      <td class="td-disagree-area"><div class="pi-disagree-text">KATILMIYORUM</div></td>
-                                  </tr>
-                                </tbody>
-                            </table>
                           </div>
-                          <progress class="progress progress-default progress-striped progress-animated" value="{{ PIAddPlusOne @index }}" max="{{ pi.length }}"></progress>
-                          {{ PIAddPlusOne @index }} / {{ pi.length }}
-                        </div>
-                      {{/each}}
 
-                      <div class="pi-preview-completed-message expression-passive">
-                        <h3>Kişilik Envanteri Tamamlanmıştır!</h3>
-                      </div>
+                          <div class="company-pi-preview-whole-expression expression-passive" style="width:100%;">
+                            <div class="company-pi-preview-whole-expression-first pi-add-checkmark">
+                              <h3 class="company-pi-expression" id="{{ phrase.scale }}">{{ phrase.phrase }}</h3>
+                              <table class="table nowrap company-pi-preview-table">
+                                  <tbody>
+                                    <tr>
+                                        <td class="td-agree-area"><div class="pi-agree-text">KATILIYORUM</div></td>
+                                        <td class="td-options-area">
+                                          <div class="company_pi_preview_options">
+                                            <label class="option agree-2"><input type="radio" name="{{ phrase.scale }}__{{phrase.index}}" autocomplete="off" value="5"></label>
+                                            <label class="option agree-1"><input type="radio" name="{{ phrase.scale }}__{{phrase.index}}" autocomplete="off" value="4"></label>
+                                            <label class="option neutral"><input type="radio" name="{{ phrase.scale }}__{{phrase.index}}" autocomplete="off" value="3"></label>
+                                            <label class="option disagree-1"><input type="radio" name="{{ phrase.scale }}__{{phrase.index}}" autocomplete="off" value="2"></label>
+                                            <label class="option disagree-2"><input type="radio" name="{{ phrase.scale }}__{{phrase.index}}" autocomplete="off" value="1"></label>
+                                            <table class="table table-hover nowrap company-pi-preview-table-mobile">
+                                                <tbody>
+                                                  <tr>
+                                                      <td style="width:50%;" class="td-agree-area-mobile"><div class="pi-agree-text-mobile">KATILIYORUM</div></td>
+                                                      <td style="width:50%;" class="td-disagree-area-mobile"><div class="pi-disagree-text-mobile">KATILMIYORUM</div></td>
+                                                  </tr>
+                                                </tbody>
+                                            </table>
+                                          </div>
+                                        </td>
+                                        <td class="td-disagree-area"><div class="pi-disagree-text">KATILMIYORUM</div></td>
+                                    </tr>
+                                  </tbody>
+                              </table>
+                            </div>
+                            <progress class="progress progress-default progress-striped progress-animated" value="{{ index }}" max="{{ pi.length }}"></progress>
+                            <span style="font-size:1.2em;font-weight:bold;color:#666;">{{ index }} / {{ pi.length }}</span>
+                          </div>
+                        {{else}}
+                          <div class="pi-preview-completed-message">
+                            <h3>Kişilik Envanteri Tamamlanmıştır!</h3>
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                  <button type="button" class="btn btn-block btn-secondary company-pi-show-result">
+                                    Sonucu gör!
+                                  </button>
+                                </div>
+                            </div>
+                          </div>
+                        {{/if}}
+                      {{/with}}
 
                     <!-- -->
                   </div>

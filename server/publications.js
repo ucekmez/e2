@@ -126,23 +126,45 @@ Meteor.publish("company_list_pis_preview", function() {
   }
 });
 
+Meteor.publish("company_list_pis_preview_for_result", function() {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return [
+      PIs.find({}, { fields: { 'scale': 1, 'shortid': 1 }}),
+      Sectors.find()
+    ];
+  }
+});
+
+
+
 
 Meteor.publish("company_selected_pigroup", function(groupId) {
   if (Roles.userIsInRole(this.userId, ['company'])) {
-    return [
-      PIGroups.find({ _id: groupId }),
-    ];
+    return PIGroups.find({ _id: groupId });
+  }
+});
+
+Meteor.publish("company_selected_pigroup_for_result", function(groupId) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return PIGroups.find({ _id: groupId }, { fields: {
+      'name': 1, 'shortid': 1
+    }});
   }
 });
 
 Meteor.publish("company_selected_pigroup_response", function(groupId) {
   if (Roles.userIsInRole(this.userId, ['company'])) {
-    return [
-      //PIResponses.find({ $and : [{ group: groupId}, {user: this.userId}]}),
-      PIResponses.find(),
-    ];
+    return PIResponses.find({ group: groupId, user: this.userId});
   }
 });
+
+Meteor.publish("company_selected_pigroup_response_for_result", function(groupId, userId) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return PIResponses.find({ group: groupId, user: userId});
+  }
+});
+
+
 
 
 
@@ -154,6 +176,14 @@ Meteor.publish("company_list_positions", function() {
     return Positions.find({ user: this.userId });
   }
 });
+
+Meteor.publish("company_show_position", function(positionId) {
+  if (Roles.userIsInRole(this.userId, ['company'])) {
+    return Positions.find({ $and : [{ _id: positionId}, {user: this.userId}]});
+  }
+});
+
+
 
 
 /*** videos ***/

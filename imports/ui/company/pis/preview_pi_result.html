@@ -1,0 +1,48 @@
+<template name="CompanyPreviewPIResult">
+  <section class="page-content">
+    <div class="page-content-inner">
+      <section class="panel">
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="panel-heading"><h3>"{{ PIGroup.name }}" için
+              {{#if response.response.user_name }}{{ response.response.user_name }}{{else}}{{response.response.email}}{{/if}}
+              kullanıcısının raporu</h3></div>
+          </div>
+          <div class="col-xs-4">
+            <div class="panel-heading" style="float:right;">
+              <a href="{{ pathFor 'company_list_pigroups' }}"><button class="btn btn-default"><i class="icmn-undo"></i> Soru Listesine Dön</button></a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="dashboard-container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-with-borders m-b-0">
+                  <div class="panel-body" style="text-align:center;">
+                    <!-- -->
+
+                      <div class="row">
+                        <div class="col-xl-12">
+                          {{#if subsReady 'company_selected_pigroup_response_for_result' }}
+                            {{#if response.response.response_result}}
+                              <canvas id="companyPreviewResult-radar" style="margin:auto;max-width:{{response.size}}px;max-height:{{response.size}}px;"></canvas>
+                              <canvas id="companyPreviewResult-line" style="margin:auto;max-width:{{response.size}}px;max-height:{{response.size}}px;"></canvas>
+                            {{else}}
+                              <h3>Bu envanter henüz tamamlanmamıştır!</h3>
+                            {{/if}}
+                          {{else}}
+                            <h3>Rapor hazırlanıyor...</h3>
+                          {{/if}}
+                        </div>
+                      </div>
+
+                    <!-- -->
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

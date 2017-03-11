@@ -1,9 +1,11 @@
-import { PIGroups, PIs } from '/imports/api/collections/pis.js';
+import { PIGroups, PIs, PIResponses } from '/imports/api/collections/pis.js';
 import { Sectors } from '/imports/api/collections/sectors.js';
 
 import './list_pis.html';
 import './preview_pi.html';
+import './preview_pi_result.html';
 
+import Chart from 'chart.js';
 
 /**********************************************
 template helpers
@@ -47,31 +49,82 @@ Template.CompanyPreviewPICombination.helpers({
   PIGroup() {
     return PIGroups.findOne();
   },
-  // burada shuffle ediyoruz
   pi() {
-    const combination = PIGroups.findOne();
-    if (combination) {
-      const scales = PIs.find({ shortid: { $in : combination.scales }}).fetch();
-      if (scales.length > 0) {
-        const phrases = new Array();
-        scales.forEach(function(scale) {
-          let index = 0;
-          scale.phrases.forEach(function(phrase) {
-            phrases.push({ scale: scale.shortid, phrase: phrase, index: index++ });
-          });
-        });
-        for(let i=0;i<phrases.length;i++) {
-          const rnd = Math.floor(Math.random() * phrases.length);
-          const tmp = phrases[i];
-          phrases[i] = phrases[rnd];
-          phrases[rnd] = tmp;
-        }
-        return {'phrases': phrases, 'length': phrases.length};
-      }
-    }
+    return PIGroups.findOne();
   }
 });
 
+
+
+Template.CompanyPreviewPIResult.helpers({
+  PIGroup() {
+    return PIGroups.findOne();
+  },
+  response() {
+    const response = PIResponses.findOne();
+    if (response && response.response_result) {
+      const scale_names = new Array();
+      response.response_acc.forEach(function(acc, i) {
+        scale_names.push(PIs.findOne({ shortid: acc.scale }).scale);
+      });
+
+      const data = {
+        labels: scale_names,
+        datasets: [
+            {
+                label: "Adayın Sonucu",
+                backgroundColor: "rgba(255,99,132,0.2)",
+                borderColor: "rgba(255,99,132,1)",
+                pointBackgroundColor: "rgba(255,99,132,1)",
+                pointBorderColor: "#fff",
+                data: response.response_result
+            },
+            {
+                label: "Genel Ortalama",
+                backgroundColor: "rgba(0,0,0,0.1)",
+                borderColor: "rgba(179,181,198,1)",
+                pointBackgroundColor: "rgba(179,181,198,1)",
+                pointBorderColor: "#fff",
+                data: [4, 3, 4, 3, 3]
+            },
+        ]
+      };
+
+      Meteor.setTimeout(function(){
+        const ctx1 = $("#companyPreviewResult-radar");
+        const resultChart1 = new Chart(ctx1, {
+          type: 'radar',
+          data: data,
+          options: {
+            scale    : { ticks:  { beginAtZero: true, stepSize: 1, fontSize: 14, max:5 }, pointLabels: { fontSize: 14 }},
+            legend   : { labels: { fontSize: 14, } },
+            elements : { point:  { radius: 6 } },
+          }
+        });
+
+        const ctx2 = $("#companyPreviewResult-line");
+        const resultChart2 = new Chart(ctx2, {
+          type: 'line',
+          data: data,
+          options: {
+            scale    : { ticks:  { beginAtZero: true, stepSize: 1, fontSize: 14, max:5 }, pointLabels: { fontSize: 14 }},
+            legend   : { labels: { fontSize: 14, } },
+            elements : { point:  { radius: 6 } },
+          }
+        });
+      }, 500);
+
+
+      let canvas_size = 600;
+      if (scale_names.length >= 6 && scale_names.length <= 8) {canvas_size = 700}
+      if (scale_names.length > 9 && scale_names.length <= 14) {canvas_size = 800}
+      if (scale_names.length > 14 && scale_names.length <= 20) {canvas_size = 900}
+      if (scale_names.length > 20) {canvas_size = 1000}
+
+      return {'response': response, 'size': canvas_size};
+    }
+  }
+});
 
 /**********************************************
 template events
@@ -80,41 +133,35 @@ template events
 // mevcut ekrani silip sonraki ekrani getirir
 const f_open_first_expression = function(event, instance) {
   const active = $('.start-button');
-  if (active.hasClass('expression-active')) {
-    active.addClass('expression-passive').removeClass('expression-active');
-    active.next().children().first().removeClass('pi-add-checkmark');
-    active.next().removeClass('expression-passive').addClass('expression-active');
-  }else {
-    active.addClass('expression-active').removeClass('expression-passive');
-  }
-  return "OK";
+  if (!active.hasClass('expression-passive')) { active.addClass('expression-passive'); }
+  active.next().fadeIn(500, function() {
+    active.next().removeClass('expression-passive');
+  });
+  active.next().children().first().removeClass('pi-add-checkmark');
 }
 
-const f_open_next_expression = function(event, instance) {
-  const active = $('.expression-active');
-  active.children().first().addClass('pi-add-checkmark');
-
-  setTimeout(function(){
-    active.hide();
-    active.next().removeClass('expression-passive').addClass('expression-active');
-    active.next().children().first().removeClass('pi-add-checkmark');
-    active.remove();
-    return "OK";
-  }, 1000);
-}
 
 const f_get_expression_response = function(event, instance) {
-  const scale = $('.expression-active input:checked').prop('name').split('__')[0];
-  const expression_index = $('.expression-active input:checked').prop('name').split('__')[1];
-  const val = $('.expression-active input:checked').val();
+  const scale = $('.company-pi-preview-whole-expression input:checked').first().prop('name').split('__')[0];
+  const expression_index = $('.company-pi-preview-whole-expression input:checked').first().prop('name').split('__')[1];
+  const val = $('.company-pi-preview-whole-expression input:checked').first().val();
+  $('input:checked').hide();
   if (typeof(val) === "undefined") {
     toastr.warning("Lütfen bir seçim yapın!");
   }else {
+    $('.company-pi-preview-whole-expression').children().first().addClass('pi-add-checkmark');
     Meteor.call("company_add_pi_preview_response", FlowRouter.getParam('groupID'), scale, expression_index, val, function(err, data) {
       if (err) {
         toastr.error(err.reason);
       }else {
-        const fone = f_open_next_expression(event, instance);
+        $("input[type=radio]").prop('checked',false);
+        $(".option.fill-with-agree").removeClass('fill-with-agree');
+        $(".option.fill-with-disagree").removeClass('fill-with-disagree');
+        $(".option.fill-with-neutral").removeClass('fill-with-neutral');
+
+        Meteor.setTimeout(function(){
+          $('.company-pi-preview-whole-expression').children().first().removeClass('pi-add-checkmark');
+        }, 200);
         toastr.info("Seçiminiz kaydedildi!");
       }
     });
@@ -136,12 +183,17 @@ Template.CompanyPreviewPICombination.events({
     }else {
       $(event.currentTarget).parent().toggleClass("fill-with-neutral");
     }
-    const fger = f_get_expression_response(event, instance);
+    f_get_expression_response(event, instance);
   },
   'click .question-start-pi'(event, instance) {
-    const fofe = f_open_first_expression(event, instance);
+    f_open_first_expression(event, instance);
+  },
+  'click .company-pi-show-result'(event, instance) {
+    FlowRouter.go('company_preview_pi_result', {'groupID': FlowRouter.getParam('groupID'), 'userID': Meteor.userId()});
   }
 });
+
+
 
 Template.CompanyAddNewPICombination.onRendered(() => {
   $("#company-add-new-pigroup-form").validate({
@@ -164,6 +216,7 @@ Template.CompanyAddNewPICombination.events({
     const chosens = $('[name=check_pi]:checked').map(function() {return this.value;}).get();
 
     if (chosens.length > 0) {
+      $('.company-save-pi-group').html('<i class="icmn-floppy-disk"></i> Kaydediliyor...').prop('disabled',true).addClass('disabled');
       Meteor.call('company_add_new_pigroup', name, sector, chosens, function (err, data) {
         if (err) {
           if (err.error === 400) { toastr.error("Lütfen tüm alanları doldurun!"); }
@@ -239,9 +292,11 @@ Template.CompanyListPIGroups.events({
   },
 });
 
+// how many scales exist in this PIGroup
 Template.registerHelper("getNumberOfScales", function(scales){
   return scales.length;
 });
+
 
 Template.registerHelper("isThisPIChecked", function(scale_id){
   const group = PIGroups.findOne();
@@ -250,11 +305,36 @@ Template.registerHelper("isThisPIChecked", function(scale_id){
   }
 });
 
-Template.registerHelper("PIAddPlusOne", function(index){
-  return parseInt(index) + 1;
+Template.registerHelper("ShowNextPhrase", function(group){
+  if (group) {
+    const response = PIResponses.findOne();
+    if (response) {
+      let next = false;
+      group.phrases.some(function(phrase, i) {
+        let is_next = true;
+        response.response_acc.some(function(acc, j) {
+          if (acc.scale === phrase.scale && acc.filled.indexOf(phrase.index) > -1) {
+            is_next = false;
+            return true;
+          }
+        });
+        if (is_next) { next = { 'phrase': phrase, 'index': i+1 }; return true; }
+      });
+
+      if(next) { return next; }
+      else {
+        if (!response.response_result) {
+          Meteor.call('company_pi_collect_response', group._id, Meteor.userId(), function(err, data) {
+            if (!err) { toastr.success("Test tamamlandı!"); }
+          });
+        }
+        return { 'phrase': false, 'index': false };
+      }
+    }else {
+      return {'phrase': group.phrases[0], 'index': 1 };
+    }
+  }
 });
-
-
 
 
 //

@@ -3,6 +3,7 @@ import { Keynotes, Slides } from '/imports/api/collections/keynotes.js';
 import { InterviewQuestions, Videos } from '/imports/api/collections/videos.js';
 import { PredefinedLanguageTemplates, PredefinedTechnicalTemplates } from '/imports/api/collections/predefined.js';
 import { PIs, PIGroups, PIResponses } from '/imports/api/collections/pis.js';
+import { Positions } from '/imports/api/collections/positions.js';
 
 
 import shortid from 'shortid';
@@ -351,21 +352,76 @@ Meteor.methods({
 
 
   company_add_new_pigroup(name, sector, chosens) {
-    //const selected_pis = PIs.find({ shortid: { $in : chosens }});
+    const pis = PIs.find({ shortid: { $in : chosens }}).fetch();
+
+    const phrases = new Array();
+    const scale_ids = new Array();
+    // response means empty array
+    const responsemeans = new Array();
+    pis.forEach(function(scale, i) {
+      scale.phrases.forEach(function(phrase, j) {
+        phrases.push({ 'scale': scale.shortid, 'phrase': phrase, 'index': j });
+      });
+      scale_ids.push(scale.shortid);
+      responsemeans.push(0);
+    });
+
+    for(let j=0;j<2;j++) {
+      for(let i=0; i<phrases.length; i++) {
+        const rnd = Math.floor(Math.random() * phrases.length);
+        const tmp = phrases[i];
+        phrases[i] = phrases[rnd];
+        phrases[rnd] = tmp;
+      }
+    }
+
     PIGroups.insert({
       user: Meteor.userId(),
       name: name,
       type: "custom",
       sector: sector,
-      scales: chosens
+      phrases: phrases,
+      numscales: pis.length,
+      length: phrases.length,
+      scales: scale_ids,
+      responsemeans: responsemeans
     });
+
   },
 
   company_edit_pigroup(group_id, name, sector, chosens) {
+    const pis = PIs.find({ shortid: { $in : chosens }}).fetch();
+
+    const phrases = new Array();
+    const scale_ids = new Array();
+    // response means empty array
+    const responsemeans = new Array();
+    pis.forEach(function(scale, i) {
+      scale.phrases.forEach(function(phrase, j) {
+        phrases.push({ 'scale': scale.shortid, 'phrase': phrase, 'index': j });
+      });
+      scale_ids.push(scale.shortid);
+      responsemeans.push(0);
+    });
+
+    for(let j=0;j<2;j++) {
+      for(let i=0; i<phrases.length; i++) {
+        const rnd = Math.floor(Math.random() * phrases.length);
+        const tmp = phrases[i];
+        phrases[i] = phrases[rnd];
+        phrases[rnd] = tmp;
+      }
+    }
+
+
     PIGroups.update({ _id: group_id}, { $set: {
       name: name,
       sector: sector,
-      scales: chosens
+      phrases: phrases,
+      numscales: pis.length,
+      length: phrases.length,
+      scales: scale_ids,
+      responsemeans: responsemeans
     }});
   },
 
@@ -375,20 +431,21 @@ Meteor.methods({
     const response = {}
     response['scale'] = scale;
     response['expressions'] = new Array();
-    const expression_answer = { 'index': expression_index, 'val': val, 'date': new Date() };
+    const expression_answer = { 'index': parseInt(expression_index), 'val': parseInt(val), 'date': new Date() };
     response['expressions'].push(expression_answer);
 
     if (already_exists) {
       const expression_exists = PIResponses.findOne({ $and : [{ group: group_id}, {user: user._id}, { 'response.scale': scale}]});
-
       if (expression_exists) {
         PIResponses.update({ $and : [{ group: group_id}, {user: user._id}, { 'response.scale': scale}]}, {
           '$addToSet': {
-            'response.$.expressions': expression_answer
+            'response.$.expressions': expression_answer,
+            'response_acc.$.filled': parseInt(expression_index)
         }});
       }else {
         PIResponses.update({ $and : [{ group: group_id}, {user: user._id}]}, { $addToSet: {
-          response: response
+          response: response,
+          response_acc: { 'scale': scale, 'filled': [parseInt(expression_index)] },
         }});
       }
     }else {
@@ -401,13 +458,73 @@ Meteor.methods({
         user_name: user_name,
         email: user_email,
         response: [response],
+        response_acc: [{ 'scale': scale, 'filled': [parseInt(expression_index)] }],
         company_preview: true,
-      })
+      });
+    }
+  },
+
+  company_pi_collect_response(groupId, userId) {
+    const response = PIResponses.findOne({ group: groupId, user: userId});
+    if (response) {
+
+      response.response.forEach(function(rsp, i) {
+        let total_points = 0;
+        rsp.expressions.forEach(function(exp, j) {
+          total_points += exp.val;
+        });
+        // burada verilen cevaplari ilgili scale icin topluyoruz daha sonra asagida ortalamasi alinacak
+        PIResponses.update({ $and : [{ group: groupId}, {user: userId}, { 'response_acc.scale': rsp.scale}]}, {
+          '$set': {
+            'response_acc.$.total': total_points
+        }});
+      });
+
+
+      let scale_means = new Array();
+      response.response_acc.forEach(function(acc) {
+        scale_means.push(parseFloat((acc.total / acc.filled.length).toFixed(2)));
+      });
+
+
+
+      PIResponses.update({ group: groupId, user: userId}, {
+        '$set': { 'response_result': scale_means }
+      });
     }
   },
 
   company_remove_pigroup(pigroup_id) {
     PIGroups.remove(pigroup_id);
+    PIResponses.remove({});
+  },
+
+
+
+  /******************************
+    methods related to position
+  *******************************/
+
+  company_add_new_position(title, starts, ends, description) {
+    const position_id = Positions.insert({
+      title: title,
+      user: Meteor.userId(),
+      description: description,
+      opensAt: starts,
+      endsAt: ends,
+    });
+    return position_id;
+  },
+
+  company_edit_position(positionId, title, starts, ends, description) {
+    Positions.update({ _id: positionId }, {
+      $set: {
+        title: title,
+        description: description,
+        opensAt: starts,
+        endsAt: ends,
+      }
+    });
   },
 
 });

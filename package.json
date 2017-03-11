@@ -9,6 +9,7 @@
     "bcrypt": "^0.8.7",
     "bootstrap": "^4.0.0-alpha.5",
     "bootstrap-select": "^1.11.2",
+    "chart.js": "^2.4.0",
     "countdown": "^2.6.0",
     "ion-rangeslider": "^2.1.4",
     "jquery-wizard": "^0.4.3",

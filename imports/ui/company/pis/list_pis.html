@@ -47,10 +47,10 @@
                                         <td>{{ index }}</td>
                                         <td><a href="{{ pathFor 'company_edit_pi_combination' groupID=_id }}" style="font-size:1.1em;"><i class="icmn-pencil7"></i> {{ name }}</a></td>
                                         <td>{{#if sector }}{{ getSectorHelper sector }}{{else}}Seçilmemiş{{/if}}</td>
-                                        <td>{{ getNumberOfScales scales }}</td>
+                                        <td>{{ numscales }}</td>
                                         <td style="padding-left:16px;">
                                           <a href="{{ pathFor 'company_preview_pi_combination' groupID=_id }}"><i class="blue-icon icmn-pencil6" aria-hidden="true"></i></a>
-                                          <a href="{{ pathFor 'company_preview_pi_combination_result' groupID=_id }}"><i class="fa fa-eye big-icon green-icon" aria-hidden="true"></i></a>
+                                          <a href="{{ pathFor 'company_preview_pi_result' groupID=_id userID=currentUser._id }}"><i class="fa fa-eye big-icon green-icon" aria-hidden="true"></i></a>
                                           <a style="cursor:pointer;" id="company-remove-pigroup"><i class="fa fa-trash big-icon red-icon" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
@@ -151,7 +151,7 @@
                       <div class="form-actions">
                           <div class="form-group row">
                               <div class="col-md-6 offset-md-3">
-                                  <button type="submit" class="btn btn-block btn-secondary"><i class="icmn-floppy-disk"></i> Kaydet</button>
+                                  <button type="submit" class="btn btn-block btn-secondary company-save-pi-group"><i class="icmn-floppy-disk"></i> Kaydet</button>
                               </div>
                               <div class="col-md-3">
                                   <button type="button" class="btn btn-block btn-default" id="company-add-new-pigroup-form-reset"><i class="icmn-undo"></i> Sıfırla</button>
